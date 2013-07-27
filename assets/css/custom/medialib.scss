@@ -1,0 +1,208 @@
+@import "../../../public/bootstrap/scss/functions";
+@import "../base/variables";
+@import "../base/mixins";
+@import "../base/elements";
+@import "../../../public/bootstrap/scss/variables";
+@import "../../../public/bootstrap/scss/mixins";
+@import "theme_settings";
+
+
+#thumbsize-control
+{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  span
+  {
+    margin-right: 0.5rem;
+  }
+}
+
+$tile-size: 80px;
+$tile-size-md-smup: 100px;
+$tile-size-sm: 54px;
+$tile-size-lg: 191px;
+$border-spacing: 8px;
+
+.category
+{
+  margin-top: 1rem;
+  &:first-child
+  {
+    margin-top: 0;
+  }
+
+  > .files
+  {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+
+    .mediafile
+    {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: $tile-size;
+      height: $tile-size;
+      margin: 0.5rem;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      transition: border 0.5s;
+
+      .checkbox
+      {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: white;
+        visibility: hidden;
+      }
+
+      &.selected
+      {
+        text-decoration: none;
+        background-color: #e5e5e5;
+
+        .checkbox
+        {
+          color: white;
+          visibility: visible;
+        }
+      }
+
+      > img
+      {
+        max-width: $tile-size - $border-spacing !important;
+        max-height: $tile-size - $border-spacing;
+      }
+
+      i.fas,
+      i.far
+      {
+        font-size: $tile-size - 15px;
+        opacity: 0.13;
+      }
+
+      &.flavored
+      {
+        order: -1;
+      }
+
+      .name {
+        z-index: 1;
+        max-width: 100%;
+        max-height: 100%;
+        padding: 1px 4px;
+        overflow: hidden;
+        font-size: 1.15rem;
+        color: $primary;
+        text-align: center;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        @include force-word-break();
+      }
+
+      &:not(.showName) .name
+      {
+        display: none;
+      }
+
+      &.showName
+      {
+        display: grid;
+        .name,
+        i.fas,
+        i.far
+        {
+          grid-column: 1;
+          grid-row: 1;
+          justify-self: center;
+        }
+      }
+
+      &[data-filetype="audio"] .name {
+        max-height: calc(100% - 1.5rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .audio-control {
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        z-index: 2;
+        font-size: 1.5rem;
+        transition: font-size 0.1s;
+
+        &:hover {
+          font-size: 1.65rem;
+        }
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(sm)
+{
+  .category > .files .mediafile
+  {
+    width: $tile-size-md-smup;
+    height: $tile-size-md-smup;
+
+    > img
+    {
+      max-width: $tile-size-md-smup - $border-spacing !important;
+      max-height: $tile-size-md-smup - $border-spacing;
+    }
+
+    i.fas,
+    i.far
+    {
+      font-size: $tile-size-md-smup - 15px;
+    }
+  }
+}
+
+#content[size=sm] .category
+{
+  > .files .mediafile
+  {
+    width: $tile-size-sm;
+    height: $tile-size-sm;
+
+    > img
+    {
+      max-width: $tile-size-sm - $border-spacing !important;
+      max-height: $tile-size-sm - $border-spacing;
+    }
+
+    i.fas,
+    i.far
+    {
+      font-size: $tile-size-sm - 15px;
+    }
+  }
+}
+
+#content[size=lg] .category
+{
+  > .files .mediafile
+  {
+    width: $tile-size-lg;
+    height: $tile-size-lg;
+
+    > img
+    {
+      max-width: $tile-size-lg - $border-spacing !important;
+      max-height: $tile-size-lg - $border-spacing;
+    }
+
+    i.fas,
+    i.far
+    {
+      font-size: $tile-size-lg - 15px;
+    }
+  }
+}

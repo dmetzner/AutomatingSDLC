@@ -1,0 +1,52 @@
+{% extends 'Default/base.html.twig' %}
+{% block page_title %}{{ "codeview.title"|trans({}, "catroweb") }}{% endblock %}
+{% block back_path %}{{ path('program', { 'id' : id }) }}{% endblock %}
+{# Catblocks is broken in the moment therefor no search would work. ToDo: Enable as soon as it's working again #}
+{% block no_search %}true{% endblock %}
+
+
+{% block head %}
+  <link rel="stylesheet" href="{{ asset('css/'~theme()~'/card.css') }}"/>
+
+  {% if isVersionSupportedByCatBlocks(version) %}
+    <link rel="stylesheet" href="{{ asset('catblocks/main.css') }}"/>
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+
+  <div class="d-flex justify-content-center">
+    <i class="material-icons" id="code-view-spinner">
+      {% include 'Default/loadingSpinner.html.twig' with {'spinner_id': 'code-view-spinner' ~ suffix|default()} %}
+    </i>
+  </div>
+  {% if isVersionSupportedByCatBlocks(version) %}
+
+    <div id='catblocks-code-container'>
+    </div>
+    {# As long as catblocks is not stable we need to also load the old view as backup #}
+    {{ render(controller('App\\Catrobat\\Controller\\Web\\CodeViewController:oldView', {'id' : id, 'visible' : false })) }}
+  {% else %}
+    {{ render(controller('App\\Catrobat\\Controller\\Web\\CodeViewController:oldView', {'id' : id })) }}
+  {% endif %}
+
+{% endblock %}
+
+
+{% block js %}
+
+<script src="{{ asset('js/OldCodeView.min.js') }}"></script>
+
+{% if isVersionSupportedByCatBlocks(version) %}
+  <script src="{{ asset('catblocks/CatBlocks.js') }}"></script>
+  <script src="{{ asset('js/ProgramCodeView.min.js') }}"></script>
+  <script>
+    let codeView = new ProgramCodeView('{{ app.request.getSchemeAndHttpHost() ~ '/' }}',
+      '{{ extracted_path }}', '{{ extracted_dir_hash }}',
+      '{{ app.request.getLocale() }}', '{{ app_env }}', CatBlocks)
+    codeView.init()
+  </script>
+{% endif %}
+
+{% endblock %}
+

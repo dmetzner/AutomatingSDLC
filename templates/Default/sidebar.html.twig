@@ -1,0 +1,83 @@
+<nav id="sidebar">
+  <a class="logo" href="{{ path('index') }}"
+     style="background-image:url('{{ asset('images/logo/catrobat_text.svg') }}')"><span
+        class="sr-only">{{ "menu.home"|trans({}, "catroweb") }}</span></a>
+  <ul class="list-unstyled" id="project-navigation">
+
+    {% if isWebview() %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('index') }}" id="btn-back-to-app">
+          <span class="sidebar-link-icon material-icons">arrow_back</span>
+          <span class="sidebar-link-text">{{ 'back_to_app'|trans({}, "catroweb") }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {# logged in #}
+    {% if app.user %}
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('notifications') }}" id="sidebar-notifications">
+          <span class="sidebar-link-icon material-icons">notifications</span>
+          <span class="sidebar-link-text">{{ "notifications"|trans({}, "catroweb") }}</span>
+          <span class="badge-pill badge-danger all-notifications"></span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('profile') }}" id="btn-profile">
+          <span class="sidebar-link-icon material-icons">person</span>
+          <span class="sidebar-link-text">{{ 'menu.profile'|trans({}, "catroweb") }}</span>
+        </a>
+      </li>
+      {% if is_granted('ROLE_ADMIN') %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url('sonata_admin_dashboard') }}" id="btn-admin">
+            <span class="sidebar-link-icon material-icons">security</span>
+            <span class="sidebar-link-text">{{ 'menu.admin'|trans({}, "catroweb") }}</span>
+          </a>
+        </li>
+      {% endif %}
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('catrobat_follower') }}" id="btn-follow">
+          <span class="sidebar-link-icon material-icons">people</span>
+          <span class="sidebar-link-text">{{ 'menu.followersAndFollowing'|trans({}, "catroweb") }}</span>
+        </a>
+      </li>
+
+    {% else %} {# login #}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('login') }}" id="btn-login">
+          <span class="sidebar-link-icon material-icons">exit_to_app</span>
+          <span class="sidebar-link-text">{{ 'menu.login'|trans({}, "catroweb") }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {# Always visible #}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url('catrobat_web_help') }}" id="btn-tutorials">
+        <span class="sidebar-link-icon material-icons">help_outline</span>
+        <span class="sidebar-link-text">{{ 'menu.helpAndTutorials'|trans({}, "catroweb") }}</span>
+      </a>
+    </li>
+
+    {# logout #}
+    {% if app.user and app.session and not app.session.get('webview-auth') %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('logout') }}" id="btn-logout">
+          <span class="sidebar-link-icon material-icons ">exit_to_app</span>
+          <span class="sidebar-link-text">{{ 'menu.logout'|trans({}, "catroweb") }}</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+  <ul class="list-unstyled">
+    {% if sidebar_ul is not empty %}
+      {{ sidebar_ul|raw }}
+    {% endif %}
+  </ul>
+
+</nav>
+<div id="sidebar-overlay"></div>
