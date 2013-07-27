@@ -1,0 +1,51 @@
+{% extends 'Default/base.html.twig' %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ asset('css/'~theme()~'/medialib.css') }}" media="screen"/>
+{% endblock %}
+
+{% block sidebar_ul %}
+  <hr>
+  {% for category in categories %}
+    <li class="nav-item" id="menu-mediacat-{{ category.displayID }}" style="display: none">
+      <a class="nav-link" href="#category-{{ category.displayID }}">{{ category.name }}</a>
+    </li>
+  {% endfor %}
+{% endblock %}
+
+{% block body %}
+
+  {% if foundResults is defined and foundResults == false %}
+  <div id="search-results">
+    <h1>{{ "media-packages.search-results"|trans({}, "catroweb") }}</h1>
+    <div id="search-results-text">
+      {{ "media-packages.no-results"|trans({}, "catroweb") }}
+    </div>
+  </div>
+  {% endif %}
+
+  <div id="content" class="medialib-content">
+    {% for category in categories %}
+      <div id="category-{{ category.displayID }}" data-name="{{ category.name | e('html_attr') }}"
+           style="display: none" class="category">
+        <h1>{{ category.name }}</h1>
+        <div class="files"></div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script src="{{ asset('js/MediaLib.min.js') }}"></script>
+  <script>
+    new MediaLib(
+      "{{ package }}",
+      "{{ mediaSearchPath|default('')|raw }}",
+      "{{ flavor }}",
+      "{{ mediaDir }}",
+      "{{ "element"|trans({}, "catroweb") }}",
+      "{{ "elements"|trans({}, "catroweb") }}",
+      "{{ isWebview() }}"
+    );
+  </script>
+{% endblock %}
