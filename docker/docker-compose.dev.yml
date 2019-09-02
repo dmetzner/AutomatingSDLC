@@ -12,7 +12,6 @@ services:
     depends_on:
       - db.catroweb.dev
       - ldap.catroweb.dev
-      - jenkins.catroweb.dev
       - chrome.catroweb.dev
     ports:
       - 80:80
