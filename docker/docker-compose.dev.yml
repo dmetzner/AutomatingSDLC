@@ -58,13 +58,6 @@ services:
     depends_on:
       - db.catroweb.dev
 
-  # JENKINS
-  jenkins.catroweb.dev:
-    image: jenkins/jenkins:lts
-    container_name: jenkins.catroweb.dev
-    ports:
-      - 8003:8080
-
   # SELENIUM
   hub.catroweb.dev:
     image: selenium/hub:3.141.59-oxygen
