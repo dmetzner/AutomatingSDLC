@@ -1,0 +1,88 @@
+version: '3.7'
+
+services:
+
+  # APACHE WITH PHP
+  app.catroweb.dev:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    container_name: app.catroweb.dev
+    image: app.catroweb.dev
+    depends_on:
+      - db.catroweb.dev
+      - ldap.catroweb.dev
+      - jenkins.catroweb.dev
+      - chrome.catroweb.dev
+    ports:
+      - 80:80
+    volumes:
+      - ./../tests:/var/www/catroweb/tests
+      - ./../templates:/var/www/catroweb/templates
+      - ./../translations:/var/www/catroweb/translations
+      - ./../src:/var/www/catroweb/src
+
+  # DATABASE
+  db.catroweb.dev:
+    image: mariadb:10.3
+    container_name: db.catroweb.dev
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=symfony
+    ports:
+      - 3306:3306
+
+  # LDAP
+  ldap.catroweb.dev:
+    image: osixia/openldap:1.2.5
+    container_name: ldap.catroweb.dev
+    environment:
+      - LDAP_ADMIN_PASSWORD=secret
+      - LDAP_BASE_DN='ou=users, dc=example, dc=org'
+    ports:
+      - 8001:636
+
+  # PHPMYADMIN
+  phpmyadmin.catroweb.dev:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin.catroweb.dev
+    environment:
+      - PMA_ARBITRARY=1
+    restart: always
+    ports:
+      - 8002:80
+    volumes:
+      - /sessions
+    external_links:
+      - db.catroweb.dev:db
+    depends_on:
+      - db.catroweb.dev
+
+  # JENKINS
+  jenkins.catroweb.dev:
+    image: jenkins/jenkins:lts
+    container_name: jenkins.catroweb.dev
+    ports:
+      - 8003:8080
+
+  # SELENIUM
+  hub.catroweb.dev:
+    image: selenium/hub:3.141.59-oxygen
+    container_name: hub.catroweb.dev
+    ports:
+      - 4444:4444
+
+  chrome.catroweb.dev:
+    image: selenium/node-chrome-debug:3.141.59-oxygen
+    container_name: chrome.catroweb.dev
+    ports:
+      - 5900:5900
+      - 5555:5555
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub.catroweb.dev
+    environment:
+      - HUB_HOST=hub.catroweb.dev
+      - HUB_PORT=4444
+      - REMOTE_HOST=http://chrome.catroweb.dev:5555
