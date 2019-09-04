@@ -25,12 +25,12 @@ parameters:
     google_testuser_name: ~
     google_testuser_id: ~
 
-    ldap_host: 'http://ldap.catroweb.dev'
-    ldap_port: 8001
-    ldap_user: 'cn=admin, dc=example, dc=org'
-    ldap_password: secret
-    ldap_base_dn: 'ou=users, dc=example, dc=org'
-    ldap_group_filter: '(&(&(ObjectClass=groupOfUniqueNames))(uniqueMember=%s))'
+    ldap_host: http://localhost
+    ldap_port: 636
+    ldap_user: cn=user, dc=organisation, dc=org
+    ldap_password: "secret"
+    ldap_base_dn: ou=users, dc=organisation, dc=org
+    ldap_group_filter: "(&(&(ObjectClass=groupOfUniqueNames))(uniqueMember=%s))" #%s is replaced by sprintf with user dn
 
     backup_host_name: ~
     backup_host_user: ~
