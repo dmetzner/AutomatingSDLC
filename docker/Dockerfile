@@ -87,7 +87,8 @@ RUN grunt
 ADD / ./
 
 # PERMISSIONS
-RUN rm -rf var/cache/* && \
+RUN composer run-script post-install-cmd && \
+    rm -rf var/cache/* && \
     rm -rf var/log/* && \
     adduser root www-data && \
     chown -R www-data:www-data var/cache var/log && \
