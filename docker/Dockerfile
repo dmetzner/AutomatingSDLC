@@ -16,15 +16,9 @@ RUN apt-get update && \
     php7.3-gd \
     php7.3-zip \
     php7.3-mysql \
-    php7.3-xml \
-    php7.3-dom \
     libapache2-mod-php7.3 \
     zlibc \
     acl \
-    libapache2-mod-php7.3 \
-    zlibc \
-    acl \
-    unzip \
     make \
     libtool \
     php-apcu \
@@ -56,7 +50,6 @@ RUN apt-get update && \
     grunt && \
     gem install sass
 
-
 # CHROME
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     dpkg -i google-chrome-stable_current_amd64.deb
@@ -66,34 +59,6 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
 COPY /docker/apache/catroweb.conf /etc/apache2/sites-available/catroweb.conf
 RUN a2dissite 000-default.conf && \
     a2ensite catroweb.conf
-
-
-# ADD CODE
-COPY / /var/www/catroweb
-WORKDIR /var/www/catroweb
-
-
-# CONFIGURATIONS
-RUN cp docker/config/parameters.yml.dist config/packages/parameters.yml && \
-    cp docker/config/behat.yml.dist behat.yml.dist && \
-    cp config/packages/test/parameters.yml.dist config/packages/test/parameters.yml && \
-    cp config/packages/dev/parameters.yml.dist config/packages/dev/parameters.yml && \
-    echo 'APP_ENV=dev' > .env.local
-
-RUN npm install && \
-    npm install grunt
-
-COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN composer install && \
-    grunt
-
-
-# PERMISSIONS
-RUN rm -rf var/cache/* && \
-    rm -rf var/log/* && \
-    HTTPDUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1` && \
-    setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/log && \
-    setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/log && \
 WORKDIR /var/www/catroweb
 
 
@@ -122,8 +87,7 @@ RUN grunt
 ADD / ./
 
 # PERMISSIONS
-RUN composer run-script post-install-cmd && \
-    rm -rf var/cache/* && \
+RUN rm -rf var/cache/* && \
     rm -rf var/log/* && \
     adduser root www-data && \
     chown -R www-data:www-data var/cache var/log && \
