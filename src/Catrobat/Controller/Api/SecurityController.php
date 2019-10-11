@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\UserManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Catrobat\StatusCode;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Catrobat\Requests\LoginUserRequest;
 use App\Catrobat\Requests\CreateUserRequest;
@@ -21,6 +22,7 @@ use App\Catrobat\Security\UserAuthenticator;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+
 
 
 /**
@@ -46,7 +48,7 @@ class SecurityController extends AbstractController
   }
 
   /**
-   * @Route("/api/checkToken/check.json", name="catrobat_api_check_token", defaults={"_format": "json"},
+   * @Route("/api/checkToken/check.json", name="catrobat_api_check_token_depricated", defaults={"_format": "json"},
    *                                      methods={"POST"})
    * 
    * @param TranslatorInterface $translator
@@ -535,5 +537,113 @@ class SecurityController extends AbstractController
   {
     return $this->oauth_service;
   }
-  
+
+  /**
+   * @OA\Post(
+   *     path="/security/checkToken",
+   *     summary="Checks if a given token is valid",
+   *     tags={"Security"},
+   *     @OA\RequestBody(
+   *         required=true,
+   *         @OA\MediaType(
+   *             mediaType="application/json",
+   *             @OA\Schema(
+   *                 @OA\Property(
+   *                     property="token",
+   *                     type="string"
+   *                 ),
+   *                 example={"token": "76ee3de97a1b8b903319b7c013d8c877"}
+   *             )
+   *         )
+   *     ),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Token is valid."
+   *     ),
+   *     @OA\Response(
+   *         response=404,
+   *         description="Token is invalid."
+   *     ),
+   *     deprecated=false
+   * )
+   */
+
+  /**
+   * @Route("/api/v2/security/checkToken",
+   *   name="api_check_token",
+   *   defaults={"_format": "json"},
+   *   methods={"POST"}
+   *   )
+   */
+  public function checkToken(Request $request)
+  {
+
+  }
+
+  /**
+   * @OA\Post(
+   *     path="/security/register",
+   *     summary="Register a user",
+   *     operationId="registerUser",
+   *     tags={"Security"},
+   *     @OA\RequestBody(
+   *         required=true,
+   *         @OA\MediaType(
+   *             mediaType="application/json",
+   *             @OA\Schema(
+   *                 @OA\Property(
+   *                     property="email",
+   *                     type="string"
+   *                 ),
+   *                 @OA\Property(
+   *                     property="username",
+   *                     type="string"
+   *                 ),
+   *                 @OA\Property(
+   *                     property="password",
+   *                     type="string"
+   *                 ),
+   *                 @OA\Property(
+   *                     property="locale",
+   *                     type="string"
+   *                 ),
+   *                 example={
+   *                  "email": "test@test.lan",
+   *                  "username": "NiceUsername",
+   *                  "password": "VerySecurePassword",
+   *                  "locale": "de",
+   *                 }
+   *             )
+   *         )
+   *     ),
+   *     @OA\Response(
+   *         response=200,
+   *         description="User got successfully registered",
+   *         @OA\JsonContent(ref="#/components/schemas/APIMessageOKRegister"),
+   *     ),
+   *     @OA\Response(
+   *         response=400,
+   *         description="There was a problem with the registration(validation etc.)",
+   *         @OA\JsonContent(
+   *           type="array",
+   *           @OA\Items(
+   *             ref="#/components/schemas/APIMessage")
+   *         ),
+   *     ),
+   *     deprecated=false
+   * )
+   */
+
+  /**
+   * @Route("/api/v2/security/register",
+   *   name="catrobat_api_register",
+   *   options={"expose"=true},
+   *   defaults={"_format":"json"},
+   *   methods={"POST"}
+   *   )
+   */
+  public function registerUser(Request $request)
+  {
+
+  }
 }

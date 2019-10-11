@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: 'SHARE - API'
+  description: ''
+  termsOfService: 'https://share.catrob.at/pocketcode/termsOfUse'
+  contact:
+    email: webmaster@catrobat.org
+  license:
+    name: '[TODO] FILL IN NAME & URL'
+    url: link.domain
+  version: DRAFT
+servers:
+  -
+    url: share.catrob.at/app/api/v2
+    description: 'SHARE - API'
+paths:
+  /security/checkToken:
+    post:
+      tags:
+        - Security
+      summary: 'Checks if a given token is valid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                token:
+                  type: string
+              type: object
+              example:
+                token: 76ee3de97a1b8b903319b7c013d8c877
+      responses:
+        '200':
+          description: 'Token is valid.'
+        '404':
+          description: 'Token is invalid.'
+      deprecated: false
+  /security/register:
+    post:
+      tags:
+        - Security
+      summary: 'Register a user'
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                locale:
+                  type: string
+              type: object
+              example:
+                email: test@test.lan
+                username: NiceUsername
+                password: VerySecurePassword
+                locale: de
+      responses:
+        '200':
+          description: 'User got successfully registered'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIMessageOKRegister'
+        '400':
+          description: 'There was a problem with the registration(validation etc.)'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/APIMessage'
+      deprecated: false
+components:
+  schemas:
+    APIMessage:
+      properties:
+        message:
+          type: string
+          example: 'The operation was successful'
+      type: object
+      xml:
+        name: APIMessage
+    APIMessageOKRegister:
+      allOf:
+        -
+          $ref: '#/components/schemas/APIMessage'
+        -
+          properties:
+            token:
+              type: string
+              example: 76ee3de97a1b8b903319b7c013d8c877
+          type: object
+          xml:
+            name: APIMessageOKRegister
+tags:
+  -
+    name: Security
+    description: 'Everything about security, login and register'
+externalDocs:
+  description: 'Find out more about Swagger'
+  url: 'http://swagger.io'
