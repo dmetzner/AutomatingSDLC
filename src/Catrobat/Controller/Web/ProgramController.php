@@ -225,6 +225,26 @@ class ProgramController extends AbstractController
     ]);
   }
 
+    /**
+     * @Route("/project/steal/{id}", name="steal_program", methods={"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     *
+     * @param ProgramManager $program_manager
+     * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function programStealAction(Request $request, $id, ProgramManager $program_manager)
+    {
+        $user = $this->getUser();
+        $program_manager->stealProgram($id, $user);
+        return new JsonResponse([
+            'result'  => $id,
+        ]);
+    }
+
 
   /**
    * @Route("/project/like/{id}", name="program_like", methods={"GET"})

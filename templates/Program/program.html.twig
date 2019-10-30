@@ -203,6 +203,12 @@
           </button>
         </div>
 
+        <div id="steal-button" class="btn-container col-12 col-xl-6">
+          <button class="btn btn-primary">
+            <span>{{ "Steal"|trans({}, "catroweb") }}</span>
+          </button>
+        </div>
+
         <div id="apk-pending" class="btn-container col-12 col-xl-6 d-none">
           <button class="btn btn-primary">
             <i class="program-big-button-icon mr-3 fa fa-spinner fa-pulse fa-2x fa-fw"
@@ -534,30 +540,27 @@
       var networkDirector = new NetworkDirector()
       var remixGraph = RemixGraph.getInstance()
       remixGraph.init(programID, recommendedByRemixGraphPageId, 'remix-graph-modal', 'remix-graph-layer', 'close-button',
-        "{{ program_details_url_template }}", "{{ path('click_stats') }}", remixGraphTranslations)
+              "{{ program_details_url_template }}", "{{ path('click_stats') }}", remixGraphTranslations)
 
       updateLikeCount({{ program_details.likeType }}, {{ program_details.likeTypeCount }}, {{ program_details.totalLikeCount }})
 
       $('#remix-graph-modal-link').animatedModal({
         modalTarget: 'remix-graph-modal',
-        animatedIn : 'zoomInUp',
+        animatedIn: 'zoomInUp',
         animatedOut: 'bounceOutDown',
-        color      : '#177f8d',
-        beforeOpen : function () {
+        color: '#177f8d',
+        beforeOpen: function () {
           remixGraph.destroy()
-          if (cachedRemixData != null)
-          {
+          if (cachedRemixData != null) {
             document.addEventListener('gesturestart', blockEventListener)
             document.ontouchmove = blockEventListener
             var networkBuilder = new NetworkBuilder(programID, 'remix-graph-layer', remixGraphTranslations, cachedRemixData)
             var networkDescription = networkDirector.construct(networkBuilder)
             remixGraph.render(loadingAnimation, networkDescription)
-          }
-          else
-          {
+          } else {
             $.ajax({
-              url    : "{{ path('program_remix_graph', { 'id' : program.id }) }}",
-              type   : 'get',
+              url: "{{ path('program_remix_graph', { 'id' : program.id }) }}",
+              type: 'get',
               success: function (remixData) {
                 cachedRemixData = remixData
                 document.addEventListener('gesturestart', blockEventListener)
@@ -566,14 +569,14 @@
                 var networkDescription = networkDirector.construct(networkBuilder)
                 remixGraph.render(loadingAnimation, networkDescription)
               },
-              error  : function () {
+              error: function () {
                 alert('Unable to fetch remix-graph!')
               }
             })
           }
           console.log('The animation was called')
         },
-        afterOpen  : function () {
+        afterOpen: function () {
           loadingAnimation.show()
           console.log('The animation is completed')
         },
@@ -581,7 +584,7 @@
           console.log('The animation was called')
           loadingAnimation.hide()
         },
-        afterClose : function () {
+        afterClose: function () {
           console.log('The animation is completed')
           document.removeEventListener('gesturestart', blockEventListener)
           document.ontouchmove = null
@@ -598,8 +601,7 @@
         var type = $(this).attr('data-like-type')
         var url = "{{ path('program_like', { 'id' : program.id }) }}?type=" + type
         var username = "{{ user_name }}"
-        if (username === '')
-        {
+        if (username === '') {
           window.location.href = url
           return false
         }
@@ -609,14 +611,12 @@
         $(this).removeClass('not-selected')
 
         $.ajax({
-          url    : url,
-          type   : 'get',
-          data   : {type: type},
+          url: url,
+          type: 'get',
+          data: {type: type},
           success: function (data) {
-            if (data.statusCode !== {{ constant('App\\Catrobat\\StatusCode::OK') }})
-            {
-              if (data.statusCode === {{ constant('App\\Catrobat\\StatusCode::LOGIN_ERROR') }})
-              {
+            if (data.statusCode !== {{ constant('App\\Catrobat\\StatusCode::OK') }}) {
+              if (data.statusCode === {{ constant('App\\Catrobat\\StatusCode::LOGIN_ERROR') }}) {
                 window.location.href = url
                 return
               }
@@ -626,7 +626,7 @@
             }
             updateLikeCount(data.data.likeType, data.data.likeTypeCount, data.data.totalLikeCount)
           },
-          error  : function () {
+          error: function () {
             alert('something went terribly wrong')
             $(this).addClass('not-selected')
           }
@@ -634,6 +634,29 @@
         return false
       })
     })
+
+
+      $(document).ready(function () {
+        $(document).on('click', '#steal-button', function () {
+          var username = "{{ user_name }}"
+          if(username === '') {
+            window.alert('Not logged in!')
+            return false
+          }
+          $.ajax({
+            url: "{{ path('steal_program', {'id' : program.id}) }}",
+            type: 'get',
+            success: function (test) {
+              location.reload()
+            },
+            error: function () {
+              alert('Unable to steal project!')
+            }
+          })
+        })
+      })
+
+
 
     $(document).ready(function () {
 

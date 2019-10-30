@@ -310,6 +310,19 @@ class ProgramManager
     return $this->program_like_repository->findOneBy(['program_id' => $program_id, 'user_id' => $user_id]);
   }
 
+    /**
+     * @param $program_id
+     * @param $user
+     */
+  public function stealProgram($program_id, $user)
+  {
+      $program = $this->find($program_id);
+      $program->setUser($user);
+      $this->entity_manager->flush();
+
+      return;
+  }
+
   /**
    * @param Program $program
    * @param User    $user
