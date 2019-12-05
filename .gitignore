@@ -73,3 +73,7 @@ behat.yml
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+### docker ###
+!/docker/php/startup.sh
+!/docker/php/wait-for-it.sh
