@@ -118,5 +118,9 @@
         "symfony-bin-dir": "bin",
         "symfony-assets-install": "relative",
         "public-dir": "public"
-    }
+    },
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/HCrane/CAPI"
+    }]
 }
