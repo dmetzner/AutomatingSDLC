@@ -45,11 +45,11 @@ Feature: Like feature on program page
 
   Scenario: I should be able to like a program when I am logged in and it should notify the owner
     Given I log in as "OtherUser" with the password "123456"
-    And I am on "/app/project/1"
+    Then I am on "/app/project/1"
     And I click "#program-like-thumbs-up"
     And I wait for a second
     When I log in as "Catrobat" with the password "123456"
-    And I am on "/app/notifications/allNotifications"
+    Then I am on "/app/notifications/allNotifications"
     Then the element "#catro-notification-1" should be visible
     And I should see "OtherUser"
     And the element "#notifications-summary" should be visible

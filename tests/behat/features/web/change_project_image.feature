@@ -30,7 +30,7 @@ Feature:
     When I click "#change-project-thumbnail-button"
     And I wait for the server response
     When I attach the avatar "logo.png" to "file"
-    And I wait 250 milliseconds
+    Then I wait 250 milliseconds
     Then I should see "Your image was uploaded successfully!"
     And I click "#change-project-thumbnail-button"
     And I wait for the server response

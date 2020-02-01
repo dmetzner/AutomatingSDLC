@@ -17,7 +17,7 @@ Feature: Showing more programs from a user(program owner)
       | 6  | user3_p1 | p7          | user3    | 5         | 1             | 1     | 01.03.2013 12:00 | 0.8.5   |
 
   Scenario: There should be more programs from the program owner be recommended
-    When I go to "//app/project/1"
+    Given I am on "/app/project/1"
     Then I should see "More from Catrobat"
     And I should see "user1_p1"
     And I should see "user1_p2"
@@ -28,7 +28,7 @@ Feature: Showing more programs from a user(program owner)
     Then I should see 2 "#more-from-this-user-recommendations .program"
 
   Scenario: When the program owner only has one program don't show the "more-from" category
-    When I go to "//app/project/6"
+    Given I am on "/app/project/6"
     Then I should not see "More from"
     Then I should see 0 "#more-from-this-user-recommendations .program"
 
@@ -37,12 +37,12 @@ Feature: Showing more programs from a user(program owner)
     When I fill in "username" with "Catrobat"
     And I fill in "password" with "123456"
     And I press "Login"
-    When I go to "//app/project/1"
+    When I am on "/app/project/1"
     Then I should not see "More from"
     Then I should see 0 "#more-from-this-user-recommendations .program"
 
   Scenario: When the user is on a program page the program should not also be recommended in the show more category
-    When I go to "//app/project/4"
+    Given I am on "/app/project/4"
     Then I should see "More from user2"
     But I should see "user2_p2"
     Then I should see 1 "#more-from-this-user-recommendations .program"

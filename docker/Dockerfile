@@ -1,5 +1,15 @@
-FROM ubuntu:18.04
+FROM composer AS composer-build
+COPY composer.json composer.lock ./
+RUN composer install --no-scripts
 
+
+FROM node AS node-build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install && npm install grunt
+
+
+FROM ubuntu:18.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 # DEPDEDENCIES
@@ -16,6 +26,8 @@ RUN apt-get update && \
     php7.3-gd \
     php7.3-zip \
     php7.3-mysql \
+    php7.3-xml \
+    php7.3-dom \
     libapache2-mod-php7.3 \
     zlibc \
     acl \
@@ -59,8 +71,14 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
 COPY /docker/apache/catroweb.conf /etc/apache2/sites-available/catroweb.conf
 RUN a2dissite 000-default.conf && \
     a2ensite catroweb.conf
+
 WORKDIR /var/www/catroweb
 
+# LIBRARIES
+COPY --from=composer-build /app/vendor vendor
+COPY --from=node-build /app/node_modules node_modules
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY composer.json composer.lock package.json package-lock.json ./
 
 # CONFIGURATIONS
 COPY /config config
@@ -68,14 +86,6 @@ COPY /docker/config/parameters.yml.dist config/packages/parameters.yml
 RUN cp config/packages/test/parameters.yml.dist config/packages/test/parameters.yml && \
     cp config/packages/dev/parameters.yml.dist config/packages/dev/parameters.yml && \
     echo 'APP_ENV=dev' > .env.local
-
-
-# LIBRARIES
-ADD /package.json /package-lock.json /composer.json /composer.lock ./
-RUN npm install && npm install grunt
-COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN composer install --no-scripts
-
 
 # GRUNT
 COPY /assets assets
@@ -90,13 +100,14 @@ ADD / ./
 RUN composer run-script post-install-cmd && \
     rm -rf var/cache/* && \
     rm -rf var/log/* && \
-    adduser root www-data && \
-    chown -R www-data:www-data var/cache var/log && \
+    adduser www-data root && \
+    HTTPDUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1` && \
+    setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/log && \
+    setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/log && \
+    chmod -R 777 var && \
     chmod o+w public/resources/ -R && \
     chmod o+w+x tests/behat/sqlite/ -R && \
     chmod +x docker/php/startup.sh && \
     chmod +x docker/php/wait-for-it.sh
 
 EXPOSE 80
-
-# CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]

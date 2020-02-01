@@ -21,28 +21,28 @@ Feature: As a program owner, I should be able to give credits for my program.
     Given I am on "/app/project/1"
     Then I should see "Credits"
     And I wait 100 milliseconds
-    And the element "#edit-credits-button" should not exist
+    Then the element "#edit-credits-button" should not exist
 
   Scenario: A button for editing credits should be visible, if I am the owner of the program
     Given I log in as "Superman" with the password "123456"
     And I am on "/app/project/1"
-    And I should see "Credits"
+    Then I should see "Credits"
     And I wait 100 milliseconds
-    And the element "#edit-credits-button" should be visible
+    Then the element "#edit-credits-button" should be visible
 
   Scenario: A button for editing credits should be not exist, if I am not the owner of the program
     Given I log in as "Superman" with the password "123456"
     And I am on "/app/project/3"
-    And I should see "Credits"
+    Then I should see "Credits"
     And I wait 100 milliseconds
-    And the element "#edit-credits-button" should not exist
+    Then the element "#edit-credits-button" should not exist
 
    Scenario: If I press the edit credits button, a textarea should appear in which I can write my credits
      Given I log in as "Superman" with the password "123456"
      And I am on "/app/project/1"
-     And I should see "Credits"
+     Then I should see "Credits"
      And I wait 100 milliseconds
-     And the element "#edit-credits-button" should be visible
+     Then the element "#edit-credits-button" should be visible
      And I click "#edit-credits-button"
      And I wait 100 milliseconds
      Then the element "#edit-credits" should be visible
@@ -50,9 +50,9 @@ Feature: As a program owner, I should be able to give credits for my program.
   Scenario: If I press the edit credits button, a textarea should appear in which I can write my credits
     Given I log in as "Superman" with the password "123456"
     And I am on "/app/project/1"
-    And I should see "Credits"
+    Then I should see "Credits"
     And I wait 100 milliseconds
-    And the element "#edit-credits-button" should be visible
+    Then the element "#edit-credits-button" should be visible
     And I click "#edit-credits-button"
     And I wait 100 milliseconds
     Then the element "#edit-credits" should be visible
@@ -61,9 +61,9 @@ Feature: As a program owner, I should be able to give credits for my program.
   Scenario: I should be able to write new credits, if I am the owner of the program
     Given I log in as "Superman" with the password "123456"
     And I am on "/app/project/1"
-    And I should see "Credits"
+    Then I should see "Credits"
     And I wait 100 milliseconds
-    And the element "#edit-credits-button" should be visible
+    Then the element "#edit-credits-button" should be visible
     And I click "#edit-credits-button"
     And I wait 100 milliseconds
     Then the element "#edit-credits" should be visible
