@@ -47,7 +47,7 @@ Feature: Search programs
           "Views": 12,
           "Downloads": 3,
           "Private": false,
-          "Uploaded": 1357041600,
+          "Uploaded": 1357038000,
           "UploadedString": "more than one year ago",
           "ScreenshotBig": "images\/default\/screenshot.png",
           "ScreenshotSmall": "images\/default\/thumbnail.png",

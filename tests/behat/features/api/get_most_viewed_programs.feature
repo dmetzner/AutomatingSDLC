@@ -30,7 +30,7 @@ Feature: Get the most downloaded programs
                                 "Views": 90,
                                 "Downloads": 333,
                                 "Private":false,
-                                "Uploaded": 1359723600,
+                                "Uploaded": 1359720000,
                                 "UploadedString":"1 year ago",
                                 "ScreenshotBig":"images/default/screenshot.png",
                                 "ScreenshotSmall":"images/default/thumbnail.png",

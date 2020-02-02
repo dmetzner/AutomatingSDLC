@@ -98,16 +98,15 @@ ADD / ./
 
 # PERMISSIONS
 RUN composer run-script post-install-cmd && \
-    rm -rf var/cache/* && \
-    rm -rf var/log/* && \
+    rm -rf var/{cache,log}/* && \
     adduser www-data root && \
     HTTPDUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1` && \
     setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/log && \
     setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/log && \
     chmod -R 777 var && \
-    chmod o+w public/resources/ -R && \
-    chmod o+w+x tests/behat/sqlite/ -R && \
-    chmod +x docker/php/startup.sh && \
-    chmod +x docker/php/wait-for-it.sh
+    chown -R www-data:www-data var/cache && \
+    chmod -R o+w public/resources/ && \
+    chmod -R o+w+x tests/behat/sqlite/ && \
+    chmod +x docker/php/*
 
 EXPOSE 80

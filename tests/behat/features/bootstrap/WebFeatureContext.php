@@ -292,7 +292,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $this->getSession()->wait($milliseconds);
   }
 
-  /**
+    /**
    * @Given /^I set the cookie "([^"]+)" to "([^"]*)"$/
    * @param string $cookie_name
    * @param string $cookie_value

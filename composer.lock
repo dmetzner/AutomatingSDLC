@@ -6160,18 +6160,6 @@
         },
         {
             "name": "symfony/flex",
-<<<<<<< HEAD
-            "version": "v1.6.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/flex.git",
-                "reference": "e4f5a2653ca503782a31486198bd1dd1c9a47f83"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/e4f5a2653ca503782a31486198bd1dd1c9a47f83",
-                "reference": "e4f5a2653ca503782a31486198bd1dd1c9a47f83",
-=======
             "version": "v1.6.1",
             "source": {
                 "type": "git",
@@ -6182,7 +6170,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/flex/zipball/c497c0c77cb9018cccd9c092832ebf9826612f92",
                 "reference": "c497c0c77cb9018cccd9c092832ebf9826612f92",
->>>>>>> Update to new develop and fix permission issues of docker container.
                 "shasum": ""
             },
             "require": {
