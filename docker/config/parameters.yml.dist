@@ -5,7 +5,11 @@ parameters:
     database_name:     symfony
     database_user:     root
     database_password: root
+<<<<<<< HEAD
     database_server_v: mariadb-10.3
+=======
+    database_server_v: 10.3
+>>>>>>> 65b985e5... Deleted Jenkins
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
@@ -25,12 +29,21 @@ parameters:
     google_testuser_name: ~
     google_testuser_id: ~
 
+<<<<<<< HEAD
     ldap_host: http://localhost
     ldap_port: 636
     ldap_user: cn=user, dc=organisation, dc=org
     ldap_password: "secret"
     ldap_base_dn: ou=users, dc=organisation, dc=org
     ldap_group_filter: "(&(&(ObjectClass=groupOfUniqueNames))(uniqueMember=%s))" #%s is replaced by sprintf with user dn
+=======
+    ldap_host: 'http://ldap.catroweb.dev'
+    ldap_port: 8001
+    ldap_user: 'cn=admin, dc=example, dc=org'
+    ldap_password: secret
+    ldap_base_dn: 'ou=users, dc=example, dc=org'
+    ldap_group_filter: '(&(&(ObjectClass=groupOfUniqueNames))(uniqueMember=%s))'
+>>>>>>> 65b985e5... Deleted Jenkins
 
     backup_host_name: ~
     backup_host_user: ~
