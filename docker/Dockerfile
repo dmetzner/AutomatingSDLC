@@ -66,7 +66,6 @@ RUN apt-get update && \
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     dpkg -i google-chrome-stable_current_amd64.deb
 
-
 # APACHE CONFIG
 COPY /docker/apache/catroweb.conf /etc/apache2/sites-available/catroweb.conf
 RUN a2dissite 000-default.conf && \
