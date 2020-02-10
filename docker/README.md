@@ -17,9 +17,9 @@ To install docker engine - community on your machine visit the official docker w
 Then just choose your operating system in the menu on the left side and follow the instructions.
 
 ## Running Catroweb in Docker
-Please quit all processes that are running on port 80, on apple devices there is the standard apache server you can deactivate it by 
+Please quit all processes that are running on port 80, on apple devices there is the standard apache server you can deactivate it by
 ```bash
-sudo apachectl stop 
+sudo apachectl stop
 ```
 
 ```bash
@@ -30,12 +30,12 @@ docker-compose -f docker-compose.dev.yml up -d
 
 This will start up the following containers:
 - #### Apache, PHP with the catroweb source
-    on Port 80
-    
+    on Port 8080
+
 - #### MariaDB
 - #### phpMyAdmin
-    <http://localhost:8001> to open to phpMyAdmin
-    
+    <http://localhost:8081> to open to phpMyAdmin
+
     credentials:
     - Server: db.catroweb.dev
     - Username: root
@@ -70,19 +70,19 @@ This will start up the following containers:
     ```bash
     docker exec -it app.catroweb.dev php bin/console catrobat:reset --hard
     ```
-    Then you can open catroweb in your browser with http://catroweb
-    
-    If you have a timeout while executing the reset or if the execution is very slow in general, 
+    Then you can open catroweb in your browser with http://catroweb:8080
+
+    If you have a timeout while executing the reset or if the execution is very slow in general,
     you can deactivate xdebug in the container just execute:
     ```
     docker exec -it app.catroweb.dev rm /etc/php/7.3/cli/conf.d/20-xdebug.ini
-    ``` 
+    ```
 
 ## Docker commands
 
 - see all the running container
 ```bash
-docker ps -a 
+docker ps -a
 ```
 Here you can also lookup the container id
 - stop one container
@@ -91,7 +91,7 @@ docker stop CONTAINER_ID
 ```
 - stop all running container
 ```bash
-docker stop $(docker ps -q) 
+docker stop $(docker ps -q)
 ```
 - remove all stopped containers
 ```bash
@@ -101,7 +101,7 @@ docker container prune
 ```bash
 docker system prune
 ```
-- execute command inside container 
+- execute command inside container
 ```bash
 docker exec -it CONTAINER_ID COMMAND
 ```

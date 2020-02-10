@@ -12,7 +12,7 @@ services:
     depends_on:
       - db.catroweb.dev
     ports:
-      - 80:80
+      - 8080:80
     volumes:
       - ./../tests:/var/www/catroweb/tests:cached
       - ./../templates:/var/www/catroweb/templates:cached
@@ -39,7 +39,7 @@ services:
       - PMA_ARBITRARY=1
     restart: always
     ports:
-      - 8001:80
+      - 8081:80
     volumes:
       - /sessions
     external_links:

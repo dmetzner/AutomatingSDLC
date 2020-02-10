@@ -84,7 +84,9 @@ COPY /config config
 COPY /docker/config/parameters.yml.dist config/packages/parameters.yml
 RUN cp config/packages/test/parameters.yml.dist config/packages/test/parameters.yml && \
     cp config/packages/dev/parameters.yml.dist config/packages/dev/parameters.yml && \
-    echo 'APP_ENV=dev' > .env.local
+    echo 'APP_ENV=dev' > .env.local && \
+    echo 'SECURE_SCHEME=http' > .env.test.local && \
+    echo 'SECURE_SCHEME=http' > .env.dev.local
 
 # GRUNT
 COPY /assets assets
@@ -99,11 +101,9 @@ ADD / ./
 RUN composer run-script post-install-cmd && \
     rm -rf var/{cache,log}/* && \
     adduser www-data root && \
-    HTTPDUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1` && \
-    setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/log && \
-    setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/log && \
+    setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/log && \
+    setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/log && \
     chmod -R 777 var && \
-    chown -R www-data:www-data var/cache && \
     chmod -R o+w public/resources/ && \
     chmod -R o+w+x tests/behat/sqlite/ && \
     chmod +x docker/php/*
