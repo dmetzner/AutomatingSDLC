@@ -28,7 +28,7 @@ In this section we discuss the general usage of docker and what docker does.
 Docker is a tool that makes it easy to run complex applications (like Catroweb) on different operating systems.
 This is accomplished by bundling the application into container. Every container can be imagined as a virtual machine.
 We specifically use docker-compose which automatically bundles different services each into one container.
-\
+
 #### Catroweb needs 3 services for development purposes:
 - The application itself which is the container with the name app.catroweb.dev, which runs ubuntu with the whole catroweb code.
   This container has shared folders with the host (so folders where changes are synchronised with the container):
@@ -38,7 +38,8 @@ We specifically use docker-compose which automatically bundles different service
     - templates
 - One MariaDB which runs with the name db.catroweb.dev
 - And a phpMyAdmin container with the name phpmyadmin.catroweb.dev
-\
+
+#### Order
 These services are started in a specific order. First it deploys the *MariaDB* then it starts *phpMyAdmin* and finally *app*.
 The App service waits for mariadb to successfully creating the database before migrating via doctrine.
 When the migration finishes successfully, the apache2 server in the app container is started and listens to the 8080 port on the host.
