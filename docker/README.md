@@ -4,7 +4,7 @@
 
 ### Content
 - [Install Docker](#install-docker)
-- [Introduction to Catroweb with docker](#intro-docker)
+- [Introduction to Catroweb with docker](#introduction-to-catroweb-with-docker)
 - [Running Catroweb](#running-catroweb-in-docker)
 - [Testing](#testing)
 - [Docker commands](#docker-commands)
