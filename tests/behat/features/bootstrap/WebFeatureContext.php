@@ -1608,110 +1608,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   }
 
   /**
-   * @Given /^there are reportable programs:$/
-   *
-   * @param TableNode $table
-   *
-   * @throws Exception
-   */
-  public function thereAreReportablePrograms(TableNode $table)
-  {
-    /**
-     * @var $user User
-     * @var $tag  Tag
-     * @var $em   EntityManager
-     */
-    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-    $programs = $table->getHash();
-    $count = count($programs);
-    for ($i = 0; $i < $count; ++$i)
-    {
-      $user = $em->getRepository('App\Entity\User')->findOneBy([
-        'username' => $programs[$i]['owned by'],
-      ]);
-      $program = new Program();
-      $program->setUser($user);
-      $program->setName($programs[$i]['name']);
-      $program->setDescription("Default Description");
-      $program->setViews(1337);
-      $program->setDownloads(1337);
-      $program->setApkDownloads(1337);
-      $program->setApkStatus(
-        isset($programs[$i]['apk_ready']) ?
-          ($programs[$i]['apk_ready'] === 'true' ? Program::APK_READY : Program::APK_NONE) :
-          Program::APK_NONE
-      );
-      $program->setUploadedAt(new DateTime("01.01.2013 12:00", new DateTimeZone('UTC')));
-      $program->setRemixMigratedAt(null);
-      $program->setCatrobatVersion(1);
-      $program->setCatrobatVersionName("0.8.5");
-      $program->setLanguageVersion(
-        isset($programs[$i]['language version']) ? $programs[$i]['language version'] : 1
-      );
-      $program->setUploadIp('127.0.0.1');
-      $program->setFilesize(0);
-      $program->setVisible(isset($programs[$i]['visible']) ? $programs[$i]['visible'] == 'true' : true);
-      $program->setUploadLanguage('en');
-      $program->setApproved(false);
-      $program->setRemixRoot(isset($programs[$i]['remix_root']) ? $programs[$i]['remix_root'] == 'true' : true);
-      $program->setDebugBuild(isset($programs[$i]['debug']) ? $programs[$i]['debug'] : false);
-
-      $em->persist($program);
-
-      // overwrite id if desired
-      if (array_key_exists('id', $programs[$i]))
-      {
-        $program->setId($programs[$i]['id']);
-        $em->persist($program);
-        $em->flush();
-        $program_repo = $em->getRepository('App\Entity\Program');
-        $program = $program_repo->find($programs[$i]['id']);
-      }
-
-      if (isset($programs[$i]['tags_id']) && $programs[$i]['tags_id'] != null)
-      {
-        $tag_repo = $em->getRepository(Tag::class);
-        $tags = explode(',', $programs[$i]['tags_id']);
-        foreach ($tags as $tag_id)
-        {
-          $tag = $tag_repo->find($tag_id);
-          $program->addTag($tag);
-        }
-      }
-
-      if (isset($programs[$i]['extensions']) && $programs[$i]['extensions'] != null)
-      {
-        /**
-         * @var $extension_repo ExtensionRepository
-         * @var $extension      Extension
-         */
-        $extension_repo = $em->getRepository(Extension::class);
-        $extensions = explode(',', $programs[$i]['extensions']);
-        foreach ($extensions as $extension_name)
-        {
-          $extension = $extension_repo->findOneBy(["name" => $extension_name]);
-          $program->addExtension($extension);
-        }
-      }
-
-      if ($program->getApkStatus() == Program::APK_READY)
-      {
-        $apkrepository = $this->kernel->getContainer()->get(ApkRepository::class);
-        $temppath = tempnam(sys_get_temp_dir(), 'apktest');
-        copy(self::FIXTUREDIR . 'test.catrobat', $temppath);
-        $apkrepository->save(new File($temppath), $i);
-
-        $file_repo = $this->kernel->getContainer()->get(ProgramFileRepository::class);
-        $file_repo->saveProgramfile(new File(self::FIXTUREDIR . 'test.catrobat'), $i);
-      }
-
-      $em->persist($program);
-    }
-    $em->flush();
-  }
-
-
-  /**
    * @When /^I download "([^"]*)"$/
    * @param $arg1
    */
@@ -2374,42 +2270,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
         Assert::assertTrue(false);
         break;
     }
-  }
-
-  /**
-   * @Given /^following programs are featured:$/
-   * @param TableNode $table
-   *
-   * @throws ORMException
-   * @throws OptimisticLockException
-   */
-  public function followingProgramsAreFeatured(TableNode $table)
-  {
-    /** @var EntityManager $em */
-    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-    $featured = $table->getHash();
-    for ($i = 0; $i < count($featured); ++$i)
-    {
-      $featured_entry = new FeaturedProgram();
-
-      if ($featured[$i]['program'] != "")
-      {
-        $program = $this->kernel->getContainer()->get(ProgramManager::class)->findOneByName($featured[$i]['program']);
-        $featured_entry->setProgram($program);
-      }
-      else
-      {
-        $url = $featured[$i]['url'];
-        $featured_entry->setUrl($url);
-      }
-
-      $featured_entry->setActive($featured[$i]['active'] == 'yes');
-      $featured_entry->setImageType('jpg');
-      $featured_entry->setPriority($featured[$i]['priority']);
-      $featured_entry->setForIos(isset($featured[$i]['ios_only']) ? $featured[$i]['ios_only'] == 'yes' : false);
-      $em->persist($featured_entry);
-    }
-    $em->flush();
   }
 
   /**
@@ -3567,6 +3427,73 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   }
 
   /**
+   * @Given /^there are admins:$/
+   * @param TableNode $table
+   */
+  public function thereAreAdmins(TableNode $table)
+  {
+    /**
+     * @var $user_manager UserManager
+     * @var $user         User
+     */
+    $user_manager = $this->kernel->getContainer()->get(UserManager::class);
+    $users = $table->getHash();
+    $user = null;
+    $count = count($users);
+    for ($i = 0; $i < $count; ++$i)
+    {
+      $user = $user_manager->createUser();
+      $user->setUsername($users[$i]['name']);
+      $user->setEmail($users[$i]['email']);
+      $user->setAdditionalEmail('');
+      $user->setPlainPassword($users[$i]['password']);
+      $user->setEnabled(true);
+      $user->setUploadToken($users[$i]['token']);
+      $user->setCountry('at');
+      $user->setSuperAdmin(true);
+      $user_manager->updateUser($user, false);
+    }
+    $user_manager->updateUser($user, true);
+  }
+
+  /**
+   * @Given /^following programs are featured:$/
+   * @param TableNode $table
+   *
+   * @throws ORMException
+   * @throws OptimisticLockException
+   */
+  public function followingProgramsAreFeatured(TableNode $table)
+  {
+    /** @var EntityManager $em */
+    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+    $featured = $table->getHash();
+    $number_of_featured_projects = count($featured);
+    for ($i = 0; $i < $number_of_featured_projects; $i++)
+    {
+      $featured_entry = new FeaturedProgram();
+
+      if ($featured[$i]['program'] != "")
+      {
+        $program = $this->kernel->getContainer()->get(ProgramManager::class)->findOneByName($featured[$i]['program']);
+        $featured_entry->setProgram($program);
+      }
+      else
+      {
+        $url = $featured[$i]['url'];
+        $featured_entry->setUrl($url);
+      }
+
+      $featured_entry->setActive($featured[$i]['active'] == 'yes');
+      $featured_entry->setImageType('jpg');
+      $featured_entry->setPriority($featured[$i]['priority']);
+      $featured_entry->setForIos(isset($featured[$i]['ios_only']) ? $featured[$i]['ios_only'] == 'yes' : false);
+      $em->persist($featured_entry);
+    }
+    $em->flush();
+  }
+
+  /**
    * @Given /^there are likes:$/
    * @param TableNode $table
    *
@@ -3597,6 +3524,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     }
     $em->flush();
   }
+
 
   //----------------------------
   // Login
