@@ -1,15 +1,14 @@
-@homepage
+@web @code_view
 Feature: As a visitor I want to see a project page
 
   Background:
     Given there are users:
-      | name     | password | token      | email               | id |
-      | catrobat | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
+      | id | name      |
+      |  1 | Catrobat  |
 
     And there are programs:
-      | id | name      | description             | owned by |
-      | 1  | project 1 | my superman description | catrobat |
-
+      | id | name      | owned by |
+      | 1  | project 1 | Catrobat |
 
   Scenario: The Code view and code statistics should be collapsed per default
     Given I am on "/app/project/1"

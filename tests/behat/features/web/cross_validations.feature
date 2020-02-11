@@ -30,7 +30,6 @@ Feature: Cross validation for recommendation system
 
   Scenario: User with selected russian language cant see the recommender
     Given I am on "/app/project/1"
-    And the selected language is "English"
     And I wait for the page to be loaded
     And I should see "Similar Projects"
     And the element "#recommendations" should be visible

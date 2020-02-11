@@ -830,111 +830,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $this->getSession()->wait(500);
   }
 
-  /**
-   * @Given /^there are programs:$/
-   * @Given /^there are projects:$/
-   *
-   * @param TableNode $table
-   *
-   * @throws Exception
-   */
-  public function thereAreProjects(TableNode $table)
-  {
-    /**
-     * @var $em             EntityManager
-     * @var $program        Program
-     * @var $user           User
-     * @var $apkrepository  ApkRepository
-     * @var $tag            Tag
-     * @var $extension_repo ExtensionRepository
-     * @var $extension      Extension
-     */
-    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-    $programs = $table->getHash();
-    $count = count($programs);
-    for ($i = 0; $i < $count; ++$i)
-    {
-      $user = $em->getRepository('App\Entity\User')->findOneBy([
-        'username' => $programs[$i]['owned by'],
-      ]);
-      $program = new Program();
-      $program->setUser($user);
-      $program->setName($programs[$i]['name']);
-      $program->setDescription(isset($programs[$i]['description']) ? $programs[$i]['description'] : '');
-      $program->setViews(isset($programs[$i]['views']) ? $programs[$i]['views'] : 0);
-      $program->setDownloads(isset($programs[$i]['downloads']) ? $programs[$i]['downloads'] : 0);
-      $program->setApkDownloads(isset($programs[$i]['apk_downloads']) ? $programs[$i]['apk_downloads'] : 0);
-      $program->setApkStatus(
-        isset($programs[$i]['apk_ready']) ?
-          ($programs[$i]['apk_ready'] === 'true' ? Program::APK_READY : Program::APK_NONE) :
-          Program::APK_NONE
-      );
-      $program->setUploadedAt(
-        isset($programs[$i]['upload time']) ?
-          new DateTime($programs[$i]['upload time'], new DateTimeZone('UTC')) :
-          null
-      );
-      $program->setRemixMigratedAt(null);
-      $program->setCatrobatVersion(1);
-      $program->setCatrobatVersionName(isset($programs[$i]['version']) ? $programs[$i]['version'] : '');
-      $program->setLanguageVersion(
-        isset($programs[$i]['language version']) ? $programs[$i]['language version'] : 1
-      );
-      $program->setUploadIp('127.0.0.1');
-      $program->setFilesize(0);
-      $program->setVisible(isset($programs[$i]['visible']) ? $programs[$i]['visible'] == 'true' : true);
-      $program->setUploadLanguage('en');
-      $program->setApproved(false);
-      $program->setRemixRoot(isset($programs[$i]['remix_root']) ? $programs[$i]['remix_root'] == 'true' : true);
-      $program->setPrivate(isset($programs[$i]['private']) ? $programs[$i]['private'] : 0);
-      $program->setDebugBuild(isset($programs[$i]['debug']) ? $programs[$i]['debug'] == 'true' : false);
-
-      $em->persist($program);
-
-      // overwrite id if desired
-      if (array_key_exists('id', $programs[$i]))
-      {
-        $program->setId($programs[$i]['id']);
-        $em->persist($program);
-        $em->flush();
-        $program_repo = $em->getRepository('App\Entity\Program');
-        $program = $program_repo->find($programs[$i]['id']);
-      }
-
-      if (isset($programs[$i]['tags_id']) && $programs[$i]['tags_id'] != null)
-      {
-        $tag_repo = $em->getRepository('App\Entity\Tag');
-        $tags = explode(',', $programs[$i]['tags_id']);
-        foreach ($tags as $tag_id)
-        {
-          $tag = $tag_repo->find($tag_id);
-          $program->addTag($tag);
-        }
-      }
-
-      if (isset($programs[$i]['extensions']) && $programs[$i]['extensions'] != null)
-      {
-        $extension_repo = $em->getRepository('App\Entity\Extension');
-        $extensions = explode(',', $programs[$i]['extensions']);
-        foreach ($extensions as $extension_name)
-        {
-          $extension = $extension_repo->findOneBy(["name" => $extension_name]);
-          $program->addExtension($extension);
-        }
-      }
-
-      if ($program->getApkStatus() == Program::APK_READY)
-      {
-        $apkrepository = $this->kernel->getContainer()->get(ApkRepository::class);
-        $temppath = tempnam(sys_get_temp_dir(), 'apktest');
-        copy(self::FIXTUREDIR . 'test.catrobat', $temppath);
-        $apkrepository->save(new File($temppath), $i);
-        $file_repo = $this->kernel->getContainer()->get(ProgramFileRepository::class);
-        $file_repo->saveProgramfile(new File(self::FIXTUREDIR . 'test.catrobat'), $i);
-      }
-    }
-    $em->flush();
-  }
 
   /**
    * @Given /^there are comments:$/
@@ -1217,41 +1112,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     }
   }
 
-  /**
-   * @Given /^I( try to)? log in as "([^"]*)" with the password "([^"]*)"$/
-   * @param $arg1
-   * @param $arg2
-   * @param $arg3
-   */
-  public function iAmLoggedInAsAsWithThePassword($arg1, $arg2, $arg3)
-  {
-    $this->visitPath('/app/login');
-    $this->fillField('_username', $arg2);
-    $this->fillField('password', $arg3);
-    $this->pressButton('Login');
-    if ($arg1 === ' try to')
-    {
-      $this->assertPageNotContainsText('Your password or username was incorrect.');
-    }
-  }
-
-  /**
-   * @Given /^I( try to)? log in as "([^"]*)"$/
-   * @param string $arg1
-   * @param string $username
-   */
-  public function iLogInAsUser($arg1, $username)
-  {
-    $this->visitPath('/app/login');
-    $this->fillField('username', $username);
-    $this->fillField('password', self::DEFAULT_PASSWORD);
-    $this->pressButton('Login');
-    if ($arg1 === ' try to')
-    {
-      $this->assertPageNotContainsText('Your password or username was incorrect.');
-    }
-    $this->iWaitForAjaxToFinish();
-  }
 
   /**
    * @Then /^"([^"]*)" must be selected in "([^"]*)"$/
@@ -3561,5 +3421,205 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   }
 
   // -------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @Given /^there are users:$/
+   * @param TableNode $table
+   *
+   * @throws ORMException
+   * @throws OptimisticLockException
+   */
+  public function thereAreUsers(TableNode $table)
+  {
+    /**
+     * @var $user_manager UserManager
+     * @var $user         User
+     * @var $em           EntityManager
+     */
+    $user_manager = $this->kernel->getContainer()->get(UserManager::class);
+    $users = $table->getHash();
+    $number_of_users = count($users);
+    for ($i = 0; $i < $number_of_users; $i++)
+    {
+      $user = $user_manager->createUser();
+      $user->setUsername($users[$i]['name']);
+      $user->setEmail(isset($users[$i]['email']) ? $users[$i]['email'] : $users[$i]['name'] . "@catrobat.at");
+      $user->setPlainPassword(isset($users[$i]['password']) ?  $users[$i]['password'] : "123456");
+      $user->setUploadToken(isset($users[$i]['token']) ? $users[$i]['token'] : "default_token");
+      $user->setAdditionalEmail('');
+      $user->setEnabled(true);
+      $user->setCountry('at');
+      $user_manager->updateUser($user, true);
+
+      if (array_key_exists('id', $users[$i]))
+      {
+        $user->setId($users[$i]['id']);
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $em->flush();
+      }
+    }
+  }
+
+  /**
+   * @Given /^there are programs:$/
+   * @Given /^there are projects:$/
+   *
+   * @param TableNode $table
+   *
+   * @throws Exception
+   */
+  public function thereArePrograms(TableNode $table)
+  {
+    /**
+     * @var $em             EntityManager
+     * @var $program        Program
+     * @var $user           User
+     * @var $apkrepository  ApkRepository
+     * @var $tag            Tag
+     * @var $extension_repo ExtensionRepository
+     * @var $extension      Extension
+     */
+    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+    $programs = $table->getHash();
+    $count = count($programs);
+    for ($i = 0; $i < $count; ++$i)
+    {
+      $user = $em->getRepository('App\Entity\User')->findOneBy([
+        'username' => $programs[$i]['owned by'],
+      ]);
+      $program = new Program();
+      $program->setUser($user);
+      $program->setName($programs[$i]['name']);
+      $program->setDescription(isset($programs[$i]['description']) ? $programs[$i]['description'] : '');
+      $program->setViews(isset($programs[$i]['views']) ? $programs[$i]['views'] : 0);
+      $program->setDownloads(isset($programs[$i]['downloads']) ? $programs[$i]['downloads'] : 0);
+      $program->setApkDownloads(isset($programs[$i]['apk_downloads']) ? $programs[$i]['apk_downloads'] : 0);
+      $program->setApkStatus(
+        isset($programs[$i]['apk_ready']) ?
+          ($programs[$i]['apk_ready'] === 'true' ? Program::APK_READY : Program::APK_NONE) :
+          Program::APK_NONE
+      );
+      $program->setUploadedAt(
+        isset($programs[$i]['upload time']) ?
+          new DateTime($programs[$i]['upload time'], new DateTimeZone('UTC')) :
+          null
+      );
+      $program->setRemixMigratedAt(null);
+      $program->setCatrobatVersion(1);
+      $program->setCatrobatVersionName(isset($programs[$i]['version']) ? $programs[$i]['version'] : '');
+      $program->setLanguageVersion(
+        isset($programs[$i]['language version']) ? $programs[$i]['language version'] : 1
+      );
+      $program->setUploadIp('127.0.0.1');
+      $program->setFilesize(0);
+      $program->setVisible(isset($programs[$i]['visible']) ? $programs[$i]['visible'] == 'true' : true);
+      $program->setUploadLanguage('en');
+      $program->setApproved(false);
+      $program->setRemixRoot(isset($programs[$i]['remix_root']) ? $programs[$i]['remix_root'] == 'true' : true);
+      $program->setPrivate(isset($programs[$i]['private']) ? $programs[$i]['private'] : 0);
+      $program->setDebugBuild(isset($programs[$i]['debug']) ? $programs[$i]['debug'] == 'true' : false);
+
+      $em->persist($program);
+
+      // overwrite id if desired
+      if (array_key_exists('id', $programs[$i]))
+      {
+        $program->setId($programs[$i]['id']);
+        $em->persist($program);
+        $em->flush();
+        $program_repo = $em->getRepository('App\Entity\Program');
+        $program = $program_repo->find($programs[$i]['id']);
+      }
+
+      if (isset($programs[$i]['tags_id']) && $programs[$i]['tags_id'] != null)
+      {
+        $tag_repo = $em->getRepository('App\Entity\Tag');
+        $tags = explode(',', $programs[$i]['tags_id']);
+        foreach ($tags as $tag_id)
+        {
+          $tag = $tag_repo->find($tag_id);
+          $program->addTag($tag);
+        }
+      }
+
+      if (isset($programs[$i]['extensions']) && $programs[$i]['extensions'] != null)
+      {
+        $extension_repo = $em->getRepository('App\Entity\Extension');
+        $extensions = explode(',', $programs[$i]['extensions']);
+        foreach ($extensions as $extension_name)
+        {
+          $extension = $extension_repo->findOneBy(["name" => $extension_name]);
+          $program->addExtension($extension);
+        }
+      }
+
+      if ($program->getApkStatus() == Program::APK_READY)
+      {
+        $apkrepository = $this->kernel->getContainer()->get(ApkRepository::class);
+        $temppath = tempnam(sys_get_temp_dir(), 'apktest');
+        copy(self::FIXTUREDIR . 'test.catrobat', $temppath);
+        $apkrepository->save(new File($temppath), $i);
+        $file_repo = $this->kernel->getContainer()->get(ProgramFileRepository::class);
+        $file_repo->saveProgramfile(new File(self::FIXTUREDIR . 'test.catrobat'), $i);
+      }
+    }
+    $em->flush();
+  }
+
+  /**
+   * @Given /^there are likes:$/
+   * @param TableNode $table
+   *
+   * @throws Exception
+   */
+  public function thereAreLikes(TableNode $table)
+  {
+    /**
+     * @var $user    User
+     * @var $program Program
+     * @var $em      EntityManager
+     */
+    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+    $likes = $table->getHash();
+
+    foreach ($likes as $like)
+    {
+      $user = $this->kernel->getContainer()->get(UserManager::class)->findOneBy(['username' => $like['username']]);
+      $program = $this->kernel->getContainer()->get(App\Repository\ProgramRepository::class)->find($like['program_id']);
+
+      $program_like = new ProgramLike($program, $user, $like['type']);
+      $program_like->setCreatedAt(isset($like['created at']) ?
+        new DateTime($like['created at'], new DateTimeZone('UTC')) :
+        new DateTime("01.01.2017 12:00", new DateTimeZone('UTC'))
+      );
+
+      $em->persist($program_like);
+    }
+    $em->flush();
+  }
+
+  //----------------------------
+  // Login
+
+  /**
+   * @Given /^I( [^"]*)? log in as "([^"]*)" with the password "([^"]*)"$/
+   * @Given /^I( [^"]*)? log in as "([^"]*)"$/
+   *
+   * @param $arg1
+   * @param $arg2
+   * @param $password
+   */
+  public function iAmLoggedInAsAsWithThePassword($arg1, $arg2, $password = "123456")
+  {
+    $this->visitPath('/app/login');
+    $this->fillField('_username', $arg2);
+    $this->fillField('password', $password);
+    $this->pressButton('Login');
+    if ($arg1 == 'try to')
+    {
+      $this->assertPageNotContainsText('Your password or username was incorrect.');
+    }
+    $this->iWaitForAjaxToFinish();
+  }
 
 }

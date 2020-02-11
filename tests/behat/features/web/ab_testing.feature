@@ -1,17 +1,17 @@
-@homepage
-Feature: A/B testing for recommendation system & remix graph
+@web @translations
+Feature: The homepage should use correct translations and all features must be available for all languages.
 
   Background:
     Given there are users:
-      | name      | password | token      | email               | id |
-      | Catrobat  | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
-      | OtherUser | 123456   | dddddddddd | dev2@pocketcode.org | 2  |
+      | id | name      |
+      |  1 | Catrobat  |
+      |  2 | OtherUser |
 
     And there are programs:
-      | id | name    | description | owned by  | downloads | apk_downloads | views | upload time      | version | remix_root |
-      | 1  | Minions | p1          | Catrobat  | 3         | 2             | 12    | 01.01.2013 12:00 | 0.8.5   | true       |
-      | 2  | Galaxy  | p2          | OtherUser | 10        | 12            | 13    | 01.02.2013 12:00 | 0.8.5   | false      |
-      | 3  | Alone   | p3          | Catrobat  | 5         | 55            | 2     | 01.03.2013 12:00 | 0.8.5   | true       |
+      | id | name    | owned by  |
+      | 1  | Minions | Catrobat  |
+      | 2  | Galaxy  | OtherUser |
+      | 3  | Alone   | Catrobat  |
 
     And there are project reactions:
       | user      | project    | type | created at       |
@@ -19,13 +19,12 @@ Feature: A/B testing for recommendation system & remix graph
       | Catrobat  | 2          | 2    | 01.01.2017 12:00 |
       | OtherUser | 1          | 4    | 01.01.2017 12:00 |
 
-  Scenario: User with selected russian language sees the recommendations on homepage (a.k.a. index page)
-    Given I am on "/app/"
-    And the selected language is "English"
+  Scenario: Users should be able to switch the language
+    Given the selected language is "English"
+    And I am on the homepage
     And I wait for the page to be loaded
     And I should see "Recommended projects"
     And the element "#recommended" should be visible
-    And I wait for a second
     And I should see a recommended homepage program having ID "1" and name "Minions"
     When I switch the language to "Russisch"
     And I wait for the page to be loaded
@@ -66,9 +65,8 @@ Feature: A/B testing for recommendation system & remix graph
       | id | program_id | downloaded_at       | ip             | country_code | country_name | user_agent | username  | referrer |
       | 1  | 1          | 2017-02-09 16:01:00 | 88.116.169.222 | AT           | Austria      | okhttp     | OtherUser | Facebook |
       | 2  | 3          | 2017-02-09 16:02:00 | 88.116.169.222 | AT           | Austria      | okhttp     | OtherUser | Facebook |
-
-    And I am on "/app/project/1"
     And the selected language is "English"
+    And I am on "/app/project/1"
     And I wait for the page to be loaded
     Then There should be recommended specific programs
     And the element "#specific-programs-recommendations" should be visible

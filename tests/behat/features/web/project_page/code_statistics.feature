@@ -1,4 +1,4 @@
-@homepage
+@web @project_page @code_view
 Feature: As a visitor I want to see a project page
 
   Scenario: On a project page there should be correct stats for all code bricks

@@ -20,7 +20,6 @@ Feature: Recommendations on homepage (a.k.a. index page)
       | Catrobat  | 2       | 2    | 01.01.2017 12:00 |
       | OtherUser | 1       | 4    | 01.01.2017 12:00 |
 
-    And the selected language is "English"
     When I am on "/app/"
     And I wait for the page to be loaded
     And I should see "Recommended projects"

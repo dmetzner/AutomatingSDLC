@@ -94,7 +94,6 @@ Feature: As a visitor I want to write, see and report comments.
     And I wait for AJAX to finish
     And I click "#comment-post-button"
     And I wait for AJAX to finish
-    And I wait for a second
     Then I should see "hello"
     And the element ".single-comment" should be visible
 
