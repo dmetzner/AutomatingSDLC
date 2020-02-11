@@ -4,8 +4,8 @@ Feature: Searching for programs with extensions
   Background:
     Given there are users:
       | name     | password | token      | email               | id |
-      | Catrobat | 123456   | cccccccccc | dev1@pocketcode.org |  1 |
-      | User1    | 654321   | cccccccccc | dev2@pocketcode.org |  2 |
+      | Catrobat | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
+      | User1    | 654321   | cccccccccc | dev2@pocketcode.org | 2  |
     And there are extensions:
       | id | name         | prefix  |
       | 1  | Arduino      | ARDUINO |
@@ -18,14 +18,15 @@ Feature: Searching for programs with extensions
       | 1  | program 1 | p1          | Catrobat | 3         | 2             | 12    | 01.01.2013 12:00 | 0.8.5   | Lego,Phiro |
       | 2  | program 2 |             | Catrobat | 333       | 123           | 9     | 22.04.2014 13:00 | 0.8.5   | Lego,Drone |
       | 3  | myprog 3  |             | User1    | 133       | 63            | 33    | 01.01.2012 13:00 | 0.8.5   | Drone      |
-    And I am on "/app"
 
   Scenario: Searching other programs with the same extensions
     Given I am on "/app/project/1"
+    And I wait for the page to be loaded
     And I should see "program 1"
     And I should see "Lego"
     And I should see "Phiro"
     When I press on the extension "Lego"
+    And I wait for AJAX to finish
     Then I should see "Your search returned 2 results"
     Then I should see "program 1"
     And I should see "program 2"
@@ -33,6 +34,7 @@ Feature: Searching for programs with extensions
 
   Scenario: search for programs should work
     When I am on "/app/search/Lego"
+    And I wait for the page to be loaded
     Then I should see "Your search returned 2 results"
     And I should see "program 1"
     And I should see "program 2"

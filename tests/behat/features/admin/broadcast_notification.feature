@@ -13,6 +13,7 @@ Feature: Admin Broadcast Notification
   Scenario: Send out Notifications
     Given I log in as "Catrobat" with the password "123456"
     And I am on "/admin/broadcast/list"
+    And I wait for the page to be loaded
     Then the element "#title" should be visible
     And the element "#msg" should be visible
     Then I fill in "title" with "Test Title"
@@ -20,10 +21,12 @@ Feature: Admin Broadcast Notification
     And I click ".btn"
     Then I should see "OK"
     When I am on "/app/notifications/allNotifications"
+    And I wait for the page to be loaded
     Then I should see text matching "Test Title"
     And I should see text matching "Test Message"
     Then I logout
     When I log in as "Catrobat2" with the password "123456"
     And I am on "/app/notifications/allNotifications"
+    And I wait for the page to be loaded
     Then I should see text matching "Test Title"
     And I should see text matching "Test Message"

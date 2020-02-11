@@ -4,12 +4,12 @@ Feature: As a program owner, I should be able to give credits for my program.
   Background:
     Given there are users:
       | name     | password | token      | email               | id |
-      | Superman | 123456   | cccccccccc | dev1@pocketcode.org |  1 |
-      | Gregor   | 123456   | cccccccccc | dev2@pocketcode.org |  2 |
+      | Superman | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
+      | Gregor   | 123456   | cccccccccc | dev2@pocketcode.org | 2  |
 
     And there are admins:
       | name  | password | token      | email                | id |
-      | Admin | 123456   | cccccccccc | admin@pocketcode.org |  3 |
+      | Admin | 123456   | cccccccccc | admin@pocketcode.org | 3  |
 
     And there are programs:
       | id | name      | description             | owned by | downloads | apk_downloads | views | upload time      | version | language version | visible | apk_ready |
@@ -19,57 +19,57 @@ Feature: As a program owner, I should be able to give credits for my program.
 
   Scenario: There should be a credits section on every program page
     Given I am on "/app/project/1"
+    And I wait for the page to be loaded
     Then I should see "Credits"
-    And I wait 100 milliseconds
-    And the element "#edit-credits-button" should not exist
+    But the element "#edit-credits-button" should not exist
 
   Scenario: A button for editing credits should be visible, if I am the owner of the program
     Given I log in as "Superman" with the password "123456"
     And I am on "/app/project/1"
+    And I wait for the page to be loaded
     And I should see "Credits"
-    And I wait 100 milliseconds
     And the element "#edit-credits-button" should be visible
 
   Scenario: A button for editing credits should be not exist, if I am not the owner of the program
     Given I log in as "Superman" with the password "123456"
     And I am on "/app/project/3"
+    And I wait for the page to be loaded
     And I should see "Credits"
-    And I wait 100 milliseconds
-    And the element "#edit-credits-button" should not exist
+    But the element "#edit-credits-button" should not exist
 
-   Scenario: If I press the edit credits button, a textarea should appear in which I can write my credits
-     Given I log in as "Superman" with the password "123456"
-     And I am on "/app/project/1"
-     And I should see "Credits"
-     And I wait 100 milliseconds
-     And the element "#edit-credits-button" should be visible
-     And I click "#edit-credits-button"
-     And I wait 100 milliseconds
-     Then the element "#edit-credits" should be visible
-
-  Scenario: If I press the edit credits button, a textarea should appear in which I can write my credits
+  Scenario: If I click the edit credits button, a textarea should appear in which I can write my credits
     Given I log in as "Superman" with the password "123456"
     And I am on "/app/project/1"
+    And I wait for the page to be loaded
     And I should see "Credits"
-    And I wait 100 milliseconds
     And the element "#edit-credits-button" should be visible
     And I click "#edit-credits-button"
-    And I wait 100 milliseconds
+    And I wait for AJAX to finish
+    Then the element "#edit-credits" should be visible
+
+  Scenario: If I click the edit credits button, a textarea should appear in which I can write my credits
+    Given I log in as "Superman" with the password "123456"
+    And I am on "/app/project/1"
+    And I wait for the page to be loaded
+    And I should see "Credits"
+    And the element "#edit-credits-button" should be visible
+    And I click "#edit-credits-button"
+    And I wait for AJAX to finish
     Then the element "#edit-credits" should be visible
 
 
   Scenario: I should be able to write new credits, if I am the owner of the program
     Given I log in as "Superman" with the password "123456"
     And I am on "/app/project/1"
+    And I wait for the page to be loaded
     And I should see "Credits"
-    And I wait 100 milliseconds
     And the element "#edit-credits-button" should be visible
     And I click "#edit-credits-button"
-    And I wait 100 milliseconds
+    And I wait for AJAX to finish
     Then the element "#edit-credits" should be visible
     Then I write "This is a credit" in textarea
     Then I click "#edit-credits-submit-button"
-    And I wait for a second
+    And I wait for AJAX to finish
     Then I should see "This is a credit"
 
 

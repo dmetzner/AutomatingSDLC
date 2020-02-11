@@ -4,8 +4,8 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
   Background:
     Given there are users:
       | name      | password | token      | email               | id |
-      | Catrobat  | 123456   | cccccccccc | dev1@pocketcode.org |  1 |
-      | OtherUser | 123456   | dddddddddd | dev2@pocketcode.org |  2 |
+      | Catrobat  | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
+      | OtherUser | 123456   | dddddddddd | dev2@pocketcode.org | 2  |
 
     And there are extensions:
       | id | name         | prefix  |
@@ -64,6 +64,7 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
   @javascript
   Scenario: Create one statistic entry from programs
     Given I am on "/app/project/1"
+    And I wait for the page to be loaded
     When I click on the first recommended program
     And I wait for AJAX to finish
     Then There should be one database entry with type is "project" and "program_id" is "2"
@@ -72,9 +73,9 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
   @javascript
   Scenario: Create one statistic entry from featured programs on homepage
     Given I am on "/app"
-    Then I wait for AJAX to finish
+    And I wait for the page to be loaded
     When I click on the first featured homepage program
-    And I wait 100 milliseconds
+    And I wait for AJAX to finish
     Then There should be one homepage click database entry with type is "featured" and program id is "2"
     And There should be no recommended click statistic database entry
     And I should see "Galaxy"
@@ -83,9 +84,9 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
   @javascript
   Scenario: Create one statistic entry from newest programs on homepage
     Given I am on "/app"
-    Then I wait for AJAX to finish
+    And I wait for the page to be loaded
     When I click on a newest homepage program having program id "2"
-    And I wait 100 milliseconds
+    And I wait for AJAX to finish
     Then There should be one homepage click database entry with type is "newest" and program id is "2"
     And There should be no recommended click statistic database entry
     And I should see "Galaxy"
@@ -94,9 +95,9 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
   @javascript
   Scenario: Create one statistic entry from most downloaded programs on homepage
     Given I am on "/app"
-    Then I wait for AJAX to finish
+    And I wait for the page to be loaded
     When I click on a most downloaded homepage program having program id "3"
-    And I wait 100 milliseconds
+    And I wait for AJAX to finish
     Then There should be one homepage click database entry with type is "mostDownloaded" and program id is "3"
     And There should be no recommended click statistic database entry
     And I should see "Alone"
@@ -105,9 +106,9 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
   @javascript
   Scenario: Create one statistic entry from most viewed programs on homepage
     Given I am on "/app"
-    Then I wait for AJAX to finish
+    And I wait for the page to be loaded
     When I click on a most viewed homepage program having program id "4"
-    And I wait 100 milliseconds
+    And I wait for AJAX to finish
     Then There should be one homepage click database entry with type is "mostViewed" and program id is "4"
     And There should be no recommended click statistic database entry
     And I should see "Trolol"
@@ -116,9 +117,9 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
   @javascript
   Scenario: Create one statistic entry from random programs on homepage
     Given I am on "/app"
-    Then I wait for AJAX to finish
+    And I wait for the page to be loaded
     When I click on a random homepage program having program id "2"
-    And I wait 100 milliseconds
+    And I wait for AJAX to finish
     Then There should be one homepage click database entry with type is "random" and program id is "2"
     And There should be no recommended click statistic database entry
     And I should see "Galaxy"
@@ -138,12 +139,12 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
       | Catrobat  | 22      | 2    | 01.01.2017 12:00 |
       | OtherUser | 21      | 4    | 01.01.2017 12:00 |
     Given I am on "/app"
-    Then I wait 100 milliseconds
+    And I wait for the page to be loaded
     Then I should see a recommended homepage program having ID "21" and name "Minions"
     When I click on the first recommended homepage program
-    And I wait 100 milliseconds
+    And I wait for AJAX to finish
     Then There should be one database entry with type is "rec_homepage" and "program_id" is "21"
-    Then There should be one database entry with type is "rec_homepage" and "user_specific_recommendation" is "false"
+    And There should be one database entry with type is "rec_homepage" and "user_specific_recommendation" is "false"
     And There should be no homepage click statistic database entry
     And I should see "Minions"
     And I should see "p1"
@@ -156,9 +157,10 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
       | 2  | 3          | 2017-02-09 16:02:00 | 88.116.169.222 | AT           | Austria      | okhttp     | OtherUser | Facebook |
 
     And I am on "/app/project/1"
+    And I wait for the page to be loaded
     Then There should be recommended specific programs
     When I click on the first recommended specific program
-    And I wait 100 milliseconds
+    And I wait for AJAX to finish
     Then There should be one database entry with type is "rec_specific_programs" and "program_id" is "3"
     And I should see "Alone"
     And I should see "p3"
@@ -171,4 +173,5 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
       | 2  | 3          | 2017-02-09 16:02:00 | 88.116.169.222 | AT           | Austria      | okhttp     | Catrobat | Facebook |
 
     And I am on "/app/project/1"
+    And I wait for the page to be loaded
     Then There should be no recommended specific programs

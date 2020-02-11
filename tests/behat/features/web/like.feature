@@ -374,6 +374,7 @@ Feature: Reactions to projects "likes"
     And I am on "/app/project/3"
     And I click "#project-like-detail .btn[data-like-type=1]"
     And I am on "/app/notifications/allNotifications"
+    And I wait for the page to be loaded
     Then the element "#catro-notification-1" should not exist
     And the element "notifications-summary" should not exist
     And I should not see "new Notification"
@@ -388,17 +389,18 @@ Feature: Reactions to projects "likes"
     And I wait for AJAX to finish
     And I log in as "Catrobat"
     And I am on "/app/notifications/allNotifications"
+    And I wait for the page to be loaded
     And the element "#catro-notification-1" should be visible
     And the element "#catro-notification-2" should be visible
     And I should see "OtherUser"
     And the element "#notifications-summary" should be visible
     And I should see "2 new Notifications"
     When I click "#mark-all-as-seen"
-    And I wait for fadeEffect to finish
+    And I wait for AJAX to finish
     Then I should see "Done!"
     And I should see "You have no new Notifications"
     And I should see "Old Notifications"
-    And the element "#mark-as-read-1" should not be visible
+    But the element "#mark-as-read-1" should not be visible
     And the element "#mark-as-read-2" should not be visible
 
   Scenario: I should be able to mark a notifications as read
@@ -411,13 +413,14 @@ Feature: Reactions to projects "likes"
     And I wait for AJAX to finish
     And I log in as "Catrobat"
     And I am on "/app/notifications/allNotifications"
+    And I wait for the page to be loaded
     And the element "#catro-notification-1" should be visible
     And the element "#catro-notification-2" should be visible
     And I should see "OtherUser"
     And the element "#notifications-summary" should be visible
     And I should see "2 new Notifications"
     When I click "#mark-as-read-2"
-    And I wait for fadeEffect to finish
+    And I wait for AJAX to finish
     Then the element "#notifications-summary" should be visible
     And I should see "1 new Notification"
     And the element "#catro-notification-1" should be visible

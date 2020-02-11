@@ -285,16 +285,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     Assert::assertFalse(strpos($img_url, $logo_src));
   }
 
-
-  /**
-   * @When /^I wait (\d+) milliseconds$/
-   * @param $milliseconds
-   */
-  public function iWaitMilliseconds($milliseconds)
-  {
-    $this->getSession()->wait($milliseconds);
-  }
-
   /**
    * @Given /^I set the cookie "([^"]+)" to "([^"]*)"$/
    * @param string $cookie_name
@@ -319,6 +309,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     {
       $this->getSession()->getPage()->find('css', '#btn-sidebar-toggle')->click();
     }
+    $this->iWaitForAjaxToFinish();
   }
 
   /**
@@ -1259,14 +1250,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     {
       $this->assertPageNotContainsText('Your password or username was incorrect.');
     }
-  }
-
-  /**
-   * @Given /^I wait for the server response$/
-   */
-  public function iWaitForTheServerResponse()
-  {
-    $this->getSession()->wait(200);
+    $this->iWaitForAjaxToFinish();
   }
 
   /**
@@ -2374,14 +2358,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   }
 
   /**
-   * @When /^I wait for a second$/
-   */
-  public function iWaitForASecond()
-  {
-    $this->getSession()->wait(1000);
-  }
-
-  /**
    * @Then /^I choose the username '([^']*)' and check button activations$/
    * @param $arg1
    *
@@ -2807,18 +2783,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   }
 
   /**
-   * Wait for AJAX to finish.
-   *
-   * @Given /^I wait for AJAX to finish$/
-   */
-  public function iWaitForAjaxToFinish()
-  {
-    $this->getSession()->wait(5000,
-      '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))'
-    );
-  }
-
-  /**
    * @When /^I click on the first recommended program$/
    *
    * @throws ElementNotFoundException
@@ -3235,14 +3199,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     }
   }
 
-  /**
-   * @When /^I wait for fadeEffect to finish$/
-   */
-  public function iWaitForFadeEffectToFinish()
-  {
-    $this->iWaitMilliseconds(1000);
-  }
-
 
   /**
    * @Given /^there are "([^"]*)"\+ notifications for "([^"]*)"$/
@@ -3302,7 +3258,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   }
 
   /**
-   * @Given /^there are "([^"]*)" "([^"]*)"  notifications for program "([^"]*)" from "([^"]*)"$/
+   * @Given /^there are "([^"]*)" "([^"]*)" notifications for program "([^"]*)" from "([^"]*)"$/
    * @param $amount
    * @param $type
    * @param $program_name
@@ -3564,5 +3520,46 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
       throw new Exception($message);
     }
   }
+
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //                     WAIT - Sometimes it is necessary to wait to prevent timing issues
+  //--------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Try to use this function only if it is not possible to define a waiting condition
+   *
+   * @When /^I wait (\d+) milliseconds$/
+   * @param $milliseconds
+   */
+  public function iWaitMilliseconds($milliseconds)
+  {
+    $this->getSession()->wait($milliseconds);
+  }
+
+  /**
+   * Waits until a page is fully loaded
+   *
+   * @Given I wait for the page to be loaded
+   */
+  public function iWaitForThePageToBeLoaded()
+  {
+    $this->getSession()->wait(5000, "document.readyState === 'complete'");
+    $this->iWaitForAjaxToFinish();
+  }
+
+  /**
+   * Wait for AJAX to finish.
+   *
+   * @Given /^I wait for AJAX to finish$/
+   */
+  public function iWaitForAjaxToFinish()
+  {
+    $this->getSession()->wait(5000,
+      '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))'
+    );
+  }
+
+  // -------------------------------------------------------------------------------------------------------------------
 
 }

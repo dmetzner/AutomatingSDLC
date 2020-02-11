@@ -4,7 +4,7 @@ Feature: Cross validation for recommendation system
   Background:
     Given there are users:
       | name     | password | token      | email               | id |
-      | Catrobat | 123456   | cccccccccc | dev1@pocketcode.org |  1 |
+      | Catrobat | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
     And there are extensions:
       | id | name         | prefix  |
       | 1  | Arduino      | ARDUINO |
@@ -31,10 +31,11 @@ Feature: Cross validation for recommendation system
   Scenario: User with selected russian language cant see the recommender
     Given I am on "/app/project/1"
     And the selected language is "English"
+    And I wait for the page to be loaded
     And I should see "Similar Projects"
     And the element "#recommendations" should be visible
     When I switch the language to "Russisch"
-    And I wait 250 milliseconds
+    And I wait for the page to be loaded
     Then I should not see "Similar Programs"
     And I should not see "#recommendations"
 

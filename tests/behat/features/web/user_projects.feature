@@ -4,10 +4,10 @@ Feature: There should be all projects of a user presented on a profile page
   Background:
     Given there are users:
       | name     | password | token      | email               | id |
-      | Catrobat | 123456   | cccccccccc | dev1@pocketcode.org |  1 |
-      | User2    | 654321   | cccccccccc | dev2@pocketcode.org |  2 |
-      | User3    | 654321   | cccccccccc | dev3@pocketcode.org |  3 |
-      | User4    | 654321   | cccccccccc | dev4@pocketcode.org |  4 |
+      | Catrobat | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
+      | User2    | 654321   | cccccccccc | dev2@pocketcode.org | 2  |
+      | User3    | 654321   | cccccccccc | dev3@pocketcode.org | 3  |
+      | User4    | 654321   | cccccccccc | dev4@pocketcode.org | 4  |
     And there are programs:
       | id | name       | description | owned by | downloads | apk_downloads | views | upload time      | version |
       | 1  | oldestProg | p1          | Catrobat | 3         | 2             | 12    | 01.01.2009 12:00 | 0.8.5   |
@@ -32,30 +32,34 @@ Feature: There should be all projects of a user presented on a profile page
       | 20 | program 20 |             | User2    | 133       | 63            | 33    | 01.01.2012 13:00 | 0.8.5   |
       | 21 | program 21 |             | User2    | 133       | 63            | 33    | 01.01.2012 13:00 | 0.8.5   |
       | 22 | program 22 |             | User2    | 133       | 63            | 33    | 01.01.2012 13:00 | 0.8.5   |
-      | 23 | program 23 |             | User3    | 1         |  1            | 1     | 01.01.2011 13:00 | 0.8.5   |
+      | 23 | program 23 |             | User3    | 1         | 1             | 1     | 01.01.2011 13:00 | 0.8.5   |
 
   Scenario: at my profile page there should always all programs be visible
     Given I log in as "Catrobat" with the password "123456"
     And I am on "/app/user"
+    And I wait for the page to be loaded
     Then I should see 2 "#myprofile-programs .program"
-    And the element ".button-show-more" should not exist
+    But the element ".button-show-more" should not exist
     And the element ".button-show-less" should not exist
 
   Scenario: at my profile page there should always all programs be visible
     Given I log in as "User2" with the password "654321"
     And I am on "/app/user"
+    And I wait for the page to be loaded
     Then I should see 20 "#myprofile-programs .program"
-    And the element ".button-show-more" should not exist
+    But the element ".button-show-more" should not exist
     And the element ".button-show-less" should not exist
 
   Scenario: at a profile page there should always all programs be visible
     Given I am on "/app/user/2"
+    And I wait for the page to be loaded
     Then I should see 20 "#user-programs .program"
-    And the element ".button-show-more" should not exist
+    But the element ".button-show-more" should not exist
     And the element ".button-show-less" should not exist
 
   Scenario: at a profile page there should always all programs be visible
     Given I am on "/app/user/1"
+    And I wait for the page to be loaded
     Then I should see 2 "#user-programs .program"
-    And the element ".button-show-more" should not exist
+    But the element ".button-show-more" should not exist
     And the element ".button-show-less" should not exist

@@ -7,8 +7,8 @@ Feature: Pocketcode homepage
   Background:
     Given there are users:
       | name     | password | token      | email               | id |
-      | Catrobat | 123456   | cccccccccc | dev1@pocketcode.org |  1 |
-      | User1    | 654321   | cccccccccc | dev2@pocketcode.org |  2 |
+      | Catrobat | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
+      | User1    | 654321   | cccccccccc | dev2@pocketcode.org | 2  |
     And there are programs:
       | id | name      | description | owned by | downloads | apk_downloads | views | upload time      | version |
       | 1  | program 1 | p1          | Catrobat | 3         | 2             | 12    | 01.01.2013 12:00 | 0.8.5   |
@@ -26,6 +26,7 @@ Feature: Pocketcode homepage
 
   Scenario: Viewing the homepage at website root
     Given I am on homepage
+    And I wait for the page to be loaded
     Then I should see the featured slider
     And I should see newest programs
     And I should see recommended programs
@@ -35,6 +36,7 @@ Feature: Pocketcode homepage
 
   Scenario: Welcome Section
     Given I am on homepage
+    And I wait for the page to be loaded
     Then I should see the welcome section
     And I should see the video available at "https://www.youtube.com/embed/BHe2r2WU-T8"
     And I should see "Get it on Google Play"
@@ -42,24 +44,33 @@ Feature: Pocketcode homepage
 
   Scenario: Cant see the Welcome Section
     Given I am on homepage
+    And I wait for the page to be loaded
     When I click the "login" button
+    And I wait for the page to be loaded
     Then I should be on "/app/login"
+    And I wait for the page to be loaded
     And I fill in "username" with "Catrobat"
     And I fill in "password" with "123456"
     Then I press "Login"
+    And I wait for AJAX to finish
     Then I should not see the welcome section
 
   Scenario: Login and logout
     Given I am on homepage
+    And I wait for the page to be loaded
     Then I should see an "#btn-login" element
     When I click the "login" button
+    And I wait for the page to be loaded
     Then I should be on "/app/login"
+    And I wait for the page to be loaded
     And I fill in "username" with "Catrobat"
     And I fill in "password" with "123456"
     Then I press "Login"
+    And I wait for AJAX to finish
     Then I should be logged in
 
   Scenario: Featured Programs and Urls
     Given I am on homepage
+    And I wait for the page to be loaded
     Then I should see the featured slider
     And I should see the slider with the values "http://www.google.at/,program 2,program 3"
