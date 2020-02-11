@@ -15,20 +15,20 @@
 To install docker engine - community on your machine visit the official docker website:
 <https://docs.docker.com/install/>
 Then just choose your operating system in the menu on the left side and follow the instructions.
-\\
+\
 If you are using docker on Linux look at this link for steps post install: <https://docs.docker.com/install/linux/linux-postinstall/>
-\\
+\
 Additionally if you have docker running inside a virtual machine keep in mind that you have enough disk space.
 We tested it on a Ubuntu 18 virtual machine with 30GB of space.
 
 
 ## Introduction to Catroweb with docker
 In this section we discuss the general usage of docker and what docker does.
-\\
+\
 Docker is a tool that makes it easy to run complex applications (like Catroweb) on different operating systems.
 This is accomplished by bundling the application into container. Every container can be imagined as a virtual machine.
 We specifically use docker-compose which automatically bundles different services each into one container.
-\\
+\
 #### Catroweb needs 3 services for development purposes:
 - The application itself which is the container with the name app.catroweb.dev, which runs ubuntu with the whole catroweb code.
   This container has shared folders with the host (so folders where changes are synchronised with the container):
@@ -38,12 +38,12 @@ We specifically use docker-compose which automatically bundles different service
     - templates
 - One MariaDB which runs with the name db.catroweb.dev
 - And a phpMyAdmin container with the name phpmyadmin.catroweb.dev
-\\
+\
 These services are started in a specific order. First it deploys the *MariaDB* then it starts *phpMyAdmin* and finally *app*.
 The App service waits for mariadb to successfully creating the database before migrating via doctrine.
 When the migration finishes successfully, the apache2 server in the app container is started and listens to the 8080 port on the host.
 At the end of this guide are some helpful commands for docker: [Docker commands](#docker-commands)
-\\
+\
 Below are some helpful links if you want to dive deeper into docker or just google it:
 - <https://docs.docker.com>
 - <https://acadgild.com/blog/what-is-docker-container-an-introduction>
