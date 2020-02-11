@@ -20,7 +20,7 @@ services:
       - ./../src:/var/www/catroweb/src:cached
       - /vendor
       - /node_modules
-    command: ["sh", "/var/www/catroweb/docker/php/startup.sh"]
+    command: ["sh", "/var/www/catroweb/docker/app/startup.sh"]
 
   # DATABASE
   db.catroweb.dev:

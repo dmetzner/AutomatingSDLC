@@ -88,24 +88,11 @@ RUN cp config/packages/test/parameters.yml.dist config/packages/test/parameters.
     echo 'SECURE_SCHEME=http' > .env.test.local && \
     echo 'SECURE_SCHEME=http' > .env.dev.local
 
-# GRUNT
-COPY /assets assets
-COPY /public public
-COPY /Gruntfile.js Gruntfile.js
-RUN grunt
-
 # ADD CODE
 ADD / ./
 
 # PERMISSIONS
 RUN composer run-script post-install-cmd && \
-    rm -rf var/{cache,log}/* && \
-    adduser www-data root && \
-    setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/log && \
-    setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/log && \
-    chmod -R 777 var && \
-    chmod -R o+w public/resources/ && \
-    chmod -R o+w+x tests/behat/sqlite/ && \
-    chmod +x docker/php/*
+    sh docker/app/test-permissions.sh
 
 EXPOSE 80

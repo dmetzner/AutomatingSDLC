@@ -75,5 +75,6 @@ behat.yml
 ###< symfony/phpunit-bridge ###
 
 ### docker ###
-!/docker/php/startup.sh
-!/docker/php/wait-for-it.sh
+!/docker/app/startup.sh
+!/docker/app/wait-for-it.sh
+!/docker/app/test-permissions.sh
