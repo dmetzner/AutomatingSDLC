@@ -1,4 +1,4 @@
-@web @project @project_report
+@web @project_page
 Feature: As a project owner, I should be able to give credits for my project.
 
   Background:

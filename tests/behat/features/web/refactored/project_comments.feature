@@ -1,32 +1,29 @@
-@homepage
+@web @project_page
 Feature: As a visitor I want to write, see and report comments.
 
   Background:
     Given there are users:
-      | name     | password | token      | email               | id |
-      | Superman | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
-      | Gregor   | 123456   | cccccccccc | dev2@pocketcode.org | 2  |
+      | id | name      | admin |
+      | 1  | Catrobat  | false |
+      | 2  | OtherUser | false |
+      | 3  | Admin     | true  |
 
-    And there are admins:
-      | name  | password | token      | email                | id |
-      | Admin | 123456   | cccccccccc | admin@pocketcode.org | 3  |
-
-    And there are programs:
-      | id | name      | description             | owned by | downloads | apk_downloads | views | upload time      | version | language version | visible | apk_ready |
-      | 1  | program 1 | my superman description | Superman | 3         | 2             | 12    | 01.01.2013 12:00 | 0.8.5   | 0.94             | true    | true      |
-      | 2  | program 2 | abcef                   | Gregor   | 333       | 3             | 9     | 22.04.2014 13:00 | 0.8.5   | 0.93             | true    | true      |
-      | 3  | program 3 | abcef                   | Gregor   | 333       | 3             | 9     | 22.04.2014 13:00 | 0.8.5   | 0.93             | true    | true      |
+    And there are projects:
+      | id | name      | owned by  |
+      | 1  | project 1 | Catrobat  |
+      | 2  | project 2 | OtherUser |
+      | 3  | project 3 | OtherUser |
 
     And there are comments:
       | program_id | user_id | upload_date      | text | user_name | reported |
-      | 1          | 0       | 01.01.2013 12:01 | c1   | Superman  | true     |
-      | 2          | 1       | 01.01.2013 12:01 | c2   | Gregor    | true     |
-      | 2          | 1       | 01.01.2013 12:01 | c3   | Gregor    | true     |
-      | 2          | 1       | 01.01.2013 12:01 | c4   | Gregor    | true     |
-      | 2          | 0       | 01.01.2013 12:01 | c5   | Superman  | true     |
-      | 2          | 0       | 01.01.2013 12:01 | c6   | Superman  | true     |
-      | 2          | 0       | 01.01.2013 12:01 | c7   | Superman  | true     |
-      | 2          | 0       | 01.01.2013 12:01 | c8   | Superman  | true     |
+      | 1          | 0       | 01.01.2013 12:01 | c1   | Catrobat  | true     |
+      | 2          | 1       | 01.01.2013 12:01 | c2   | OtherUser | true     |
+      | 2          | 1       | 01.01.2013 12:01 | c3   | OtherUser | true     |
+      | 2          | 1       | 01.01.2013 12:01 | c4   | OtherUser | true     |
+      | 2          | 0       | 01.01.2013 12:01 | c5   | Catrobat  | true     |
+      | 2          | 0       | 01.01.2013 12:01 | c6   | Catrobat  | true     |
+      | 2          | 0       | 01.01.2013 12:01 | c7   | Catrobat  | true     |
+      | 2          | 0       | 01.01.2013 12:01 | c8   | Catrobat  | true     |
 #      3 has no comments
 
 
@@ -57,34 +54,37 @@ Feature: As a visitor I want to write, see and report comments.
     And I write "hello" in textbox
     And I wait for AJAX to finish
     When I click "#comment-post-button"
-    And I wait for AJAX to finish
+    And I wait for the page to be loaded
     Then I should be on "/app/login"
 
 
   Scenario: If a logged out user enters a comment into the textbox, it should be remembered throughout the login process and page reloads
     Given I am on "/app/project/1"
+    And I wait for the page to be loaded
     And I click "#show-add-comment-button"
-    And I wait 250 milliseconds
+    And I wait for AJAX to finish
     And I write "comment to remember" in textbox
-    And I wait 250 milliseconds
+    And I wait for AJAX to finish
     When I click "#comment-post-button"
-    And I wait 200 milliseconds
+    And I wait for the page to be loaded
     Then I should be on "/app/login"
-    And I fill in "username" with "Superman"
+    And I fill in "username" with "Catrobat"
     And I fill in "password" with "123456"
     Then I press "Login"
+    And I wait for the page to be loaded
     Then I should be on "/app/project/1#login"
     And I am on "/app/project/1"
+    And I wait for the page to be loaded
     And the element "#show-add-comment-button" should not be visible
     And the element "#hide-add-comment-button" should be visible
     And the element "#user-comment-wrapper" should be visible
     And I click "#comment-post-button"
-    And I wait for a second
+    And I wait for AJAX to finish
     Then I should see "comment to remember"
     And the element ".single-comment" should be visible
 
   Scenario: I should be able to write a comment when I am logged in
-    Given I log in as "Superman" with the password "123456"
+    Given I log in as "Catrobat"
     And I am on "/app/project/3"
     And I wait for the page to be loaded
     Then the element ".single-comment" should not exist
@@ -149,7 +149,7 @@ Feature: As a visitor I want to write, see and report comments.
     But the element "#show-more-comments-button" should be visible
 
   Scenario: I can't report my own comment
-    Given I log in as "Superman" with the password "123456"
+    Given I log in as "Catrobat"
     And I am on "/app/project/1"
     And I wait for the page to be loaded
     Then the element ".comment-report-button" should not exist
@@ -164,7 +164,7 @@ Feature: As a visitor I want to write, see and report comments.
     Then I should be on "/app/login"
 
   Scenario: There should be a confirmation pop up to report comments
-    Given I log in as "Gregor" with the password "123456"
+    Given I log in as "OtherUser"
     And I am on "/app/project/1"
     And I wait for the page to be loaded
     And I click ".comment-report-button"
@@ -175,24 +175,24 @@ Feature: As a visitor I want to write, see and report comments.
     Then I should see "Reported"
 
   Scenario: When I am logged in as an admin, I should see a delete button
-    Given I log in as "Admin" with the password "123456"
+    Given I log in as "Admin"
     And I am on "/app/project/1"
     And I wait for the page to be loaded
     Then the element ".comment-delete-button" should be visible
 
   Scenario: I should see a delete button only for my own comments when I am no admin
-    Given I log in as "Superman" with the password "123456"
+    Given I log in as "Catrobat"
     And I am on "/app/project/1"
     And I wait for the page to be loaded
     Then the element ".comment-delete-button" should be visible
-    When I log in as "Gregor" with the password "123456"
+    When I log in as "OtherUser"
     And I am on "/app/project/1"
     And I wait for the page to be loaded
     Then the element ".comment-delete-button" should not exist
 
   Scenario: When I am logged in as an admin and I delete a comment it should be gone, but there
   should be a confirmation pop up
-    Given I log in as "Admin" with the password "123456"
+    Given I log in as "Admin"
     And I am on "/app/project/1"
     And I wait for the page to be loaded
     Then I should see "c1"
@@ -207,7 +207,7 @@ Feature: As a visitor I want to write, see and report comments.
     Then I should not see "c1"
 
   Scenario: I should be able to write a comment when I am logged in and it should notify the owner
-    Given I log in as "Gregor" with the password "123456"
+    Given I log in as "OtherUser"
     And I am on "/app/project/1"
     And I wait for the page to be loaded
     And I click "#show-add-comment-button"
@@ -217,14 +217,14 @@ Feature: As a visitor I want to write, see and report comments.
     When I click "#comment-post-button"
     And I wait for AJAX to finish
     Then I should see "hello"
-    When I log in as "Superman" with the password "123456"
+    When I log in as "Catrobat"
     And I am on "/app/notifications/allNotifications"
     And I wait for AJAX to finish
     Then the element "#catro-notification-1" should be visible
-    And I should see "Gregor"
+    And I should see "OtherUser"
 
   Scenario: I should be able to write a comment for my own program but I wont get a notification
-    Given I log in as "Superman" with the password "123456"
+    Given I log in as "Catrobat"
     And I am on "/app/project/1"
     And I wait for the page to be loaded
     And I click "#show-add-comment-button"

@@ -1,4 +1,4 @@
-@help
+@web @help
 Feature: Pocketcode help page
   In order to access and browse the help page
   As a visitor

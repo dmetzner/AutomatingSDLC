@@ -1,4 +1,4 @@
-@homepage
+@web @media
 Feature:
   In order to speed up the creation of a pocketcode program
   As UX/Design team
@@ -19,7 +19,7 @@ Feature:
 
     And there are mediapackage files:
       | id | name       | category     | extension | active | file   | flavor     | author        |
-      | 1  | Dog (😊🐶) | Animals      | png       | 1      | 1.png  | pocketcode | Bob Schmidt   |
+      | 1  | Dog (😊🐶)   | Animals      | png       | 1      | 1.png  | pocketcode | Bob Schmidt   |
       | 2  | Bubble     | Fantasy      | mpga      | 1      | 2.mpga | pocketcode |               |
       | 3  | SexyGrexy  | Bla          | png       | 0      | 3.png  | luna       | Micheal John  |
       | 4  | SexyFlavor | Animals      | png       | 1      | 4.png  | luna       |               |

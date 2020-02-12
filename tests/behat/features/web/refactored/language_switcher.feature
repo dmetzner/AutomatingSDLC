@@ -1,4 +1,4 @@
-@homepage
+@web @translations
 Feature: Switch language
 
   Scenario: Select another language

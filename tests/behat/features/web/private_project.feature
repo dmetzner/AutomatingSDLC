@@ -25,7 +25,7 @@ Feature: As a visitor I want to see a program page
     And I fill in "username" with "myUsername"
     And I fill in "password" with "123456"
     And I press "Login"
-    And I wait for AJAX to finish
+    And I wait for the page to be loaded
     When I am on "/app/project/1"
     And I wait for the page to be loaded
     Then I should see "project 1"
@@ -53,7 +53,7 @@ Feature: As a visitor I want to see a program page
     And I fill in "username" with "randomUsername"
     And I fill in "password" with "123456"
     And I press "Login"
-    And I wait for AJAX to finish
+    And I wait for the page to be loaded
     When I am on "/app/project/1"
     And I wait for the page to be loaded
     Then I should see "project 1"
@@ -70,7 +70,7 @@ Feature: As a visitor I want to see a program page
     And I fill in "username" with "myUsername"
     And I fill in "password" with "123456"
     And I press "Login"
-    And I wait for AJAX to finish
+    And I wait for the page to be loaded
     When I am on "/app/user/1"
     And I wait for the page to be loaded
     Then I should see "project 1"

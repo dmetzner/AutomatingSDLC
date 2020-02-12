@@ -1,11 +1,11 @@
-@homepage
+@web @click_statistics
 Feature: Creating click statistics by clicking on tags, extensions and recommended programs
 
   Background:
     Given there are users:
-      | name      | password | token      | email               | id |
-      | Catrobat  | 123456   | cccccccccc | dev1@pocketcode.org | 1  |
-      | OtherUser | 123456   | dddddddddd | dev2@pocketcode.org | 2  |
+      | id | name      |
+      | 1  | Catrobat  |
+      | 2  | OtherUser |
 
     And there are extensions:
       | id | name         | prefix  |
@@ -48,6 +48,7 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
   @javascript
   Scenario: Create one statistic entry from tags
     Given I am on "/app/project/1"
+    And I wait for the page to be loaded
     When I press on the tag "Game"
     And I wait for AJAX to finish
     Then There should be one database entry with type is "tags" and "tag_id" is "1"
@@ -56,6 +57,7 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
   @javascript
   Scenario: Create one statistic entry from extensions
     Given I am on "/app/project/1"
+    And I wait for the page to be loaded
     When I press on the extension "Lego"
     And I wait for AJAX to finish
     Then There should be one database entry with type is "extensions" and "extension_id" is "3"
@@ -72,7 +74,7 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
 
   @javascript
   Scenario: Create one statistic entry from featured programs on homepage
-    Given I am on "/app"
+    Given I am on the homepage
     And I wait for the page to be loaded
     When I click on the first featured homepage program
     And I wait for AJAX to finish
@@ -83,7 +85,7 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
 
   @javascript
   Scenario: Create one statistic entry from newest programs on homepage
-    Given I am on "/app"
+    Given I am on the homepage
     And I wait for the page to be loaded
     When I click on a newest homepage program having program id "2"
     And I wait for AJAX to finish
@@ -94,7 +96,7 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
 
   @javascript
   Scenario: Create one statistic entry from most downloaded programs on homepage
-    Given I am on "/app"
+    Given I am on the homepage
     And I wait for the page to be loaded
     When I click on a most downloaded homepage program having program id "3"
     And I wait for AJAX to finish
@@ -105,7 +107,7 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
 
   @javascript
   Scenario: Create one statistic entry from most viewed programs on homepage
-    Given I am on "/app"
+    Given I am on the homepage
     And I wait for the page to be loaded
     When I click on a most viewed homepage program having program id "4"
     And I wait for AJAX to finish
@@ -116,7 +118,7 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
 
   @javascript
   Scenario: Create one statistic entry from random programs on homepage
-    Given I am on "/app"
+    Given I am on the homepage
     And I wait for the page to be loaded
     When I click on a random homepage program having program id "2"
     And I wait for AJAX to finish
@@ -138,7 +140,7 @@ Feature: Creating click statistics by clicking on tags, extensions and recommend
       | Catrobat  | 21      | 1    | 01.01.2017 12:00 |
       | Catrobat  | 22      | 2    | 01.01.2017 12:00 |
       | OtherUser | 21      | 4    | 01.01.2017 12:00 |
-    Given I am on "/app"
+    Given I am on the homepage
     And I wait for the page to be loaded
     Then I should see a recommended homepage program having ID "21" and name "Minions"
     When I click on the first recommended homepage program

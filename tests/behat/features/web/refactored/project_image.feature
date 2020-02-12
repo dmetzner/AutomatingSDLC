@@ -1,6 +1,7 @@
 @web @project_page
 Feature:
-  A user should be able to change his projects screenshot/thumbnail
+  User should see a project image on project pages.
+  The owner should be able to change his projects screenshot/thumbnail.
 
   Background:
     Given there are users:
@@ -12,6 +13,12 @@ Feature:
       | id | name      | owned by |
       | 1  | project 1 | Catrobat |
       | 2  | project 2 | Catrobat |
+
+  Scenario: The project image should be visible
+    Given I am on "/app/project/1"
+    And I wait for the page to be loaded
+    Then I should see "project 1"
+    And the element "#project-thumbnail-big" should be visible
 
   Scenario: Uploading a new image should not work when not logged in
     Given I am on "/app/project/1"

@@ -1,5 +1,5 @@
-@web @project_page @code_view
-Feature: As a visitor I want to see a project page
+@web @project_page
+Feature: As a visitor I want to see code statistics on the project page
 
   Scenario: On a project page there should be correct stats for all code bricks
     Given I have a project zip "CodeStatistics/code_statistics_compound_blocks.catrobat"

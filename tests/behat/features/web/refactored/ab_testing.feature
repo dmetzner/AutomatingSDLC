@@ -1,18 +1,16 @@
-@web @translations
-Feature: The homepage should use correct translations and all features must be available for all languages.
+@homepage
+Feature: A/B testing for recommendation system & remix graph
 
   Background:
     Given there are users:
       | id | name      |
       |  1 | Catrobat  |
       |  2 | OtherUser |
-
     And there are programs:
       | id | name    | owned by  |
       | 1  | Minions | Catrobat  |
       | 2  | Galaxy  | OtherUser |
       | 3  | Alone   | Catrobat  |
-
     And there are project reactions:
       | user      | project    | type | created at       |
       | Catrobat  | 1          | 1    | 01.01.2017 12:00 |

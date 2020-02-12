@@ -675,96 +675,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $this->thereAreUsers($table);
   }
 
-  /**
-   * @Given /^there are users(?: with password "([^"]+)")?:$/
-   * @param string    $default_password
-   * @param TableNode $table
-   *
-   * @throws ORMException
-   * @throws OptimisticLockException
-   */
-  public function thereAreUsers(TableNode $table, $default_password = null)
-  {
-    if ($default_password == null || empty($default_password))
-    {
-      $default_password = self::DEFAULT_PASSWORD;
-    }
-
-    /** @var UserManager $user_manager */
-    $user_manager = $this->kernel->getContainer()->get(UserManager::class);
-    foreach ($table->getHash() as $data)
-    {
-      /** @var User $user */
-      $user = $user_manager->createUser();
-      $user->setUsername($data['name']);
-      $user->setAdditionalEmail('');
-      $user->setEnabled(true);
-      $user->setCountry('at');
-
-      if (array_key_exists('email', $data) && !empty($data['email']))
-      {
-        $user->setEmail($data['email']);
-      }
-      else
-      {
-        $user->setEmail($data['name'] . '@tests.catrob.at');
-      }
-
-      if (array_key_exists('password', $data) && !empty($data['password']))
-      {
-        $user->setPlainPassword($data['password']);
-      }
-      else
-      {
-        $user->setPlainPassword($default_password);
-      }
-
-      if (array_key_exists('token', $data) && !empty($data['token']))
-      {
-        $user->setUploadToken($data['token']);
-      }
-
-      $user_manager->updateUser($user, false);
-      if (array_key_exists('id', $data))
-      {
-        $user->setId($data['id']);
-      }
-    }
-
-    /** @var EntityManager $em */
-    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-    $em->flush();
-  }
-
-  /**
-   * @Given /^there are admins:$/
-   * @param TableNode $table
-   */
-  public function thereAreAdmins(TableNode $table)
-  {
-    /**
-     * @var $user_manager UserManager
-     * @var $user         User
-     */
-    $user_manager = $this->kernel->getContainer()->get(UserManager::class);
-    $users = $table->getHash();
-    $user = null;
-    $count = count($users);
-    for ($i = 0; $i < $count; ++$i)
-    {
-      $user = $user_manager->createUser();
-      $user->setUsername($users[$i]['name']);
-      $user->setEmail($users[$i]['email']);
-      $user->setAdditionalEmail('');
-      $user->setPlainPassword($users[$i]['password']);
-      $user->setEnabled(true);
-      $user->setUploadToken($users[$i]['token']);
-      $user->setCountry('at');
-      $user->setSuperAdmin(true);
-      $user_manager->updateUser($user, false);
-    }
-    $user_manager->updateUser($user, true);
-  }
 
   /**
    * @Given /^there are catro notifications:$/
@@ -3306,6 +3216,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
       $user->setEmail(isset($users[$i]['email']) ? $users[$i]['email'] : $users[$i]['name'] . "@catrobat.at");
       $user->setPlainPassword(isset($users[$i]['password']) ?  $users[$i]['password'] : "123456");
       $user->setUploadToken(isset($users[$i]['token']) ? $users[$i]['token'] : "default_token");
+      $user->setSuperAdmin(isset($users[$i]['admin']) ? $users[$i]['admin'] === 'true' : false);
       $user->setAdditionalEmail('');
       $user->setEnabled(true);
       $user->setCountry('at');
@@ -3426,38 +3337,10 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $em->flush();
   }
 
-  /**
-   * @Given /^there are admins:$/
-   * @param TableNode $table
-   */
-  public function thereAreAdmins(TableNode $table)
-  {
-    /**
-     * @var $user_manager UserManager
-     * @var $user         User
-     */
-    $user_manager = $this->kernel->getContainer()->get(UserManager::class);
-    $users = $table->getHash();
-    $user = null;
-    $count = count($users);
-    for ($i = 0; $i < $count; ++$i)
-    {
-      $user = $user_manager->createUser();
-      $user->setUsername($users[$i]['name']);
-      $user->setEmail($users[$i]['email']);
-      $user->setAdditionalEmail('');
-      $user->setPlainPassword($users[$i]['password']);
-      $user->setEnabled(true);
-      $user->setUploadToken($users[$i]['token']);
-      $user->setCountry('at');
-      $user->setSuperAdmin(true);
-      $user_manager->updateUser($user, false);
-    }
-    $user_manager->updateUser($user, true);
-  }
 
   /**
    * @Given /^following programs are featured:$/
+   * @Given /^following projects are featured:$/
    * @param TableNode $table
    *
    * @throws ORMException
@@ -3473,10 +3356,10 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     {
       $featured_entry = new FeaturedProgram();
 
-      if ($featured[$i]['program'] != "")
+      if ($featured[$i]['project'] != "")
       {
-        $program = $this->kernel->getContainer()->get(ProgramManager::class)->findOneByName($featured[$i]['program']);
-        $featured_entry->setProgram($program);
+        $project = $this->kernel->getContainer()->get(ProgramManager::class)->findOneByName($featured[$i]['project']);
+        $featured_entry->setProgram($project);
       }
       else
       {
@@ -3493,39 +3376,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $em->flush();
   }
 
-  /**
-   * @Given /^there are likes:$/
-   * @param TableNode $table
-   *
-   * @throws Exception
-   */
-  public function thereAreLikes(TableNode $table)
-  {
-    /**
-     * @var $user    User
-     * @var $program Program
-     * @var $em      EntityManager
-     */
-    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-    $likes = $table->getHash();
-
-    foreach ($likes as $like)
-    {
-      $user = $this->kernel->getContainer()->get(UserManager::class)->findOneBy(['username' => $like['username']]);
-      $program = $this->kernel->getContainer()->get(App\Repository\ProgramRepository::class)->find($like['program_id']);
-
-      $program_like = new ProgramLike($program, $user, $like['type']);
-      $program_like->setCreatedAt(isset($like['created at']) ?
-        new DateTime($like['created at'], new DateTimeZone('UTC')) :
-        new DateTime("01.01.2017 12:00", new DateTimeZone('UTC'))
-      );
-
-      $em->persist($program_like);
-    }
-    $em->flush();
-  }
-
-
   //----------------------------
   // Login
 
@@ -3534,13 +3384,13 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
    * @Given /^I( [^"]*)? log in as "([^"]*)"$/
    *
    * @param $arg1
-   * @param $arg2
+   * @param $username
    * @param $password
    */
-  public function iAmLoggedInAsAsWithThePassword($arg1, $arg2, $password = "123456")
+  public function iAmLoggedInAsAsWithThePassword($arg1, $username, $password = "123456")
   {
     $this->visitPath('/app/login');
-    $this->fillField('_username', $arg2);
+    $this->fillField('_username', $username);
     $this->fillField('password', $password);
     $this->pressButton('Login');
     if ($arg1 == 'try to')

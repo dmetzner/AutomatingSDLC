@@ -140,7 +140,7 @@ Feature:
     And I fill in "username" with "CatrobatNew"
     And I fill in "password" with "12345"
     And I press "Login"
-    And I wait for AJAX to finish
+    And I wait for the page to be loaded
     Then I should see "Your password or username was incorrect."
 
   Scenario: The visibility of the password should be changeable via a button

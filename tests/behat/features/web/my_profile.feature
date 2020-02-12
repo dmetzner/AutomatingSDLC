@@ -6,9 +6,9 @@ Feature:
 
   Background:
     Given there are users:
-      | name     | password | token      | email        | id |
-      | Catrobat | 123456   | cccccccccc | dev1@app.org | 1  |
-      | User1    | 654321   | cccccccccc | dev2@app.org | 2  |
+      | id | name     |
+      | 1  | Catrobat |
+      | 2  | User1    |
     And there are programs:
       | id | name       | description | owned by | downloads | apk_downloads | views | upload time      | version | language version | private |
       | 1  | program 1  | p1          | Catrobat | 3         | 2             | 12    | 01.01.2013 12:00 | 0.8.5   | 0.6              | 0       |
@@ -41,7 +41,7 @@ Feature:
       | 28 | program 28 |             | User1    | 133       | 63            | 33    | 01.01.2012 13:00 | 0.8.5   | 0.6              | 0       |
       | 29 | program 29 |             | User1    | 133       | 63            | 33    | 01.01.2012 13:00 | 0.8.5   | 0.6              | 0       |
 
-    And I log in as "Catrobat" with the password "123456"
+    And I log in as "Catrobat"
     And I am on "/app/user"
     And I wait for the page to be loaded
     And I should see "My Profile"
@@ -54,9 +54,10 @@ Feature:
     And I wait for the page to be loaded
     And I should be on "/app/user"
     When I go to "/app/logout"
-    And I log in as "Catrobat" with the password "123456"
+    And I wait for the page to be loaded
+    And I log in as "Catrobat"
     Then I should see "Your password or username was incorrect."
-    When I try to log in as "Mr.Catro" with the password "123456"
+    When I try to log in as "Mr.Catro"
     Then I should be logged in
 
   Scenario: When changing the username the min length must be 3
@@ -68,7 +69,8 @@ Feature:
     And I should be on "/app/user"
     Then I should see "This username is not valid."
     When I go to "/app/logout"
-    And I log in as "Mr" with the password "123456"
+    And I wait for the page to be loaded
+    And I log in as "Mr"
     Then I should see "Your password or username was incorrect."
 
   Scenario: When changing the username the max length must be 180
@@ -91,7 +93,8 @@ Feature:
     And I wait for the page to be loaded
     And I should be on "/app/user"
     When I go to "/app/logout"
-    And I log in as "Catrobat" with the password "123456"
+    And I wait for the page to be loaded
+    And I log in as "Catrobat"
     Then I should see "Your password or username was incorrect."
     When I log in as "Catrobat" with the password "abcdef"
     Then I should be logged in
@@ -323,7 +326,7 @@ Feature:
     Then I should be logged out
 
   Scenario: at a profile page there should always all programs be visible
-    Given I log in as "User1" with the password "654321"
+    Given I log in as "User1"
     And I am on "/app/user"
     And I wait for the page to be loaded
     Then I should see "program 3"
@@ -355,7 +358,7 @@ Feature:
     And I should see "program 29"
 
   Scenario: programs should be ordered newest first
-    Given I log in as "User1" with the password "654321"
+    Given I log in as "User1"
     And I am on "/app/user"
     And I wait for the page to be loaded
     When I click ".program"

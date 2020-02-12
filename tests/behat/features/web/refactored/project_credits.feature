@@ -1,4 +1,4 @@
-@web @project @project_details
+@web @project_page
 Feature: As a project owner, I should be able to give credits for my project.
 
   Background:
@@ -6,7 +6,6 @@ Feature: As a project owner, I should be able to give credits for my project.
       | id | name      |
       |  1 | Catrobat  |
       |  2 | OtherUser |
-
     And there are programs:
       | id | name      | owned by  | 
       | 1  | project 1 | Catrobat  | 
