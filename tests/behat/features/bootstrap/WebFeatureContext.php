@@ -3100,6 +3100,44 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   }
 
   /**
+   * @Given /^there are :arg1 users$/
+   *
+   * @throws ORMException
+   * @throws OptimisticLockException
+   */
+  public function thereAreNUsers($arg1)
+  {
+    /**
+     * @var $user_manager UserManager
+     * @var $user         User
+     * @var $followedUser   FollowedUser
+     * @var $em           EntityManager
+     */
+    $user_manager = $this->kernel->getContainer()->get(UserManager::class);
+    $user = null;
+
+    for ($i = 0; $i < $arg1; ++$i)
+    {
+      $user = $user_manager->createUser();
+      $user->setUsername('User'.$i);
+      $user->setEmail('User'.$i.'@pocketcode.org');
+      $user->setAdditionalEmail('');
+      $user->setPlainPassword('catroweb');
+      $user->setEnabled(true);
+      $user->setUploadToken('token'.$i);
+      $user->setCountry('at');
+      $user_manager->updateUser($user, true);
+      $user->setId($i);
+      $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+      $em->flush();
+      if($i == 0)
+        continue;
+      $followedUser = $user_manager->find(0);
+      $followedUser->addFollowing($user);
+      $user_manager->updateUser($followedUser);
+    }
+  }
+  /**
    * @Given /^there are "([^"]*)" "([^"]*)" notifications for program "([^"]*)" from "([^"]*)"$/
    * @param $amount
    * @param $type
