@@ -1964,8 +1964,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $page = $this->getSession()->getPage();
     $video = $page->find('css', '#youtube-help-video');
     Assert::assertNotNull($video, "Video not found on tutorial page!");
-    Assert::assertTrue(strpos($video->getAttribute('src'), $url) !== false &&
-      strpos($video->getAttribute('src'), "&origin=http://localhost") !== false);
+    Assert::assertTrue(strpos($video->getAttribute('src'), $url) !== false);
   }
 
 
