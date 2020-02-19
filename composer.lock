@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "catrobat/capi",
-            "version": "v1.0.5",
+            "version": "v1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/HCrane/CAPI.git",
-                "reference": "ab2515b89a3689bf091bf4fdb48c3eace91df24c"
+                "reference": "66f9c3433613169cdb594bf4221c53ad7b309155"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/HCrane/CAPI/zipball/ab2515b89a3689bf091bf4fdb48c3eace91df24c",
-                "reference": "ab2515b89a3689bf091bf4fdb48c3eace91df24c",
+                "url": "https://api.github.com/repos/HCrane/CAPI/zipball/66f9c3433613169cdb594bf4221c53ad7b309155",
+                "reference": "66f9c3433613169cdb594bf4221c53ad7b309155",
                 "shasum": ""
             },
             "require": {
@@ -60,10 +60,10 @@
                 "sdk"
             ],
             "support": {
-                "source": "https://github.com/HCrane/CAPI/tree/v1.0.5",
+                "source": "https://github.com/HCrane/CAPI/tree/v1.0.7",
                 "issues": "https://github.com/HCrane/CAPI/issues"
             },
-            "time": "2020-01-30T22:25:18+00:00"
+            "time": "2020-02-18T19:52:32+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -9759,7 +9759,6 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
-            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
