@@ -3141,11 +3141,12 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
       $user->setId($i);
       $user_manager->updateUser($user, true);
       $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-      $followedUser->addFollower($user);
-      $user_manager->updateUser($followedUser);
+      $user->addFollowing($followedUser);
+      $user_manager->updateUser($user);
+      $notification = new FollowNotification($followedUser, $user);
+      $em->persist($notification);
       $em->flush();
     }
-    $test = 2;
   }
   /**
    * @Given /^there are "([^"]*)" "([^"]*)" notifications for program "([^"]*)" from "([^"]*)"$/
