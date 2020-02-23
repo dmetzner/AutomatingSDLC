@@ -3100,42 +3100,52 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   }
 
   /**
-   * @Given /^there are :arg1 users$/
+   * @Given :arg1 users follow:
+   * @param TableNode $table
    *
    * @throws ORMException
    * @throws OptimisticLockException
    */
-  public function thereAreNUsers($arg1)
+  public function thereAreNUsers($arg1, TableNode $table)
   {
     /**
      * @var $user_manager UserManager
      * @var $user         User
-     * @var $followedUser   FollowedUser
+     * @var $followedUser FollowedUser
      * @var $em           EntityManager
      */
     $user_manager = $this->kernel->getContainer()->get(UserManager::class);
     $user = null;
+    $users = $table->getHash();
+    $followedUser = $user_manager->createUser();
+    $followedUser->setUsername($users[0]['name']);
+    $followedUser->setEmail($users[0]['name'].'@pocketcode.org');
+    $followedUser->setAdditionalEmail('');
+    $followedUser->setPlainPassword('123456');
+    $followedUser->setEnabled(true);
+    $followedUser->setUploadToken('token'.$users[0]['id']);
+    $followedUser->setCountry('at');
+    $followedUser->setId($users[0]['id']);
+    $user_manager->updateUser($followedUser, true);
 
-    for ($i = 0; $i < $arg1; ++$i)
+    for ($i = 1; $i < $arg1; ++$i)
     {
       $user = $user_manager->createUser();
-      $user->setUsername('User'.$i);
-      $user->setEmail('User'.$i.'@pocketcode.org');
+      $user->setUsername('user'.$i);
+      $user->setEmail('user'.$i.'@pocketcode.org');
       $user->setAdditionalEmail('');
-      $user->setPlainPassword('catroweb');
+      $user->setPlainPassword('123456');
       $user->setEnabled(true);
       $user->setUploadToken('token'.$i);
       $user->setCountry('at');
-      $user_manager->updateUser($user, true);
       $user->setId($i);
+      $user_manager->updateUser($user, true);
       $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-      $em->flush();
-      if($i == 0)
-        continue;
-      $followedUser = $user_manager->find(0);
-      $followedUser->addFollowing($user);
+      $followedUser->addFollower($user);
       $user_manager->updateUser($followedUser);
+      $em->flush();
     }
+    $test = 2;
   }
   /**
    * @Given /^there are "([^"]*)" "([^"]*)" notifications for program "([^"]*)" from "([^"]*)"$/
