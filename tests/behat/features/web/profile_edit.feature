@@ -250,7 +250,6 @@ Feature:
     And I wait for the page to be loaded
     Then the element "#delete-account-button" should not be visible
     When I click "#account-settings-button"
-    And I wait for AJAX to finish
     Then the element "#delete-account-button" should be visible
     When I click "#delete-account-button"
     And I wait for AJAX to finish

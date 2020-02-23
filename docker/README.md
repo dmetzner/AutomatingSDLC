@@ -86,8 +86,7 @@ This will start up the following containers:
 
 * #### behat:
     ```bash
-    docker exec -it app.catroweb.dev bin/console cache:clear -e test
-    docker exec -it app.catroweb.dev sh docker/app/set-test-permissions.sh
+    docker exec -it app.catroweb.dev sh docker/app/prepare-test-env.sh
     docker exec -it app.catroweb.dev bin/behat
     ```
 
