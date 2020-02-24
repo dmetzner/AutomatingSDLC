@@ -21,18 +21,13 @@ Feature: A/B testing for recommendation system & remix graph
     Given the selected language is "English"
     And I am on the homepage
     And I wait for the page to be loaded
-    And I should see "FEATURED"
-    And the element "#featuredPrograms" should be visible
+    And I should see "Recommended Projects"
+    And the element "#recommended" should be visible
     And I should see a recommended homepage program having ID "1" and name "Minions"
-    When I switch the language to "Russisch"
+    When I switch the language to "Deutsch"
     And I wait for the page to be loaded
-    Then I should see "ПОПУЛЯРНОЕ"
-    And the element "#featuredPrograms" should be visible
-    And I should see a recommended homepage program having ID "1" and name "Minions"
-    When I switch the language to "French"
-    And I wait for the page to be loaded
-    Then I should see "A L'AFFICHE"
-    And the element "#featuredPrograms" should be visible
+    Then I should see "Recommended projects"
+    And the element "#recommended" should be visible
     And I should see a recommended homepage program having ID "1" and name "Minions"
 
   Scenario: User with selected russian language sees the remix graph button and details on program page

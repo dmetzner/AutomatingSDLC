@@ -14,7 +14,6 @@ use App\Entity\LikeNotification;
 use App\Entity\MediaPackage;
 use App\Entity\MediaPackageCategory;
 use App\Entity\MediaPackageFile;
-use App\Entity\NewProgramNotification;
 use App\Entity\Program;
 use App\Entity\ProgramDownloads;
 use App\Entity\ProgramLike;
@@ -105,6 +104,18 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $this->symfony_support = new SymfonySupport(self::FIXTUREDIR);
   }
 
+  ///////////////////////////////////////////
+  // region GETTER & SETTER
+  ///////////////////////////////////////////
+
+  /**
+   * @return string
+   */
+  public static function getAcceptedSnippetType()
+  {
+    return 'regex';
+  }
+
   /**
    * Sets HttpKernel instance.
    * This method will be automatically called by Symfony2Extension ContextInitializer.
@@ -117,6 +128,57 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $this->symfony_support->setKernel($kernel);
   }
 
+  /**
+   * @return KernelBrowser
+   */
+  public function getClient()
+  {
+    if ($this->client == null)
+    {
+      $this->client = $this->kernel->getContainer()->get('test.client');
+    }
+
+    return $this->client;
+  }
+
+  /**
+   * @param $name
+   *
+   * @return bool|string
+   */
+  private function getParameterValue($name)
+  {
+    $my_file = fopen("app/config/parameters.yml", "r") or die("Unable to open file!");
+    while (!feof($my_file))
+    {
+      $line = fgets($my_file);
+      if (strpos($line, $name) != false)
+      {
+        fclose($my_file);
+
+        return substr(trim($line), strpos(trim($line), ':') + 2);
+      }
+    }
+    fclose($my_file);
+    Assert::assertTrue(false, 'No entry found in parameters.yml!');
+
+    return false;
+  }
+
+  /**
+   * @param $value
+   */
+  private function setOauthServiceParameter($value)
+  {
+    $new_content = 'parameters:' . chr(10) . '    oauth_use_real_service: ' . $value;
+    file_put_contents("config/packages/test/parameters.yml", $new_content);
+  }
+
+  // endregion GETTER & SETTER
+
+  ///////////////////////////////////////////
+  // region BEFORE SCENARIO
+  ///////////////////////////////////////////
 
   private $old_metadata_hash = "";
 
@@ -151,31 +213,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   }
 
   /**
-   * @AfterScenario @RealOAuth
-   */
-  public function deactivateRealOAuthService()
-  {
-    $this->setOauthServiceParameter('0');
-    $this->use_real_oauth_javascript_code = false;
-  }
-
-  /**
-   * @return string
-   */
-  public static function getAcceptedSnippetType()
-  {
-    return 'regex';
-  }
-
-  /**
-   * @When /^I click browser's back button$/
-   */
-  public function iClickBrowsersBackButton()
-  {
-    $this->getSession()->back();
-  }
-
-  /**
    * @BeforeScenario
    */
   public function setup()
@@ -183,6 +220,21 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $this->getMink()->restartSessions();
     // 15px = scroll bar width
     $this->getSession()->resizeWindow(320 + 15, 1024);
+  }
+
+  // endregion BEFORE SCENARIO
+
+  ///////////////////////////////////////////
+  // region AFTER SCENARIO
+  ///////////////////////////////////////////
+
+  /**
+   * @AfterScenario @RealOAuth
+   */
+  public function deactivateRealOAuthService()
+  {
+    $this->setOauthServiceParameter('0');
+    $this->use_real_oauth_javascript_code = false;
   }
 
   /**
@@ -193,6 +245,12 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $this->getSession()->getDriver()->reset();
     $this->getSession()->getDriver()->reset();
   }
+
+  // endregion AFTER SCENARIO
+
+  ///////////////////////////////////////////
+  // region AFTER STEP
+  ///////////////////////////////////////////
 
   /**
    * @AfterStep
@@ -205,6 +263,20 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     {
       $this->saveScreenshot(null, $this->screenshot_directory);
     }
+  }
+
+  // endregion AFTER STEP
+
+  ///////////////////////////////////////////
+  // region STEPS
+  ///////////////////////////////////////////
+
+  /**
+   * @When /^I click browser's back button$/
+   */
+  public function iClickBrowsersBackButton()
+  {
+    $this->getSession()->back();
   }
 
   /**
@@ -1999,19 +2071,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////// Getter & Setter
 
-  /**
-   * @return KernelBrowser
-   */
-  public function getClient()
-  {
-    if ($this->client == null)
-    {
-      $this->client = $this->kernel->getContainer()->get('test.client');
-    }
-
-    return $this->client;
-  }
-
 
   /**
    * @Then /^I log in to Google with valid credentials$/
@@ -2277,39 +2336,6 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
       $this->getSession()->wait(1000, 'window.location.href.search("login") == -1');
     }
     $this->getSession()->wait(500);
-  }
-
-  /**
-   * @param $name
-   *
-   * @return bool|string
-   */
-  private function getParameterValue($name)
-  {
-    $my_file = fopen("app/config/parameters.yml", "r") or die("Unable to open file!");
-    while (!feof($my_file))
-    {
-      $line = fgets($my_file);
-      if (strpos($line, $name) != false)
-      {
-        fclose($my_file);
-
-        return substr(trim($line), strpos(trim($line), ':') + 2);
-      }
-    }
-    fclose($my_file);
-    Assert::assertTrue(false, 'No entry found in parameters.yml!');
-
-    return false;
-  }
-
-  /**
-   * @param $value
-   */
-  private function setOauthServiceParameter($value)
-  {
-    $new_content = 'parameters:' . chr(10) . '    oauth_use_real_service: ' . $value;
-    file_put_contents("config/packages/test/parameters.yml", $new_content);
   }
 
   /**
