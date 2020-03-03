@@ -2,7 +2,7 @@
 Feature: User has a large number of follower (> 100).
 
   Background:
-    Given 200 users follow:
+    Given 501 users follow:
       | id | name      |
       | 0  | user0     |
 
@@ -12,7 +12,7 @@ Feature: User has a large number of follower (> 100).
     And I wait for the page to be loaded
     Then I should see "My Profile"
     And I wait for the page to be loaded
-    And I should see "Follower (199)"
+    And I should see "Follower (500)"
     When I am on "/pocketcode/user/"
     And I open the menu
     And the element ".collapsible" should be visible
