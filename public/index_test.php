@@ -37,7 +37,7 @@ if (file_exists('../.env.test.local'))
   (new Dotenv(true))->load('../.env.test.local');
 }
 
-$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$kernel = new Kernel($_SERVER['APP_ENV'], false);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();

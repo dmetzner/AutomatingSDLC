@@ -273,6 +273,7 @@ class UploadController
      * @var $program Program
      */
     $response = [];
+    $user->setUploadToken($this->tokengenerator->generateToken());
     $this->usermanager->updateUser($user);
 
     $response['projectId'] = $program->getId();
@@ -304,6 +305,7 @@ class UploadController
      * @var $user User
      */
     $response = [];
+    $user->setUploadToken($this->tokengenerator->generateToken());
     $this->usermanager->updateUser($user);
 
     $response['projectId'] = 0;

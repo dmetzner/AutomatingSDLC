@@ -31,6 +31,16 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
    */
   const TOKEN = 'token';
 
+  /**
+   * @required request parameter USERNAME
+   *
+   *  For GET  requests must be sent in the request BODY containing
+   *  For POST requests must be sent in the request as QUERY parameter
+   *  Must not be empty
+   *
+   */
+  const USERNAME = "username";
+
 
   /**
    * @var TranslatorInterface
@@ -66,7 +76,10 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
    */
   public function supports(Request $request)
   {
-    return $this->requestHasValidAuthTokenInHeader($request);
+    return $this->requestHasValidAuthTokenInHeader($request) && (
+        $this->postRequestHasValidCredentialsInRequestBody($request) ||
+        $this->getRequestHasValidCredentialsInQueryParameters($request)
+      );
   }
 
   /**
@@ -79,8 +92,23 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
    */
   public function getCredentials(Request $request)
   {
+    $username = null;
+
+    if ($request->isMethod(Request::METHOD_GET))
+    {
+      $username = $request->query->get(self::USERNAME);
+    }
+    else
+    {
+      if ($request->isMethod(Request::METHOD_POST))
+      {
+        $username = $request->request->get(self::USERNAME);
+      }
+    }
+
     return [
-      self::TOKEN => $request->headers->get(self::TOKEN),
+      self::TOKEN    => $request->headers->get(self::TOKEN),
+      self::USERNAME => $username,
     ];
   }
 
@@ -93,8 +121,9 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
   public function getUser($credentials, UserProviderInterface $userProvider)
   {
     $token = $credentials[self::TOKEN];
+    $username = $credentials[self::USERNAME];
 
-    if (null === $token || "" === $token)
+    if (null === $token || null === $username)
     {
       return null;
     }
@@ -116,6 +145,11 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
    */
   public function checkCredentials($credentials, UserInterface $user)
   {
+    if ($user->getUsername() !== $credentials[self::USERNAME])
+    {
+      return false;
+    }
+
     // return true to cause authentication success
     return true;
   }
@@ -173,6 +207,7 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     return false;
   }
 
+
   /**
    * @param Request $request
    *
@@ -183,4 +218,25 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     return $request->headers->has(self::TOKEN) && "" !== $request->headers->get(self::TOKEN);
   }
 
+  /**
+   * @param Request $request
+   *
+   * @return bool
+   */
+  private function postRequestHasValidCredentialsInRequestBody(Request $request)
+  {
+    return $request->isMethod(Request::METHOD_POST) &&
+      $request->request->has(self::USERNAME) && "" !== $request->request->get(self::USERNAME);
+  }
+
+  /**
+   * @param Request $request
+   *
+   * @return bool
+   */
+  private function getRequestHasValidCredentialsInQueryParameters(Request $request)
+  {
+    return $request->isMethod(Request::METHOD_GET) &&
+      $request->query->has(self::USERNAME) && "" !== $request->query->get(self::USERNAME);
+  }
 }

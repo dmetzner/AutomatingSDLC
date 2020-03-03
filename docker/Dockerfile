@@ -79,6 +79,6 @@ RUN sed -i "s|APP_ENVIRONMENT|$APP_ENVIRONMENT|g" behat.yml.dist
 
 # PERMISSIONS
 RUN composer run-script post-install-cmd && \
-    sh docker/app/prepare-test-env.sh
+    sh docker/app/test-permissions.sh
 
 EXPOSE 80

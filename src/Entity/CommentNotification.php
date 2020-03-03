@@ -10,19 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 class CommentNotification extends CatroNotification
 {
   /**
-   * @var UserComment The UserComment which triggered this CommentNotification. If the UserComment gets deleted,
-   *                  this CommentNotification gets deleted as well.
-   *
-   * @ORM\OneToOne(
-   *   targetEntity="\App\Entity\UserComment",
-   *   inversedBy="notification"
-   * )
-   * @ORM\JoinColumn(
-   *   name="comment_id",
-   *   referencedColumnName="id",
-   *   onDelete="SET NULL",
-   *   nullable=true
-   * )
+   * @ORM\ManyToOne(targetEntity="\App\Entity\UserComment")
+   * @ORM\JoinColumn(name="comment_id", referencedColumnName="id", nullable=true)
    */
   private $comment;
 
@@ -34,8 +23,8 @@ class CommentNotification extends CatroNotification
   /**
    * CommentNotification constructor.
    *
-   * @param User $user The user to which this CommentNotification should be shown.
-   * @param UserComment $comment The UserComment which triggered this CommentNotification.
+   * @param User $user
+   * @param      $comment
    *
    */
   public function __construct(User $user, $comment)
@@ -45,9 +34,7 @@ class CommentNotification extends CatroNotification
   }
 
   /**
-   * Returns the UserComment which triggered this CommentNotification.
-   *
-   * @return UserComment The UserComment which triggered this CommentNotification.
+   * @return mixed
    */
   public function getComment()
   {
@@ -55,9 +42,7 @@ class CommentNotification extends CatroNotification
   }
 
   /**
-   * Sets the UserComment which triggered this CommentNotification.
-   *
-   * @param UserComment $comment The UserComment which triggered this CommentNotification.
+   * @param $comment
    */
   public function setComment($comment)
   {

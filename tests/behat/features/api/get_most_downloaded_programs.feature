@@ -22,7 +22,7 @@ Feature: Get the most downloaded programs
       """
       {
           "CatrobatProjects":[{
-                                "ProjectId": "REGEX_STRING_WILDCARD",
+                                "ProjectId": "(.*?)",
                                 "ProjectName":"program 2",
                                 "ProjectNameShort":"program 2",
                                 "Author":"Catrobat",
@@ -31,12 +31,12 @@ Feature: Get the most downloaded programs
                                 "Views": 9,
                                 "Downloads": 333,
                                 "Private":false,
-                                "Uploaded": "REGEX_INT_WILDCARD",
+                                "Uploaded": 1398164400,
                                 "UploadedString":"3 months ago",
                                 "ScreenshotBig":"images/default/screenshot.png",
                                 "ScreenshotSmall":"images/default/thumbnail.png",
-                                "ProjectUrl":"app/project/REGEX_STRING_WILDCARD",
-                                "DownloadUrl":"app/download/REGEX_STRING_WILDCARD.catrobat",
+                                "ProjectUrl":"app/project/(.*?)",
+                                "DownloadUrl":"app/download/(.*?).catrobat",
                                 "FileSize":0
                             }],
           "completeTerm":"",
@@ -57,13 +57,13 @@ Feature: Get the most downloaded programs
       """
       {
           "CatrobatProjects":[{
-                                "ProjectId": "REGEX_STRING_WILDCARD",
+                                "ProjectId": "(.*?)",
                                 "ProjectName":"program 2"
                             }],
           "completeTerm":"",
           "preHeaderMessages":"",
           "CatrobatInformation": {
-                         "BaseUrl":"REGEX_STRING_WILDCARD",
+                         "BaseUrl":"http://localhost/",
                          "TotalProjects": 3,
                          "ProjectsExtension":".catrobat"
                         }

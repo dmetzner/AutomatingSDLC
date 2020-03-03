@@ -462,11 +462,10 @@ let ProjectLoader = function(container, url, recommended_by_project_id, recommen
       
       case '#mostDownloaded':
         return  '<div><i class="fas fa-download program-small-icon"></i>' + project.Downloads + '</div>'
-  
-      case '#scratchRemixes':
+      
       case '#mostViewed':
         return  '<div><i class="fas fa-eye program-small-icon"></i>' + project.Views + '</div>'
-  
+      
       case '#recommendations':
       case '#more-from-this-user-recommendations':
         return  '<div><i class="fas fa-eye program-small-icon"></i>' + project.Views + '</div>'

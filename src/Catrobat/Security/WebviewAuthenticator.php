@@ -23,22 +23,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class WebviewAuthenticator extends AbstractGuardAuthenticator
 {
   /**
-   * @required request cookie CATRO_LOGIN_TOKEN to automatically log in a user in the webview
-   *
-   *  Must be sent as cookie containing the user token
-   *  Must not be empty
-   *
-   */
-  const COOKIE_TOKEN_KEY = 'CATRO_LOGIN_TOKEN';
-
-  /**
    * @var TranslatorInterface
    */
   protected $translator;
 
-  /**
-   * @var SessionInterface
-   */
+  /** @var SessionInterface */
   protected $session;
 
   /**
@@ -60,6 +49,9 @@ class WebviewAuthenticator extends AbstractGuardAuthenticator
     $this->session = $session;
   }
 
+  protected $cookie_name_user = "CATRO_LOGIN_USER";
+  protected $cookie_name_token = "CATRO_LOGIN_TOKEN";
+
   /**
    * Called on every request to decide if this authenticator should be
    * used for the request. Returning false will cause this authenticator
@@ -73,7 +65,7 @@ class WebviewAuthenticator extends AbstractGuardAuthenticator
   {
     $this->session->set('webview-auth', false);
 
-    return $this->hasValidTokenCookieSet($request);
+    return $this->hasValidTokenCookieSet($request) && $this->hasValidUserCookieSet($request);
   }
 
   /**
@@ -87,7 +79,8 @@ class WebviewAuthenticator extends AbstractGuardAuthenticator
   public function getCredentials(Request $request)
   {
     return [
-      self::COOKIE_TOKEN_KEY => $request->cookies->get(self::COOKIE_TOKEN_KEY, null),
+      'token'    => $request->cookies->get($this->cookie_name_token, null),
+      'username' => $request->cookies->get($this->cookie_name_user, null),
     ];
   }
 
@@ -99,9 +92,9 @@ class WebviewAuthenticator extends AbstractGuardAuthenticator
    */
   public function getUser($credentials, UserProviderInterface $userProvider)
   {
-    $token = $credentials[self::COOKIE_TOKEN_KEY];
+    $apiToken = $credentials['token'];
 
-    if (null === $token || "" === $token)
+    if (null === $apiToken || "" === $apiToken)
     {
       throw new AuthenticationException(
         $this->translator->trans("errors.authentication.webview", [], "catroweb")
@@ -109,7 +102,7 @@ class WebviewAuthenticator extends AbstractGuardAuthenticator
     }
 
     $user = $this->em->getRepository(User::class)
-      ->findOneBy(['upload_token' => $token]);
+      ->findOneBy(['upload_token' => $apiToken]);
 
     if (!$user)
     {
@@ -134,6 +127,13 @@ class WebviewAuthenticator extends AbstractGuardAuthenticator
    */
   public function checkCredentials($credentials, UserInterface $user)
   {
+    if (null === $user || $user->getUsername() !== $credentials['username'])
+    {
+      throw new AuthenticationException(
+        $this->translator->trans("errors.authentication.webview", [], "catroweb")
+      );
+    }
+
     // return true to cause authentication success
     return true;
   }
@@ -193,7 +193,16 @@ class WebviewAuthenticator extends AbstractGuardAuthenticator
    */
   private function hasValidTokenCookieSet(Request $request)
   {
-    return $request->cookies->has(self::COOKIE_TOKEN_KEY) && "" !== $request->cookies->get(self::COOKIE_TOKEN_KEY);
+    return $request->cookies->has($this->cookie_name_token) && "" !== $request->cookies->get($this->cookie_name_token);
   }
 
+  /**
+   * @param Request $request
+   *
+   * @return bool
+   */
+  private function hasValidUserCookieSet(Request $request)
+  {
+    return $request->cookies->has($this->cookie_name_user) && "" !== $request->cookies->get($this->cookie_name_user);
+  }
 }

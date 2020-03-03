@@ -21,7 +21,7 @@ Feature: Get the most recent programs
       """
       {
           "CatrobatProjects":[{
-                                "ProjectId": "REGEX_STRING_WILDCARD",
+                                "ProjectId": "(.*?)",
                                 "ProjectName":"program 2",
                                 "ProjectNameShort":"program 2",
                                 "Author":"Catrobat",
@@ -30,12 +30,12 @@ Feature: Get the most recent programs
                                 "Views":9,
                                 "Downloads":33,
                                 "Private":false,
-                                "Uploaded": "REGEX_INT_WILDCARD",
+                                "Uploaded": 1359720000,
                                 "UploadedString":"1 year ago",
                                 "ScreenshotBig":"images/default/screenshot.png",
                                 "ScreenshotSmall":"images/default/thumbnail.png",
-                                "ProjectUrl":"app/project/REGEX_STRING_WILDCARD",
-                                "DownloadUrl":"app/download/REGEX_STRING_WILDCARD.catrobat",
+                                "ProjectUrl":"app/project/(.*?)",
+                                "DownloadUrl":"app/download/(.*?).catrobat",
                                 "FileSize":0
                             }],
           "completeTerm":"",
@@ -56,7 +56,7 @@ Feature: Get the most recent programs
       """
       {
           "CatrobatProjects":[{
-                                "ProjectId": "REGEX_STRING_WILDCARD",
+                                "ProjectId": "(.*?)",
                                 "ProjectName":"program 2"
                             }],
           "completeTerm":"",

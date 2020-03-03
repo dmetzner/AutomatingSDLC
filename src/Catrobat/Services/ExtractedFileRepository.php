@@ -52,9 +52,9 @@ class ExtractedFileRepository
    *
    * @param ParameterBagInterface $parameter_bag
    * @param CatrobatFileExtractor $file_extractor
-   * @param ProgramManager        $program_manager
+   * @param ProgramManager $program_manager
    * @param ProgramFileRepository $prog_file_rep
-   * @param LoggerInterface       $l
+   * @param LoggerInterface $l
    */
   public function __construct(ParameterBagInterface $parameter_bag, CatrobatFileExtractor $file_extractor,
                               ProgramManager $program_manager, ProgramFileRepository $prog_file_rep,
@@ -90,26 +90,15 @@ class ExtractedFileRepository
     try
     {
       $hash = $program->getExtractedDirectoryHash();
-
-      return new ExtractedCatrobatFile($this->local_path . $hash . '/', $this->webpath . $hash . '/', $hash);
-
+      $extracted_file = new ExtractedCatrobatFile($this->local_path . $hash . '/', $this->webpath . $hash . '/', $hash);
+      return $extracted_file;
     } catch (InvalidCatrobatFileException $e)
     {
       //need to extract first
-      unset($e);
-    }
-
-    try
-    {
-      $program_file = $this->prog_file_repo->getProgramFile($program->getId());
-      $extracted_file = $this->file_extractor->extract($program_file);
+      $extracted_file = $this->file_extractor->extract($this->prog_file_repo->getProgramFile($program->getId()));
       $program->setExtractedDirectoryHash($extracted_file->getDirHash());
       $this->program_manager->save($program);
-
       return $extracted_file;
-    } catch (\Exception $e)
-    {
-      return null;
     }
   }
 
@@ -156,7 +145,7 @@ class ExtractedFileRepository
             }
             rmdir($sound_path);
           }
-          /** @var Finder $finder */
+
           $finder = new Finder();
           $finder->files()->in($path);
           foreach ($finder as $file)
