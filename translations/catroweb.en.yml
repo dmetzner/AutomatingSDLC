@@ -44,7 +44,9 @@ LikeNotifications: 'Reactions'
 likesNotificationsTitle: 'Reaction Notifications'
 followersNotificationsTitle: 'Follower Notifications'
 commentsNotificationsTitle: 'Comment Notifications'
+remixNotificationsTitle: 'Remix Notifications'
 CommentNotifications: 'Comments'
+RemixNotifications: 'Remixes'
 oldnotification: 'Old Notifications'
 wellDone: "Well done!"
 done: "Done!"
@@ -78,6 +80,7 @@ programs:
   featured: Featured
   newest: Newest projects
   recommended: Recommended projects
+  scratchremixes: Scratch remixes
   noPrograms: There are currently no projects.
   deleteConfirmation: |+
     Are you sure?

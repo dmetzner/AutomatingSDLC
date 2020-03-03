@@ -3,10 +3,13 @@
 use App\Catrobat\Services\ApkRepository;
 use App\Catrobat\Services\MediaPackageFileRepository;
 use App\Catrobat\Services\ProgramFileRepository;
-use App\Entity\AchievementNotification;
 use App\Entity\CatroNotification;
 use App\Entity\ClickStatistic;
 use App\Entity\CommentNotification;
+use App\Entity\NewProgramNotification;
+use App\Entity\AnniversaryNotification;
+use App\Entity\AchievementNotification;
+use App\Entity\BroadcastNotification;
 use App\Entity\Extension;
 use App\Entity\FeaturedProgram;
 use App\Entity\FollowNotification;
@@ -19,6 +22,7 @@ use App\Entity\ProgramDownloads;
 use App\Entity\ProgramLike;
 use App\Entity\ProgramManager;
 use App\Entity\ProgramRemixRelation;
+use App\Entity\RemixNotification;
 use App\Entity\StarterCategory;
 use App\Entity\Tag;
 use App\Entity\User;
@@ -450,6 +454,11 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
         $this->assertSession()->elementExists('css', '.program');
         break;
 
+      case 'scratchRemixes':
+        $this->assertSession()->elementExists('css', '#scratchRemixes');
+        $this->assertSession()->elementExists('css', '.program');
+        break;
+
       case 'random':
         $this->assertSession()->elementExists('css', '#random');
         $this->assertSession()->elementExists('css', '.program');
@@ -749,22 +758,54 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
       }
       switch ($notification['type'])
       {
-        case "achievement":
-          $to_create = new AchievementNotification($user, $notification['title'], $notification['message'], "");
-          $em->persist($to_create);
-          break;
         case "comment":
           $comment = $em->getRepository(UserComment::class)->find($notification['commentID']);
           $to_create = new CommentNotification($user, $comment);
-          $em->persist($to_create);
+          break;
+        case "follower":
+          $follower = $em->getRepository(User::class)->find($notification['follower_id']);
+          $to_create = new FollowNotification($user, $follower);
+          break;
+        case "like":
+          $liker = $em->getRepository(User::class)->find($notification['like_from']);
+          $program = $em->getRepository(Program::class)->find($notification['program_id']);
+          $to_create = new LikeNotification($user, $liker, $program);
+          break;
+        case "follow_program":
+          $program = $em->getRepository(Program::class)->find($notification['program_id']);
+          $to_create = new NewProgramNotification($user, $program);
+          break;
+        case "anniversary":
+          $to_create = new AnniversaryNotification($user, $notification['title'], $notification['message'], $notification['prize']);
+          break;
+        case "achievement":
+          $to_create = new AchievementNotification($user, $notification['title'], $notification['message'], $notification['image_path']);
+          break;
+        case "broadcast":
+          $to_create = new BroadcastNotification($user, $notification['title'], $notification['message']);
+          break;
+        case "remix":
+          $parent_program = $em->getRepository(Program::class)->find($notification['parent_program']);
+          $child_program = $em->getRepository(Program::class)->find($notification['child_program']);
+          $to_create = new RemixNotification($user, $parent_program->getUser(), $parent_program, $child_program);
           break;
         default:
           $to_create = new CatroNotification($user, $notification['title'], $notification['message']);
-          $em->persist($to_create);
           break;
       }
+
+      if ($to_create)
+      {
+        // Some specific id desired?
+        if (isset($notification['id']))
+        {
+          $to_create->setId($notification['id']);
+        }
+
+        $em->persist($to_create);
+        $em->flush();
+      }
     }
-    $em->flush();
   }
 
   /**
@@ -915,13 +956,42 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
 
       $new_comment->setUploadDate(new DateTime($comment['upload_date'], new DateTimeZone('UTC')));
       $new_comment->setProgram($program_manager->find($comment['program_id']));
-      $new_comment->setUser($user_manager->find($comment['user_id']));
+      $user = $entity_manager->getRepository(User::class)->find($comment['user_id']);
+      $new_comment->setUser($user);
       $new_comment->setUsername($comment['user_name']);
       $new_comment->setIsReported(false);
       $new_comment->setText($comment['text']);
       $entity_manager->persist($new_comment);
+
+      // overwrite id if desired
+      if (isset($comment['id']))
+      {
+        $new_comment->setId($comment['id']);
+        $entity_manager->persist($new_comment);
+      }
     }
     $entity_manager->flush();
+  }
+
+  /**
+   * @Given /^there are Scratch remix relations:$/
+   * @param TableNode $table
+   *
+   * @throws ORMException
+   * @throws OptimisticLockException
+   */
+  public function thereAreScratchRemixRelations(TableNode $table)
+  {
+    $scratch_relations = $table->getHash();
+
+    foreach ($scratch_relations as $scratch_relation)
+    {
+      @$config = [
+        'scratch_parent_id' => $scratch_relation['scratch_parent_id'],
+        'catrobat_child_id' => $scratch_relation['catrobat_child_id'],
+      ];
+      $this->symfony_support->insertScratchRemixRelation($config);
+    }
   }
 
   /**
@@ -1172,6 +1242,40 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
       $this->assertElementOnPage('#btn-login');
       $this->assertElementNotOnPage('#btn-logout');
     }
+  }
+
+  /**
+   * @Then /^the user "([^"]*)" should not exist$/
+   * @param $arg1
+   */
+  public function theUserShouldNotExist($arg1)
+  {
+    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+    $user = $em->getRepository('App\Entity\User')->findOneBy([
+        'username' => $arg1,
+      ]);
+
+    Assert::assertNull($user);
+  }
+
+  /**
+   * @Then /^comments or catro notifications should not exist$/
+   * @param $arg1
+   */
+  public function commentsOrCatroNotificationsShouldNotExist()
+  {
+    $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+    $comments = $em->getRepository('App\Entity\User')->findAll();
+    $notifications = $em->getRepository('App\Entity\User')->findAll();
+
+    $dontExist = false;
+
+    if (!$comments && !$notifications)
+    {
+      $dontExist = true;
+    }
+
+    Assert::assertTrue($dontExist);
   }
 
   /**
@@ -1964,8 +2068,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
     $page = $this->getSession()->getPage();
     $video = $page->find('css', '#youtube-help-video');
     Assert::assertNotNull($video, "Video not found on tutorial page!");
-    Assert::assertTrue(strpos($video->getAttribute('src'), $url) !== false &&
-      strpos($video->getAttribute('src'), "&origin=http://localhost") !== false);
+    Assert::assertTrue(strpos($video->getAttribute('src'), $url) !== false);
   }
 
 
@@ -3195,6 +3298,10 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
             $to_create = new LikeNotification($program->getUser(), $user, $program);
             $em->persist($to_create);
             break;
+          case "remix":
+            $to_create = new RemixNotification($program->getUser(), $program->getUser(), $program, $program);
+            $em->persist($to_create);
+            break;
           case "catro notifications":
             $to_create = new CatroNotification($user, "Random Title", "Random Text");
             $em->persist($to_create);
@@ -3466,8 +3573,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
       'username' => $user,
     ]);
     $this->symfony_support->upload(sys_get_temp_dir() . '/program_generated.catrobat', $user, null);
-    // A kinda hacky solution, but we need to upload the program twice to use the fixed ids!
-    $this->symfony_support->upload(sys_get_temp_dir() . '/program_generated.catrobat', $user, null);
+
   }
 
 
@@ -3495,7 +3601,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
    */
   public function iWaitForThePageToBeLoaded()
   {
-    $this->getSession()->wait(5000, "document.readyState === 'complete'");
+    $this->getSession()->wait(10000, "document.readyState === 'complete'");
     $this->iWaitForAjaxToFinish();
   }
 
@@ -3506,7 +3612,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
    */
   public function iWaitForAjaxToFinish()
   {
-    $this->getSession()->wait(5000,
+    $this->getSession()->wait(10000,
       '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))'
     );
   }
@@ -3523,7 +3629,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   {
     /** @var NodeElement $element */
     $element = $this->getSession()->getPage()->find('css', $selector);
-    $timeout_in_seconds = 10.0;
+    $timeout_in_seconds = 15;
     for ($timer = 0; $timer < $timeout_in_seconds; $timer++)
     {
       if ($element->getText() === $text)
@@ -3548,7 +3654,7 @@ class WebFeatureContext extends MinkContext implements KernelAwareContext
   {
     /** @var NodeElement $element */
     $element = $this->getSession()->getPage()->find('css', $selector);
-    $timeout_in_seconds = 10.0;
+    $timeout_in_seconds = 15;
     for ($timer = 0; $timer < $timeout_in_seconds; $timer++)
     {
       if ($element->isVisible())
