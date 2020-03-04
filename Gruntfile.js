@@ -99,10 +99,6 @@ const COPY_CONFIG =
       src : 'node_modules/sweetalert2/dist/sweetalert2.all.min.js',
       dest: PUBLIC_DIRECTORY + '/js/modules/sweetalert2.all.min.js'
     },
-    popper_js             : {   // not used
-      src : 'node_modules/popper.js/dist/popper.min.js',
-      dest: PUBLIC_DIRECTORY + '/js/modules/popper.min.js'
-    },
     jquery                : {
       src : 'node_modules/jquery/dist/jquery.min.js',
       dest: PUBLIC_DIRECTORY + '/js/modules/jquery.min.js'
