@@ -40,7 +40,7 @@ function openDialog(defaultText = chooseUserNameDialogText, defaultInputValue = 
   //
   // Gets called when a user sign in via OAuth, but has no account already registered.
   //
-  swal({
+  Swal.fire({
     title: chooseUserNameDialogTitleText,
     text: defaultText,
     input: 'text',
@@ -49,35 +49,38 @@ function openDialog(defaultText = chooseUserNameDialogText, defaultInputValue = 
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
     confirmButtonText: okButtonText,
-    allowOutsideClick: false
-  }).then(function (result) {
-    if (result.length < 3 || result.length > 180) {
-      // The user has to choose a valid username
-      // constraints should be the same like in in: src/Resources/config/validation.xml
-      openDialog(usernameInvalidSize, result)
-      return
-    }
-    let $url = Routing.generate('catrobat_oauth_login_username_available', { flavor: flavor })
-    $.post($url,
-      {
-        username: result
-      },
-      function (data) {
-        if (data['username_available'] === true) {
-          // The user has to choose a valid username
-          return openDialog(usernameTaken, result)
-        }
-        // Register the user with google
-        let fbOrGoogle = $('#fb_google').val()
-        if (fbOrGoogle === 'g+') {
-          sendCodeToServer(
-            $('#access_token_oauth').val(),
-            $('#id_oauth').val(),
-            result,
-            $('#email_oauth').val(),
-            $('#locale_oauth').val())
-        }
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value || value.length < 3 || value.length > 180) {
+        return usernameInvalidSize
       }
-    )
-  }).catch(swal.noop)
+    }
+  }).then((result) => {
+
+      let username = result.value
+      let $url = Routing.generate('catrobat_oauth_login_username_available', { flavor: flavor })
+      $.post($url,
+        {
+          username: username
+        },
+        function (data) {
+          if (data['username_available'] === true)
+          {
+            // The user has to choose a valid username
+            return openDialog(usernameTaken, username)
+          }
+          // Register the user with google
+          let fbOrGoogle = $('#fb_google').val()
+          if (fbOrGoogle === 'g+')
+          {
+            sendCodeToServer(
+              $('#access_token_oauth').val(),
+              $('#id_oauth').val(),
+              username,
+              $('#email_oauth').val(),
+              $('#locale_oauth').val())
+          }
+        }
+      )
+  })
 }

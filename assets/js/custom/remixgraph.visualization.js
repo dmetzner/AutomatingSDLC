@@ -126,10 +126,10 @@ var _InternalRemixGraph = function () {
     
     if ($.inArray(nodeId, self.unavailableNodes) != -1)
     {
-      swal({
+      Swal.fire({
           title            : self.remixGraphTranslations.programNotAvailableErrorTitle,
           text             : self.remixGraphTranslations.programNotAvailableErrorDescription,
-          type             : 'error',
+          icon             : 'error',
           showCancelButton : false,
           confirmButtonText: self.remixGraphTranslations.ok,
           closeOnConfirm   : true

@@ -34,7 +34,7 @@ function ProgramReport (programId, reportUrl, loginUrl, reportSentText, errorTex
   
   function reportProgramDialog (error = false, oldReason = '', oldCategory = '')
   {
-    swal({
+    Swal.fire({
       title             : reportDialogTitle,
       html              : getReportDialogHtml(error, oldReason, oldCategory),
       focusConfirm      : false,
@@ -51,9 +51,12 @@ function ProgramReport (programId, reportUrl, loginUrl, reportSentText, errorTex
           ])
         })
       }
-    }).then(function (result) {
-      handleSubmitProgramReport(result)
-    }).catch(swal.noop)
+    }).then((result) => {
+      if (result.value)
+      {
+        handleSubmitProgramReport(result.value)
+      }
+    })
   }
   
   $(document).on('keyup', '#report-reason', function () {
@@ -101,9 +104,9 @@ function ProgramReport (programId, reportUrl, loginUrl, reportSentText, errorTex
     }, function (data) {
       if (data['statusCode'] === statusCode_OK)
       {
-        swal({
+        Swal.fire({
           text              : reportSentText,
-          type              : 'success',
+          icon              : 'success',
           confirmButtonClass: 'btn btn-success',
         }).then(function () {
           window.location.href = '/'
@@ -111,17 +114,17 @@ function ProgramReport (programId, reportUrl, loginUrl, reportSentText, errorTex
       }
       else
       {
-        swal({
+        Swal.fire({
           title: errorText,
-          type : 'error',
+          icon : 'error',
         })
       }
       
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-      swal({
+      Swal.fire({
         title: errorText,
         text : errorThrown,
-        type : 'error',
+        icon : 'error',
       })
     })
   }

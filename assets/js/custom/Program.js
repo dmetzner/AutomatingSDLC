@@ -147,8 +147,8 @@ const Program = function(project_id, csrf_token, user_role, my_program, status_u
       message = 'Something went wrong! Please try again later.';
     }
     
-    swal({
-      type : 'error',
+    Swal.fire({
+      icon : 'error',
       title: 'Oops...',
       text : message
     });

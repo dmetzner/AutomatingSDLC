@@ -120,17 +120,20 @@ let MyProfile = function (profile_url, save_username,
     let url =stringTranslate(programName,catalogEntry)
     $.get(url, function (data) {
       let split = data.split('\n')
-      swal({
+      Swal.fire({
         title             : split[0],
         html              : split[1] + '<br><br>' + split[2],
-        type              : 'warning',
+        icon              : 'warning',
         showCancelButton  : true,
         confirmButtonColor: blueColor,
         cancelButtonColor : redColor,
         confirmButtonText : split[3],
         cancelButtonText  : split[4]
-      }).then(() => {
-        window.location.href = self.delete_url + '/' + id
+      }).then((result) => {
+        if (result.value)
+        {
+          window.location.href = self.delete_url + '/' + id
+        }
       })
     })
   }
@@ -149,44 +152,49 @@ let MyProfile = function (profile_url, save_username,
           let split = data.split('\n')
           if (visibilityLockId.is(':visible'))
           {
-            swal({
+            Swal.fire({
               title             : split[0],
               html              : split[3],
-              type              : 'warning',
+              icon              : 'warning',
               showCancelButton  : true,
               confirmButtonColor: blueColor,
               cancelButtonColor : redColor,
               confirmButtonText : split[4],
               cancelButtonText  : split[6],
-            }).then(() => {
-              visibilityLockId.hide()
-              visibilityLockOpenId.show()
-            }).catch(swal.noop)
+            }).then((result) => {
+              if (result.value)
+              {
+                visibilityLockId.hide()
+                visibilityLockOpenId.show()
+              }
+            })
           }
           else
           {
-            swal({
+            Swal.fire({
               title             : split[0],
               html              : split[1] + '<br><br>' + split[2],
-              type              : 'warning',
+              icon              : 'warning',
               showCancelButton  : true,
               confirmButtonColor: blueColor,
               cancelButtonColor : redColor,
               confirmButtonText : split[5],
               cancelButtonText  : split[6],
-            }).then(() => {
-              visibilityLockId.show()
-              visibilityLockOpenId.hide()
-            }).catch(swal.noop)
+            }).then((result) => {
+              if (result.value) {
+                visibilityLockId.show()
+                visibilityLockOpenId.hide()
+              }
+            })
           }
         })
       }
       else if (data === 'false')
       {
-        swal({
+        Swal.fire({
           title             : programCanNotChangeVisibilityTitle,
           text              : programCanNotChangeVisibilityText,
-          type              : 'error',
+          icon              : 'error',
           confirmButtonClass: 'btn btn-danger',
         })
       }
@@ -199,23 +207,26 @@ let MyProfile = function (profile_url, save_username,
     }, false)
     $.get(url, function (data) {
       let split = data.split('\n')
-      swal({
+      Swal.fire({
         title             : split[0],
         html              : split[1] + '<br><br>' + split[2],
-        type              : 'warning',
+        icon              : 'warning',
         showCancelButton  : true,
         confirmButtonColor: blueColor,
         cancelButtonColor : redColor,
         confirmButtonText : split[3],
         cancelButtonText  : split[4],
-      }).then(() => {
-        $.post(self.delete_account_url, null, function (data) {
-          switch (parseInt(data.statusCode))
-          {
-            case statusCode_OK:
-              window.location.href = '../../'
-          }
-        })
+      }).then((result) => {
+        if (result.value)
+        {
+          $.post(self.delete_account_url, null, function (data) {
+            switch (parseInt(data.statusCode))
+            {
+              case statusCode_OK:
+                window.location.href = '../../'
+            }
+          })
+        }
       })
       $('.swal2-container.swal2-shown').css('background-color', 'rgba(255, 0, 0, 0.75)')//changes the color of the overlay
     })
@@ -238,10 +249,10 @@ let MyProfile = function (profile_url, save_username,
       switch (parseInt(data.statusCode))
       {
         case statusCode_OK:
-          swal({
+          Swal.fire({
             title             : successText,
             text              : checkMailText,
-            type              : 'success',
+            icon              : 'success',
             confirmButtonClass: 'btn btn-success',
           }).then(() => {
             window.location.href = self.profile_edit_url
@@ -383,10 +394,10 @@ let MyProfile = function (profile_url, save_username,
           break
         
         default:
-          swal({
+          Swal.fire({
             title             : successText,
             text              : passwordUpdatedText,
-            type              : 'success',
+            icon              : 'success',
             confirmButtonClass: 'btn btn-success',
           }).then(() => {
             window.location.href = self.profile_edit_url

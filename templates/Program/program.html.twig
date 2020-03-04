@@ -587,7 +587,7 @@
   <script>
 
     $(function () {
-      var copy_button = $('.btn-copy')
+      const copy_button = $('.btn-copy')
 
       copy_button.tooltip({
         trigger  : 'manual',
@@ -601,7 +601,7 @@
         }, 1000)
       })
 
-      var cb = new Clipboard('.btn-copy')
+      const cb = new ClipboardJS('.btn-copy')
       cb.on('success', function () {
         copy_button
         .attr('data-original-title', '{{ "clipboard.success"|trans({}, "catroweb") }}')

@@ -81,7 +81,7 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
       success: function (data) {
         if (!data.success)
         {
-          swal(somethingWentWrongError, notificationsClearError, 'error')
+          Swal.fire(somethingWentWrongError, notificationsClearError, 'error')
           return
         }
         
@@ -96,45 +96,47 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
         self.manageDisplayedElements(mark_all_as_read)
       },
       error  : function () {
-        swal(somethingWentWrongError, notificationsClearError, 'error')
+        Swal.fire(somethingWentWrongError, notificationsClearError, 'error')
       }
     })
   }
   
   self.deleteAllNotifications = function () {
     
-    swal({
+    Swal.fire({
       title             : self.deleteNotificationConfirmation,
       text              : self.notificationDeleteAllMessage,
-      type              : 'warning',
+      icon              : 'warning',
       showCancelButton  : true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor : '#d33',
       confirmButtonText : self.confirmMessage,
       cancelButtonText  : self.cancelMessage
-    }).then(() => {
+    }).then((result) => {
+      if (result.value)
+      {
+        $.ajax({
+          url    : deleteAllUrl,
+          type   : 'get',
+          success: function (data) {
+            if (!data.success)
+            {
+              Swal.fire(somethingWentWrongError, notificationsClearError, 'error')
+              return
+            }
+            self.notifications = 0
+            self.old_notifications = 0
       
-      $.ajax({
-        url    : deleteAllUrl,
-        type   : 'get',
-        success: function (data) {
-          if (!data.success)
-          {
-            swal(somethingWentWrongError, notificationsClearError, 'error')
-            return
+            self.updateBadgeNumber('specificNotification')
+            self.showAllClearedPopUp('delete_all')
+            let delete_all = 'deleteAll'
+            self.manageDisplayedElements(delete_all)
+          },
+          error  : function () {
+            Swal.fire(somethingWentWrongError, notificationsDeleteError, 'error')
           }
-          self.notifications = 0
-          self.old_notifications = 0
-          
-          self.updateBadgeNumber('specificNotification')
-          self.showAllClearedPopUp('delete_all')
-          let delete_all = 'deleteAll'
-          self.manageDisplayedElements(delete_all)
-        },
-        error  : function () {
-          swal(somethingWentWrongError, notificationsDeleteError, 'error')
-        }
-      })
+        })
+      }
     })
   }
   
@@ -174,11 +176,11 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
         }
         else
         {
-          swal(somethingWentWrongError, notificationsClearError, 'error')
+          Swal.fire(somethingWentWrongError, notificationsClearError, 'error')
         }
       },
       error  : function () {
-        swal(somethingWentWrongError, notificationsClearError, 'error')
+        Swal.fire(somethingWentWrongError, notificationsClearError, 'error')
       }
     })
   }
@@ -289,74 +291,77 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
       message = self.notificationDeletedMessage
     }
     
-    swal(
+    Swal.fire(
       {
         title             : self.popUpClearedAllMessagesTitle,
         text              : message,
-        type              : 'success',
+        icon              : 'success',
         confirmButtonClass: 'btn btn-success',
       }
     )
   }
   
   self.deleteNotification = function (id) {
-    swal({
+    Swal.fire({
       title             : self.deleteNotificationConfirmation,
       text              : self.notificationDeleteMessage,
-      type              : 'warning',
+      icon              : 'warning',
       showCancelButton  : true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor : '#d33',
       confirmButtonText : self.confirmMessage,
       cancelButtonText  : self.cancelMessage
-    }).then(() => {
-      $.ajax({
-        url    : self.deleteNotificationUrl + '/' + id,
-        type   : 'get',
-        success: function (data) {
-          if (data.success)
-          {
-            if ($('#new-notifications-container').children().find('#catro-notification-' + id).length)
+    }).then((result) => {
+      if (result.value)
+      {
+        $.ajax({
+          url    : self.deleteNotificationUrl + '/' + id,
+          type   : 'get',
+          success: function (data) {
+            if (data.success)
             {
-              self.notifications--
-              
-              self.updateNotificationAmountText()
-              
-              self.updateBadgeNumber()
-            }
-            
-            $('#catro-notification-' + id).fadeOut(function () {
-              
-              let notificationsContainer = $('#new-notifications-container')
-              let oldNotificationsContainer = $('#old-notifications-container')
-              
-              $('#catro-notification-' + id).parent().remove()
-              
-              if (notificationsContainer.children().length === 0)
+              if ($('#new-notifications-container').children().find('#catro-notification-' + id).length)
               {
+                self.notifications--
+          
+                self.updateNotificationAmountText()
+          
+                self.updateBadgeNumber()
+              }
+        
+              $('#catro-notification-' + id).fadeOut(function () {
+          
+                let notificationsContainer = $('#new-notifications-container')
+                let oldNotificationsContainer = $('#old-notifications-container')
+          
+                $('#catro-notification-' + id).parent().remove()
+          
+                if (notificationsContainer.children().length === 0)
+                {
+                  if (oldNotificationsContainer.children().length === 0)
+                  {
+                    $('#old-notification-header').hide()
+                    self.showAllClearedPopUp('delete_all')
+                    self.clearAll()
+                  }
+                  self.clearAll('delete')
+                }
                 if (oldNotificationsContainer.children().length === 0)
                 {
                   $('#old-notification-header').hide()
-                  self.showAllClearedPopUp('delete_all')
-                  self.clearAll()
                 }
-                self.clearAll('delete')
-              }
-              if (oldNotificationsContainer.children().length === 0)
-              {
-                $('#old-notification-header').hide()
-              }
-            })
+              })
+            }
+            else
+            {
+              Swal.fire(somethingWentWrongError, notificationsDeleteError, 'error')
+            }
+          },
+          error  : function () {
+            Swal.fire(somethingWentWrongError, notificationsDeleteError, 'error')
           }
-          else
-          {
-            swal(somethingWentWrongError, notificationsDeleteError, 'error')
-          }
-        },
-        error  : function () {
-          swal(somethingWentWrongError, notificationsDeleteError, 'error')
-        }
-      })
+        })
+      }
     })
   }
   

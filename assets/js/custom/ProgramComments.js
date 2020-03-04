@@ -95,7 +95,7 @@ function ProgramComments (programId, visibleComments, showStep, minAmountOfVisib
         }
       },
       error  : function () {
-        swal(defaultErrorMessage)
+        Swal.fire(defaultErrorMessage)
       }
     })
   }
@@ -113,7 +113,7 @@ function ProgramComments (programId, visibleComments, showStep, minAmountOfVisib
         }
         else if (data === statusCode_NO_ADMIN_RIGHTS)
         {
-          swal(noAdminRightsMessage)
+          Swal.fire(noAdminRightsMessage)
         }
         else
         {
@@ -122,7 +122,7 @@ function ProgramComments (programId, visibleComments, showStep, minAmountOfVisib
         }
       },
       error  : function () {
-        swal(defaultErrorMessage)
+        Swal.fire(defaultErrorMessage)
       }
     })
   }
@@ -144,34 +144,37 @@ function ProgramComments (programId, visibleComments, showStep, minAmountOfVisib
         }
       },
       error  : function () {
-        swal(defaultErrorMessage)
+        Swal.fire(defaultErrorMessage)
       }
     })
   }
   
   function askForConfirmation (continueWithAction, commentId, text, okayText)
   {
-    swal({
+    Swal.fire({
       title             : areYouSure,
       html              : text + '<br><br>' + noWayOfReturn,
-      type              : 'warning',
+      icon              : 'warning',
       showCancelButton  : true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor : '#d33',
       confirmButtonText : okayText,
       cancelButtonText  : cancel
-    }).then(() => {
-      continueWithAction(commentId)
+    }).then((result) => {
+      if (result.value)
+      {
+        continueWithAction(commentId)
+      }
     })
   }
   
   function showSuccessPopUp (title, text)
   {
-    swal(
+    Swal.fire(
       {
         title             : title,
         text              : text,
-        type              : 'success',
+        icon              : 'success',
         confirmButtonClass: 'btn btn-success',
       }
     ).then(() => {

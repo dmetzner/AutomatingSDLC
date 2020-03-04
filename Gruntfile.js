@@ -141,12 +141,12 @@ const CONCAT_CONFIG =
   //    banner: '/*\n  Generated File by Grunt\n  Source path: assets/js\n*/\n'
   //},
   base: {
-    src: [ ASSETS_DIRECTORY + '/js/base/*.js', ASSETS_DIRECTORY + '/js/globalPlugins/*.js' ],
-      dest: PUBLIC_DIRECTORY + '/js/script.js'
+    src: [ASSETS_DIRECTORY + '/js/base/*.js',  ASSETS_DIRECTORY + '/js/globalPlugins/*.js'],
+    dest: PUBLIC_DIRECTORY + '/js/base.js'
   },
   register: {
     src: ASSETS_DIRECTORY + '/js/register/*.js',
-      dest: PUBLIC_DIRECTORY + '/js/register.js'
+    dest: PUBLIC_DIRECTORY + '/js/register.js'
   },
 }
 
@@ -195,32 +195,53 @@ const COPY_CONFIG =
   },
   
   clipboard_js: {
-      src: 'node_modules/clipboard/dist/clipboard.min.js',
-      dest: PUBLIC_DIRECTORY + '/js/libraries/clipboard.min.js'
+    src: 'node_modules/clipboard/dist/clipboard.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/clipboard.min.js'
   },
   bootstrap_js: {
     src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-      dest: PUBLIC_DIRECTORY + '/js/libraries/bootstrap.min.js'
+    dest: PUBLIC_DIRECTORY + '/js/libraries/bootstrap.min.js'
   },
-
-  popper_js: {
-    src: 'node_modules/popper.js/dist/popper.min.js',
-      dest: PUBLIC_DIRECTORY + '/js/libraries/popper.min.js'
+  sweetalert_js: {
+    src: 'node_modules/sweetalert2/dist/sweetalert2.all.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/sweetalert2.all.min.js'
   },
-  //jquery_ui_js: {
-  //  src: 'node_modules/popper.js/dist/popper.js',
-  //    dest: PUBLIC_DIRECTORY + '/js/libraries/popper.js'
+  //sweetalert_css: {
+  //  src: 'node_modules/sweetalert2/dist/sweetalert2.min.css',
+  //  dest: PUBLIC_DIRECTORY + '/css/libraries/sweetalert2.min.css'
   //},
+  
+  popper_js: {   // not used
+    src: 'node_modules/popper.js/dist/popper.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/popper.min.js'
+  },
   jquery: {
     src: 'node_modules/jquery/dist/jquery.min.js',
     dest: PUBLIC_DIRECTORY + '/js/libraries/jquery.min.js'
   },
-  
-  localPlugins: {
-    expand: true,
-    cwd: ASSETS_DIRECTORY + '/js/localPlugins',
-    src: '**/*.js',
-    dest: PUBLIC_DIRECTORY + '/js/libraries'
+  jquery_textfill: {
+    src: 'node_modules/jquery-textfill/source/jquery.textfill.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/jquery-textfill.min.js'
+  },
+  jquery_ui: {
+    src: 'node_modules/jquery-ui-dist/jquery-ui.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/jquery-ui.min.js'
+  },
+  jquery_contextmenu: {
+    src: 'node_modules/jquery-contextmenu/dist/jquery.contextMenu.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/jquery.contextMenu.min.js'
+  },
+  jquery_ui_position: {
+    src: 'node_modules/jquery-contextmenu/dist/jquery.ui.position.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/jquery.ui.position.min.js'
+  },
+  vis_js: { // @deprecated
+    src: 'node_modules/vis/dist/vis.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/vis.min.js'
+  },
+  animatedModal_js: {
+    src: 'node_modules/animatedmodal/animatedModal.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/animatedModal.min.js'
   },
   
   custom: {
@@ -235,6 +256,13 @@ const COPY_CONFIG =
     cwd: ASSETS_DIRECTORY + '/js/analytics',
     src: '**/*.js',
     dest: PUBLIC_DIRECTORY + '/js/'
+  },
+  
+  global: {
+    expand: true,
+    cwd: ASSETS_DIRECTORY + '/js/globalPlugins',
+    src: '**/*.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries'
   },
   
 }
