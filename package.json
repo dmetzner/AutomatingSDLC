@@ -39,13 +39,13 @@
     "grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
     "jquery": "^3.4.1",
     "jquery-contextmenu": "^2.9.0",
-    "jquery-textfill": "^0.6.0",
     "jquery-ui-dist": "^1.12.1",
     "js-yaml": "^3.13.1",
     "npm": "^6.14.1",
     "npm-check-updates": "^4.0.3",
     "popper.js": "^1.16.1",
     "sweetalert2": "^9.8.2",
+    "textfilljs": "^1.0.3-a",
     "vis": "^4.21.0-EOL"
   },
   "standard": {

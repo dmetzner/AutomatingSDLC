@@ -59,13 +59,6 @@ function addThemeConfig(SASS_CONFIG, theme)
         THEME_CONFIG,
         {
           expand: true,
-          cwd   : ASSETS_DIRECTORY + '/css/libraries/',
-          src   : ['*'],
-          dest  : PUBLIC_DIRECTORY + '/css/libraries/',
-          extDot: 'first'
-        },
-        {
-          expand: true,
           cwd   : ASSETS_DIRECTORY + '/css/custom/',
           src   : ['**/*.scss'],
           dest  : PUBLIC_DIRECTORY + '/css/' + theme + '/',
@@ -141,7 +134,7 @@ const CONCAT_CONFIG =
   //    banner: '/*\n  Generated File by Grunt\n  Source path: assets/js\n*/\n'
   //},
   base: {
-    src: [ASSETS_DIRECTORY + '/js/base/*.js',  ASSETS_DIRECTORY + '/js/globalPlugins/*.js'],
+    src: [ASSETS_DIRECTORY + '/js/base/*.js'],
     dest: PUBLIC_DIRECTORY + '/js/base.js'
   },
   register: {
@@ -202,14 +195,10 @@ const COPY_CONFIG =
     src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
     dest: PUBLIC_DIRECTORY + '/js/libraries/bootstrap.min.js'
   },
-  sweetalert_js: {
+  sweetalert_all: {
     src: 'node_modules/sweetalert2/dist/sweetalert2.all.min.js',
     dest: PUBLIC_DIRECTORY + '/js/libraries/sweetalert2.all.min.js'
   },
-  //sweetalert_css: {
-  //  src: 'node_modules/sweetalert2/dist/sweetalert2.min.css',
-  //  dest: PUBLIC_DIRECTORY + '/css/libraries/sweetalert2.min.css'
-  //},
   
   popper_js: {   // not used
     src: 'node_modules/popper.js/dist/popper.min.js',
@@ -219,17 +208,21 @@ const COPY_CONFIG =
     src: 'node_modules/jquery/dist/jquery.min.js',
     dest: PUBLIC_DIRECTORY + '/js/libraries/jquery.min.js'
   },
-  jquery_textfill: {
-    src: 'node_modules/jquery-textfill/source/jquery.textfill.min.js',
-    dest: PUBLIC_DIRECTORY + '/js/libraries/jquery-textfill.min.js'
+  textfill_js: {
+    src: 'node_modules/textfilljs/dist/textfill.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/textfill.min.js'
   },
   jquery_ui: {
     src: 'node_modules/jquery-ui-dist/jquery-ui.min.js',
     dest: PUBLIC_DIRECTORY + '/js/libraries/jquery-ui.min.js'
   },
-  jquery_contextmenu: {
+  jquery_contextmenu_js: {
     src: 'node_modules/jquery-contextmenu/dist/jquery.contextMenu.min.js',
     dest: PUBLIC_DIRECTORY + '/js/libraries/jquery.contextMenu.min.js'
+  },
+  jquery_contextmenu_css: {
+    src: 'node_modules/jquery-contextmenu/dist/jquery.contextMenu.min.css',
+    dest: PUBLIC_DIRECTORY + '/css/libraries/jquery.contextMenu.min.css'
   },
   jquery_ui_position: {
     src: 'node_modules/jquery-contextmenu/dist/jquery.ui.position.min.js',
@@ -238,6 +231,10 @@ const COPY_CONFIG =
   vis_js: { // @deprecated
     src: 'node_modules/vis/dist/vis.min.js',
     dest: PUBLIC_DIRECTORY + '/js/libraries/vis.min.js'
+  },
+  vis_css: { // @deprecated
+    src: 'node_modules/vis/dist/vis.min.css',
+    dest: PUBLIC_DIRECTORY + '/css/libraries/vis.min.css'
   },
   animatedModal_js: {
     src: 'node_modules/animatedmodal/animatedModal.min.js',
@@ -257,14 +254,6 @@ const COPY_CONFIG =
     src: '**/*.js',
     dest: PUBLIC_DIRECTORY + '/js/'
   },
-  
-  global: {
-    expand: true,
-    cwd: ASSETS_DIRECTORY + '/js/globalPlugins',
-    src: '**/*.js',
-    dest: PUBLIC_DIRECTORY + '/js/libraries'
-  },
-  
 }
 
 // -------------------------------------------------------------------------------------------------

@@ -316,7 +316,7 @@ $(function() {
     const $span = $("<span/>").html(html);
     $(container).append($span);
     
-    $(container).textfill({
+    TextFill(container, {
       maxFontPixels: maxFontPixels,
       minFontPixels: minFontPixels,
       widthOnly    : true,
