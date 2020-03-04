@@ -1,34 +1,56 @@
+yaml = require('js-yaml')
+fs = require('fs')
+
+// --------------------------------------------------------------------------------------------------
+// JS & (S)CSS should always be placed in the assets directory.
+// Grunt will tweak the code to our preferences and put it into the assets directory.
+//
+const ASSETS_DIRECTORY = 'assets'
+const PUBLIC_DIRECTORY = 'public'
 
 // -------------------------------------------------------------------------------------------------
-// Change assets/public dir here:
+// Defining the configuration of our scss to css compile tasks
 //
-let assetsDir = 'assets'
-let publicDir = 'public' // 'public'
-
-// -------------------------------------------------------------------------------------------------
-// Defining JavaScript paths:
+//   - loading all supported themes from the liip config
+//   - creating an entry for every theme + admin
 //
-let jsBaseSrc = [ assetsDir + '/js/base/*.js', assetsDir + '/js/globalPlugins/*.js' ]
-let jsRegisterSrc = [ assetsDir + '/js/register/*.js' ]
-let jsCustomSrc = assetsDir + '/js/custom'
-let jsAnalyticsSrc = assetsDir + '/js/analytics'
-let jsLocalPluginSrc = assetsDir + '/js/localPlugins'
+const SCSS_CONFIG = {}
 
-// -------------------------------------------------------------------------------------------------
-// Defining CSS paths for all themes + admin:
 //
-let themes = [ 'pocketcode', 'pocketalice', 'pocketgalaxy', 'phirocode', 'luna', 'create@school', 'embroidery', 'arduino' ]
-let sassconfig = {}
+// Retrieving all supported themes from the symfony liip config
+//
 
-for (let index = 0; index < themes.length; index++) {
-  let theme = themes[index]
-  let baseCssPath = publicDir + '/css/' + theme + '/base.css'
+
+const THEMES = loadThemesFromSymfonyParameters()
+
+function loadThemesFromSymfonyParameters()
+{
+  try {
+    const liip_config = yaml.safeLoad(
+      fs.readFileSync('config/packages/liip_theme.yaml', 'utf8')
+    );
+    const themes = liip_config['parameters']['themes'];
+    if (!Array.isArray(themes) || !themes.length) {
+      console.error('Themes array is empty!');
+    }
+    return themes
+  } catch (e) {
+    console.error('Themes could not be loaded!\n'+ e);
+    return undefined
+  }
+}
+
+
+
+for (let index = 0; index < THEMES.length; index++) {
+  let theme = THEMES[index]
+  let baseCssPath = PUBLIC_DIRECTORY + '/css/' + theme + '/base.css'
   let baseFileConfig = {}
-  baseFileConfig[baseCssPath] = [ assetsDir + '/css/themes/' + theme + '/' + theme + '.scss' ]
-  sassconfig[theme] =
+  baseFileConfig[baseCssPath] = [ ASSETS_DIRECTORY + '/css/themes/' + theme + '/' + theme + '.scss' ]
+  SCSS_CONFIG[theme] =
   {
     options: {
-      loadPath: [ assetsDir + '/css/base', assetsDir + '/css/themes/' + theme ],
+      loadPath: [ ASSETS_DIRECTORY + '/css/base', ASSETS_DIRECTORY + '/css/themes/' + theme ],
       style: 'compressed',
       sourcemap: 'none'
     },
@@ -37,17 +59,17 @@ for (let index = 0; index < themes.length; index++) {
       // copy plugins
       {
         expand: true,
-        cwd: assetsDir + '/css/plugins/',
+        cwd: ASSETS_DIRECTORY + '/css/plugins/',
         src: ['*'],
-        dest: publicDir + '/css/plugins/',
+        dest: PUBLIC_DIRECTORY + '/css/plugins/',
         extDot: 'first'
       },
       // every css/custom file gets a separate file
       {
         expand: true,
-        cwd: assetsDir + '/css/custom/',
+        cwd: ASSETS_DIRECTORY + '/css/custom/',
         src: ['**/*.scss'],
-        dest: publicDir + '/css/' + theme + '/',
+        dest: PUBLIC_DIRECTORY + '/css/' + theme + '/',
         ext: '.css',
         extDot: 'first'
       }
@@ -55,23 +77,33 @@ for (let index = 0; index < themes.length; index++) {
   }
 }
 
-let adminCssPath = publicDir + '/css/admin/admin.css'
+let adminCssPath = PUBLIC_DIRECTORY + '/css/admin/admin.css'
 let adminFileConfig = {}
-adminFileConfig[adminCssPath] = [ assetsDir + '/css/plugins/*' ]
+adminFileConfig[adminCssPath] = [ ASSETS_DIRECTORY + '/css/plugins/*' ]
 
-sassconfig['admin'] = {
+SCSS_CONFIG['admin'] = {
   files: [
     adminFileConfig,
     {
       expand: true,
-      cwd: assetsDir + '/css/admin/',
+      cwd: ASSETS_DIRECTORY + '/css/admin/',
       src: ['**/*.scss'],
-      dest: publicDir + '/css/admin/',
+      dest: PUBLIC_DIRECTORY + '/css/admin/',
       ext: '.css',
       extDot: 'first'
     }
   ]
 }
+
+
+// -------------------------------------------------------------------------------------------------
+// Defining JavaScript paths:
+//
+let jsBaseSrc = [ ASSETS_DIRECTORY + '/js/base/*.js', ASSETS_DIRECTORY + '/js/globalPlugins/*.js' ]
+let jsRegisterSrc = [ ASSETS_DIRECTORY + '/js/register/*.js' ]
+let jsCustomSrc = ASSETS_DIRECTORY + '/js/custom'
+let jsAnalyticsSrc = ASSETS_DIRECTORY + '/js/analytics'
+let jsLocalPluginSrc = ASSETS_DIRECTORY + '/js/localPlugins'
 
 // -------------------------------------------------------------------------------------------------
 // Register all grunt tasks here:
@@ -85,55 +117,55 @@ module.exports = function (grunt) {
         expand: true,
         cwd: 'node_modules/bootstrap/',
         src: '**',
-        dest: publicDir + '/bootstrap_vendor/'
+        dest: PUBLIC_DIRECTORY + '/bootstrap_vendor/'
       },
       font_awesome: {
         expand: true,
         cwd: 'node_modules/@fortawesome/',
         src: '**',
-        dest: publicDir + '/font_awesome_wrapper/'
+        dest: PUBLIC_DIRECTORY + '/font_awesome_wrapper/'
       },
       font_awesome_webfonts: {
         expand: true,
-        cwd: publicDir + '/font_awesome_wrapper/fontawesome-free/webfonts',
+        cwd: PUBLIC_DIRECTORY + '/font_awesome_wrapper/fontawesome-free/webfonts',
         src: '**',
-        dest: publicDir + '/webfonts/'
+        dest: PUBLIC_DIRECTORY + '/webfonts/'
       },
       fonts: {
         expand: true,
-        cwd: assetsDir + '/css/fonts',
+        cwd: ASSETS_DIRECTORY + '/css/fonts',
         src: '**',
-        dest: publicDir + '/css/fonts/'
+        dest: PUBLIC_DIRECTORY + '/css/fonts/'
       },
       images: {
         expand: true,
-        cwd: assetsDir + '/images',
+        cwd: ASSETS_DIRECTORY + '/images',
         src: '**',
-        dest: publicDir + '/images/'
+        dest: PUBLIC_DIRECTORY + '/images/'
       },
       catblocks: {
         expand: true,
-        cwd: assetsDir + '/catblocks',
+        cwd: ASSETS_DIRECTORY + '/catblocks',
         src: '**',
-        dest: publicDir + '/catblocks/'
+        dest: PUBLIC_DIRECTORY + '/catblocks/'
       },
       clipboard_js: {
         expand: true,
         cwd: 'node_modules/clipboard/dist/',
         src: 'clipboard.min.js',
-        dest: publicDir + '/js/localPlugins/'
+        dest: PUBLIC_DIRECTORY + '/js/localPlugins/'
       },
       bootstrap_js: {
         src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-        dest: publicDir + '/compiled/bootstrap/bootstrap.min.js'
+        dest: PUBLIC_DIRECTORY + '/compiled/bootstrap/bootstrap.min.js'
       },
       popper_js: {
         src: 'node_modules/popper.js/dist/popper.js',
-        dest: publicDir + '/compiled/popper/popper.js'
+        dest: PUBLIC_DIRECTORY + '/compiled/popper/popper.js'
       },
       jquery_ui_js: {
         src: 'node_modules/popper.js/dist/popper.js',
-        dest: publicDir + '/compiled/popper/popper.js'
+        dest: PUBLIC_DIRECTORY + '/compiled/popper/popper.js'
       }
     },
     concat: {
@@ -143,35 +175,35 @@ module.exports = function (grunt) {
       },
       base: {
         src: jsBaseSrc,
-        dest: publicDir + '/compiled/js/<%= pkg.baseJSName %>.js'
+        dest: PUBLIC_DIRECTORY + '/compiled/js/<%= pkg.baseJSName %>.js'
       },
       register: {
         src: jsRegisterSrc,
-        dest: publicDir + '/compiled/js/<%= pkg.registerJSName %>.js'
+        dest: PUBLIC_DIRECTORY + '/compiled/js/<%= pkg.registerJSName %>.js'
       },
       localPlugins: {
         expand: true,
         cwd: jsLocalPluginSrc,
         src: '**/*.js',
-        dest: publicDir + '/compiled/js/'
+        dest: PUBLIC_DIRECTORY + '/compiled/js/'
       },
       custom: {
         expand: true,
         cwd: jsCustomSrc,
         src: '**/*.js',
-        dest: publicDir + '/compiled/js/'
+        dest: PUBLIC_DIRECTORY + '/compiled/js/'
       },
       analytics: {
         expand: true,
         cwd: jsAnalyticsSrc,
         src: '**/*.js',
-        dest: publicDir + '/compiled/js/'
+        dest: PUBLIC_DIRECTORY + '/compiled/js/'
       },
       jquery: {
         expand: true,
         cwd: 'node_modules/jquery/dist',
         src: 'jquery.min.js',
-        dest: publicDir + '/compiled/bootstrap/'
+        dest: PUBLIC_DIRECTORY + '/compiled/bootstrap/'
       },
       css: {
         expand: true,
@@ -186,27 +218,27 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: publicDir + '/compiled/js',
+            cwd: PUBLIC_DIRECTORY + '/compiled/js',
             src: '**/*.js',
-            dest: publicDir + '/compiled/min'
+            dest: PUBLIC_DIRECTORY + '/compiled/min'
           }
         ]
       }
     },
-    sass: sassconfig,
+    sass: SCSS_CONFIG,
     watch: {
       options: {
         nospawn: true
       },
       styles: {
-        files: [publicDir + '/css/**/*.scss'],
+        files: [PUBLIC_DIRECTORY + '/css/**/*.scss'],
         tasks: ['sass'],
         options: {
           nospawn: true
         }
       },
       scripts: {
-        files: [publicDir + '/js/**/*.js'],
+        files: [PUBLIC_DIRECTORY + '/js/**/*.js'],
         tasks: ['concat', 'uglify'],
         options: {
           nospawn: true
