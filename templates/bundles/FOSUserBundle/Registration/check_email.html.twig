@@ -3,8 +3,7 @@
 {% block head %}
 
   <link rel="stylesheet" href="{{ asset('css/'~theme()~'/login.css') }}" media="screen"/>
-  <script src="{{ asset('compiled/js/jquery-ui.js') }}"></script>
-  <script src="{{ asset( getJavascriptPath('loginscript.js') ) }}"></script>
+  <script src="{{ asset('js/libraries/jquery-ui.min.js') }}"></script>
 
 {% endblock %}
 
@@ -64,5 +63,4 @@
 {% endblock body %}
 
 {% block js %}
-  <script src="{{ asset('compiled/js/social.js') }}"></script>
 {% endblock %}

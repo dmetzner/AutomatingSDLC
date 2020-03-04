@@ -306,7 +306,7 @@
 {% endblock %}
 
 {% block js %}
-  <script src="{{ asset('compiled/js/CodeView.js') }}"></script>
+  <script src="{{ asset('js/CodeView.min.js') }}"></script>
   <script>
     initCodeView(
       '{{ "codeview.showCode"|trans({}, "catroweb") }}',

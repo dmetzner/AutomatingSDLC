@@ -23,7 +23,7 @@ config/packages/test/parameters.yml
 node_modules/
 
 ### public ###
-public/bootstrap_vendor
+public/bootstrap
 public/bundles
 public/compiled
 public/css

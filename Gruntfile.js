@@ -1,6 +1,3 @@
-yaml = require('js-yaml')
-fs = require('fs')
-
 // --------------------------------------------------------------------------------------------------
 // JS & (S)CSS should always be placed in the assets directory.
 // Grunt will tweak the code to our preferences and put it into the assets directory.
@@ -8,23 +5,28 @@ fs = require('fs')
 const ASSETS_DIRECTORY = 'assets'
 const PUBLIC_DIRECTORY = 'public'
 
+
 // -------------------------------------------------------------------------------------------------
-// Defining the configuration of our scss to css compile tasks
+// SASS to CSS task:
 //
 //   - loading all supported themes from the liip config
-//   - creating an entry for every theme + admin
+//   - creating an entry for every theme
 //
-const SCSS_CONFIG = {}
-
-//
-// Retrieving all supported themes from the symfony liip config
-//
-
+const SASS_CONFIG = {}
 
 const THEMES = loadThemesFromSymfonyParameters()
 
+THEMES.forEach(function(theme) {
+  addThemeConfig(SASS_CONFIG, theme)
+})
+
 function loadThemesFromSymfonyParameters()
 {
+  // Requiring all necessary Modules
+  const yaml = require('js-yaml')
+  const fs = require('fs')
+  
+  // load the yaml file
   try {
     const liip_config = yaml.safeLoad(
       fs.readFileSync('config/packages/liip_theme.yaml', 'utf8')
@@ -40,211 +42,214 @@ function loadThemesFromSymfonyParameters()
   }
 }
 
-
-
-for (let index = 0; index < THEMES.length; index++) {
-  let theme = THEMES[index]
-  let baseCssPath = PUBLIC_DIRECTORY + '/css/' + theme + '/base.css'
-  let baseFileConfig = {}
-  baseFileConfig[baseCssPath] = [ ASSETS_DIRECTORY + '/css/themes/' + theme + '/' + theme + '.scss' ]
-  SCSS_CONFIG[theme] =
-  {
-    options: {
-      loadPath: [ ASSETS_DIRECTORY + '/css/base', ASSETS_DIRECTORY + '/css/themes/' + theme ],
-      style: 'compressed',
-      sourcemap: 'none'
-    },
-    files: [
-      baseFileConfig,
-      // copy plugins
-      {
-        expand: true,
-        cwd: ASSETS_DIRECTORY + '/css/plugins/',
-        src: ['*'],
-        dest: PUBLIC_DIRECTORY + '/css/plugins/',
-        extDot: 'first'
+function addThemeConfig(SASS_CONFIG, theme)
+{
+  // all css files should be available for every theme
+  const PUBLIC_CSS_BASE_FILE_PATH = PUBLIC_DIRECTORY + '/css/' + theme + '/base.css'
+  const THEME_CONFIG = {}
+  THEME_CONFIG[PUBLIC_CSS_BASE_FILE_PATH] = [ASSETS_DIRECTORY + '/css/themes/' + theme + '/' + theme + '.scss']
+  SASS_CONFIG[theme] =
+    {
+      options: {
+        loadPath : [ASSETS_DIRECTORY + '/css/base', ASSETS_DIRECTORY + '/css/themes/' + theme],
+        style    : 'compressed',
+        sourcemap: 'none'
       },
-      // every css/custom file gets a separate file
+      files  : [
+        THEME_CONFIG,
+        {
+          expand: true,
+          cwd   : ASSETS_DIRECTORY + '/css/libraries/',
+          src   : ['*'],
+          dest  : PUBLIC_DIRECTORY + '/css/libraries/',
+          extDot: 'first'
+        },
+        {
+          expand: true,
+          cwd   : ASSETS_DIRECTORY + '/css/custom/',
+          src   : ['**/*.scss'],
+          dest  : PUBLIC_DIRECTORY + '/css/' + theme + '/',
+          ext   : '.css',
+          extDot: 'first'
+        }
+      ]
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+// Watch task:
+//
+//   When grunt detects any of the files specified have changed it will run the specified tasks
+//
+const WATCH_CONFIG =
+{
+  options: {
+    nospawn: true
+  },
+  styles: {
+    files: [ASSETS_DIRECTORY + '/css/**/*.scss'],
+      tasks: ['sass'],
+      options: {
+      nospawn: true
+    }
+  },
+  scripts: {
+    files: [ASSETS_DIRECTORY + '/js/**/*.js'],
+      tasks: ['concat', 'uglify'],
+      options: {
+      nospawn: true
+    }
+  }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+// Uglify task:
+//
+//   Creating minimized JS files for files that aren't already minimized using grunt uglify
+//
+const UGLIFY_CONFIG =
+{
+  options: {
+    mangle: false
+  },
+  compiledFiles: {
+    files: [
       {
         expand: true,
-        cwd: ASSETS_DIRECTORY + '/css/custom/',
-        src: ['**/*.scss'],
-        dest: PUBLIC_DIRECTORY + '/css/' + theme + '/',
-        ext: '.css',
-        extDot: 'first'
+        src: [PUBLIC_DIRECTORY + '/js/**/*.js', '!' + PUBLIC_DIRECTORY + '/js/**/*.min.js'],
+        dest: PUBLIC_DIRECTORY + '/js',
+        rename: function (dst, src) {
+          return src.replace('.js', '.min.js');
+        }
       }
     ]
   }
 }
 
-let adminCssPath = PUBLIC_DIRECTORY + '/css/admin/admin.css'
-let adminFileConfig = {}
-adminFileConfig[adminCssPath] = [ ASSETS_DIRECTORY + '/css/plugins/*' ]
-
-SCSS_CONFIG['admin'] = {
-  files: [
-    adminFileConfig,
-    {
-      expand: true,
-      cwd: ASSETS_DIRECTORY + '/css/admin/',
-      src: ['**/*.scss'],
-      dest: PUBLIC_DIRECTORY + '/css/admin/',
-      ext: '.css',
-      extDot: 'first'
-    }
-  ]
-}
-
 
 // -------------------------------------------------------------------------------------------------
-// Defining JavaScript paths:
+// Concat task:
 //
-let jsBaseSrc = [ ASSETS_DIRECTORY + '/js/base/*.js', ASSETS_DIRECTORY + '/js/globalPlugins/*.js' ]
-let jsRegisterSrc = [ ASSETS_DIRECTORY + '/js/register/*.js' ]
-let jsCustomSrc = ASSETS_DIRECTORY + '/js/custom'
-let jsAnalyticsSrc = ASSETS_DIRECTORY + '/js/analytics'
-let jsLocalPluginSrc = ASSETS_DIRECTORY + '/js/localPlugins'
+//   - ToDo explain
+//
+const CONCAT_CONFIG =
+{
+  //options: {
+  //  separator: ';',
+  //    banner: '/*\n  Generated File by Grunt\n  Source path: assets/js\n*/\n'
+  //},
+  base: {
+    src: [ ASSETS_DIRECTORY + '/js/base/*.js', ASSETS_DIRECTORY + '/js/globalPlugins/*.js' ],
+      dest: PUBLIC_DIRECTORY + '/js/script.js'
+  },
+  register: {
+    src: ASSETS_DIRECTORY + '/js/register/*.js',
+      dest: PUBLIC_DIRECTORY + '/js/register.js'
+  },
+}
+
+// -------------------------------------------------------------------------------------------------
+// Copy task:
+//
+//   - ToDo explain
+//
+const COPY_CONFIG =
+{
+  bootstrap: {
+    expand: true,
+      cwd: 'node_modules/bootstrap/',
+      src: '**',
+      dest: PUBLIC_DIRECTORY + '/bootstrap_vendor/'
+  },
+  font_awesome: {
+    expand: true,
+      cwd: 'node_modules/@fortawesome/',
+      src: '**',
+      dest: PUBLIC_DIRECTORY + '/font_awesome_wrapper/'
+  },
+  font_awesome_webfonts: {
+    expand: true,
+      cwd: PUBLIC_DIRECTORY + '/font_awesome_wrapper/fontawesome-free/webfonts/',
+      src: '**',
+      dest: PUBLIC_DIRECTORY + '/webfonts/'
+  },
+  fonts: {
+    expand: true,
+      cwd: ASSETS_DIRECTORY + '/css/fonts',
+      src: '**',
+      dest: PUBLIC_DIRECTORY + '/css/fonts/'
+  },
+  images: {
+    expand: true,
+      cwd: ASSETS_DIRECTORY + '/images',
+      src: '**',
+      dest: PUBLIC_DIRECTORY + '/images/'
+  },
+  catblocks: {
+    expand: true,
+      cwd: ASSETS_DIRECTORY + '/catblocks',
+      src: '**',
+      dest: PUBLIC_DIRECTORY + '/catblocks/'
+  },
+  
+  clipboard_js: {
+      src: 'node_modules/clipboard/dist/clipboard.min.js',
+      dest: PUBLIC_DIRECTORY + '/js/libraries/clipboard.min.js'
+  },
+  bootstrap_js: {
+    src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+      dest: PUBLIC_DIRECTORY + '/js/libraries/bootstrap.min.js'
+  },
+
+  popper_js: {
+    src: 'node_modules/popper.js/dist/popper.min.js',
+      dest: PUBLIC_DIRECTORY + '/js/libraries/popper.min.js'
+  },
+  //jquery_ui_js: {
+  //  src: 'node_modules/popper.js/dist/popper.js',
+  //    dest: PUBLIC_DIRECTORY + '/js/libraries/popper.js'
+  //},
+  jquery: {
+    src: 'node_modules/jquery/dist/jquery.min.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries/jquery.min.js'
+  },
+  
+  localPlugins: {
+    expand: true,
+    cwd: ASSETS_DIRECTORY + '/js/localPlugins',
+    src: '**/*.js',
+    dest: PUBLIC_DIRECTORY + '/js/libraries'
+  },
+  
+  custom: {
+    expand: true,
+    cwd: ASSETS_DIRECTORY + '/js/custom',
+    src: '**/*.js',
+    dest: PUBLIC_DIRECTORY + '/js/'
+  },
+  
+  analytics: {
+    expand: true,
+    cwd: ASSETS_DIRECTORY + '/js/analytics',
+    src: '**/*.js',
+    dest: PUBLIC_DIRECTORY + '/js/'
+  },
+  
+}
 
 // -------------------------------------------------------------------------------------------------
 // Register all grunt tasks here:
 //
 module.exports = function (grunt) {
-  require('jit-grunt')(grunt)
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    copy: {
-      bootstrap_vendor: {
-        expand: true,
-        cwd: 'node_modules/bootstrap/',
-        src: '**',
-        dest: PUBLIC_DIRECTORY + '/bootstrap_vendor/'
-      },
-      font_awesome: {
-        expand: true,
-        cwd: 'node_modules/@fortawesome/',
-        src: '**',
-        dest: PUBLIC_DIRECTORY + '/font_awesome_wrapper/'
-      },
-      font_awesome_webfonts: {
-        expand: true,
-        cwd: PUBLIC_DIRECTORY + '/font_awesome_wrapper/fontawesome-free/webfonts',
-        src: '**',
-        dest: PUBLIC_DIRECTORY + '/webfonts/'
-      },
-      fonts: {
-        expand: true,
-        cwd: ASSETS_DIRECTORY + '/css/fonts',
-        src: '**',
-        dest: PUBLIC_DIRECTORY + '/css/fonts/'
-      },
-      images: {
-        expand: true,
-        cwd: ASSETS_DIRECTORY + '/images',
-        src: '**',
-        dest: PUBLIC_DIRECTORY + '/images/'
-      },
-      catblocks: {
-        expand: true,
-        cwd: ASSETS_DIRECTORY + '/catblocks',
-        src: '**',
-        dest: PUBLIC_DIRECTORY + '/catblocks/'
-      },
-      clipboard_js: {
-        expand: true,
-        cwd: 'node_modules/clipboard/dist/',
-        src: 'clipboard.min.js',
-        dest: PUBLIC_DIRECTORY + '/js/localPlugins/'
-      },
-      bootstrap_js: {
-        src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-        dest: PUBLIC_DIRECTORY + '/compiled/bootstrap/bootstrap.min.js'
-      },
-      popper_js: {
-        src: 'node_modules/popper.js/dist/popper.js',
-        dest: PUBLIC_DIRECTORY + '/compiled/popper/popper.js'
-      },
-      jquery_ui_js: {
-        src: 'node_modules/popper.js/dist/popper.js',
-        dest: PUBLIC_DIRECTORY + '/compiled/popper/popper.js'
-      }
-    },
-    concat: {
-      options: {
-        separator: ';',
-        banner: '/*\n  Generated File by Grunt\n  Sourcepath: assets/js\n*/\n'
-      },
-      base: {
-        src: jsBaseSrc,
-        dest: PUBLIC_DIRECTORY + '/compiled/js/<%= pkg.baseJSName %>.js'
-      },
-      register: {
-        src: jsRegisterSrc,
-        dest: PUBLIC_DIRECTORY + '/compiled/js/<%= pkg.registerJSName %>.js'
-      },
-      localPlugins: {
-        expand: true,
-        cwd: jsLocalPluginSrc,
-        src: '**/*.js',
-        dest: PUBLIC_DIRECTORY + '/compiled/js/'
-      },
-      custom: {
-        expand: true,
-        cwd: jsCustomSrc,
-        src: '**/*.js',
-        dest: PUBLIC_DIRECTORY + '/compiled/js/'
-      },
-      analytics: {
-        expand: true,
-        cwd: jsAnalyticsSrc,
-        src: '**/*.js',
-        dest: PUBLIC_DIRECTORY + '/compiled/js/'
-      },
-      jquery: {
-        expand: true,
-        cwd: 'node_modules/jquery/dist',
-        src: 'jquery.min.js',
-        dest: PUBLIC_DIRECTORY + '/compiled/bootstrap/'
-      },
-      css: {
-        expand: true,
-        cwd: ''
-      }
-    },
-    uglify: {
-      options: {
-        mangle: false
-      },
-      compiledFiles: {
-        files: [
-          {
-            expand: true,
-            cwd: PUBLIC_DIRECTORY + '/compiled/js',
-            src: '**/*.js',
-            dest: PUBLIC_DIRECTORY + '/compiled/min'
-          }
-        ]
-      }
-    },
-    sass: SCSS_CONFIG,
-    watch: {
-      options: {
-        nospawn: true
-      },
-      styles: {
-        files: [PUBLIC_DIRECTORY + '/css/**/*.scss'],
-        tasks: ['sass'],
-        options: {
-          nospawn: true
-        }
-      },
-      scripts: {
-        files: [PUBLIC_DIRECTORY + '/js/**/*.js'],
-        tasks: ['concat', 'uglify'],
-        options: {
-          nospawn: true
-        }
-      }
-    }
+    copy: COPY_CONFIG,
+    concat: CONCAT_CONFIG,
+    uglify: UGLIFY_CONFIG,
+    sass: SASS_CONFIG,
+    watch: WATCH_CONFIG
   })
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-contrib-concat')

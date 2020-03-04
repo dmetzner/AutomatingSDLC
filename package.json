@@ -1,7 +1,5 @@
 {
   "name": "catroweb",
-  "baseJSName": "script",
-  "registerJSName": "register",
   "version": "1.0.0",
   "description": "Catroweb =========",
   "main": "Gruntfile.js",

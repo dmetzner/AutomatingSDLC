@@ -36,7 +36,7 @@
   </a>
   {% endif %}
 </div>
-<script src="{{ asset('compiled/js/ImageUpload.js') }}"></script>
+<script src="{{ asset('js/ImageUpload.min.js') }}"></script>
 <script>
   setImageUploadListener('{{ path('upload_project_thumbnail', { 'id': program.id }) }}',
     '#change-project-thumbnail-button', '#project-thumbnail-big',
