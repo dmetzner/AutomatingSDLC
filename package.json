@@ -4,7 +4,7 @@
   "description": "Catroweb =========",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "standard 'assets/js/**/*.js'",
+    "test": "standard 'assets/js/**/((?!CatBlocks).).js'",
     "fix": "standard --fix 'assets/js/**/*.js'"
   },
   "repository": {

@@ -68,7 +68,7 @@ const COPY_CONFIG =
       src   : '**',
       dest  : PUBLIC_DIRECTORY + '/images/'
     },
-    catblocks            : {
+    catBlocks            : {
       expand: true,
       cwd   : ASSETS_DIRECTORY + '/catblocks',
       src   : '**',
