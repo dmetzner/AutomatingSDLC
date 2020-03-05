@@ -13,7 +13,8 @@ const Main = function (searchUrl) {
   })
 
   let sidebar, sidebarToggleBtn
-  const fnCloseSidebar = function () {
+  const fnCloseSidebar = function ()
+  {
     sidebar.removeClass('active')
     sidebarToggleBtn.attr('aria-expanded', false)
   }
@@ -26,7 +27,8 @@ const Main = function (searchUrl) {
     sidebar.addClass('active')
     sidebarToggleBtn.attr('aria-expanded', true)
   }
-  const fnOpenSidebarDesktop = function () {
+  const fnOpenSidebarDesktop = function ()
+  {
     sidebar.removeClass('inactive')
     $('body').addClass('new-nav')
     sidebarToggleBtn.attr('aria-expanded', true)
