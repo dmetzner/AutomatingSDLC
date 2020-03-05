@@ -2,8 +2,6 @@
 
 {% block head %}
   <link rel="stylesheet" href="{{ asset('css/'~theme()~'/login.css') }}" media="screen"/>
-  <script src="{{ asset('js/modules/jquery-ui.min.js') }}"></script>
-
 {% endblock %}
 
 
@@ -140,4 +138,14 @@
 
 {% block js %}
   <script src="{{ asset('js/PasswordVisibilityToggler.min.js') }}"></script>
+  <script src="{{ asset('js/register.min.js') }}"></script>
+  <script>
+    // Defining register.js constants here for easy twig extension access
+    let flavor = "{{ flavor() }}"
+    let chooseUserNameDialogTitleText = "{{ "oauth.username_header"|trans({}, "catroweb") }}"
+    let chooseUserNameDialogText = "{{ "oauth.username_chooser"|trans({}, "catroweb") }}"
+    let usernameTaken = "{{ "oauth.usernameTaken"|trans({}, "catroweb") }}"
+    let usernameInvalidSize = "{{ "errors.username.size"|trans({}, "catroweb") }}"
+    let okButtonText = "{{ "ok"|trans({}, "catroweb") }}"
+  </script>
 {% endblock js %}

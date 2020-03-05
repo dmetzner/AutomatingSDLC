@@ -5,31 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="UTF-8">
-  
   <meta name='viewport' content='width=device-width, user-scalable=no'/>
+
   <title>{% block title %}Pocket Code Website{% endblock %}</title>
 
   <link rel="shortcut icon" href="{{ asset('images/logo/favicon.png') }}"/>
 
   <link rel="stylesheet" href="{{ asset('css/'~theme()~'/base.css') }}" media="screen"/>
-
-  <script src="{{ asset('js/modules/jquery.min.js') }}"></script>
-  <script src="{{ asset('js/modules/textfill.min.js') }}"></script>
-  <script src="{{ asset('js/modules/bootstrap.min.js') }}"></script>
-  <script src="{{ asset('js/modules/sweetalert2.all.min.js') }}"></script>
-  <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-  <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-  <script src="{{ asset('js/base.min.js') }}"></script>
-
-  <script>
-    {# seems to be needed for some behat tests #}
-    let configGA = {
-      'UaId': 'UA-42270417-5',
-      //'DebugOutput' : true,
-    }
-  </script>
-
-  <script async src="{{ asset('js/analytics.min.js') }}"></script>
 
   {% block head %}{% endblock %}
 </head>
@@ -43,6 +25,7 @@
     </header>
     {% include 'Default/sidebar.html.twig' with {sidebar_ul: (block('sidebar_ul')) ?? ''} %}
     <div class="container">
+      {# Body block where child views will appear #}
       {% block body %}{% endblock %}
     </div>
   </div>
@@ -52,6 +35,53 @@
   {% endblock %}
 
   <div id="app-version" style="display:none">{{ app_version }}</div>
+
+  {# Define scripts not in the head, but after the body to increase performance! #}
+  <script src="{{ asset('js/modules/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/modules/textfill.min.js') }}"></script>
+  <script src="{{ asset('js/modules/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('js/modules/sweetalert2.all.min.js') }}"></script>
+  <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+  <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+  <script src="{{ asset('js/base.min.js') }}"></script>
+
+  <script> {# seems to be needed for some behat tests #} let configGA = {'UaId': 'UA-42270417-5' } </script>
+
+  <script async src="{{ asset('js/analytics.min.js') }}"></script>
+
+  {# Create the javascripts blocks where all the scripts written in the child views should appear really #}
+  {% block js %}{% endblock %}
+
+  <script>
+    enableNavButtonIfCategoryContainsProjects('#nav-newest', '{{ path('api_recent_programs') }}')
+    enableNavButtonIfRecommendedCategoryContainsProjects(
+      '#nav-recommended',
+      '{{ path('api_recsys_general_projects') }}',
+        {{ constant('App\\Catrobat\\RecommenderSystem\\RecommendedPageId::INDEX_PAGE') }}
+    )
+    enableNavButtonIfCategoryContainsProjects('#nav-most-downloaded', '{{ path('api_most_downloaded_programs') }}')
+    enableNavButtonIfCategoryContainsProjects('#nav-most-viewed', '{{ path('api_most_viewed_programs') }}')
+    enableNavButtonIfCategoryContainsProjects('#nav-scratch-remixes', '{{ path('api_scratch_remix') }}')
+    enableNavButtonIfCategoryContainsProjects('#nav-random', '{{ path('api_random_programs') }}')
+    manageNotificationsDropdown()
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $('.search-icon-header').on('click', function() {
+        $(this).hide()
+        const input_group = $("#search-input-group-header");
+        input_group.removeClass('d-none')
+
+        let search_header = $('.search-input-header')
+        let val = search_header.val()
+        search_header
+        .focus()
+        .val('')
+        .val(val)
+      })
+    })
+  </script>
 
   <script>
     function scrollToHash() {
@@ -66,8 +96,6 @@
 
     new Main('{{ path('search', {'q': 0 } ) }}')
   </script>
-
-  {% block js %}{% endblock %}
 
   {% if app.user %}
     <script src="{{ asset('js/FetchNotifications.min.js') }}"></script>

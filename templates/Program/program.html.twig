@@ -8,16 +8,6 @@
   <link rel="stylesheet" href="{{ asset('css/'~theme()~'/loadinganimation.css') }}"/>
   <link rel="stylesheet" href="{{ asset('css/modules/animate.min.css') }}"/>
 
-  <script src=" {{ asset( 'js/LoadingAnimation.min.js') }}"></script>
-  <script src=" {{ asset( 'js/modules/jquery.contextMenu.min.js') }}"></script>
-  <script src=" {{ asset( 'js/modules/jquery.ui.position.min.js') }}"></script>
-  <script src=" {{ asset( 'js/modules/animatedModal.min.js') }}"></script>
-  <script src=" {{ asset( 'js/modules/vis.min.js') }}"></script>
-  <script src=" {{ asset( 'js/modules/clipboard.min.js') }}"></script>
-  <script src=" {{ asset( 'js/remixgraph.configuration.min.js') }}"></script>
-  <script src=" {{ asset( 'js/remixgraph.builder.min.js') }}"></script>
-  <script src=" {{ asset( 'js/remixgraph.visualization.min.js') }}"></script>
-
   <meta property="og:image" content="{{ asset(program_details.screenshotBig) }}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image:secure_url" content="{{ asset(program_details.screenshotBig) }}"/>
@@ -477,6 +467,27 @@
 {% endblock %}
 
 {% block js %}
+
+  <script src=" {{ asset( 'js/LoadingAnimation.min.js') }}"></script>
+  <script src=" {{ asset( 'js/modules/jquery.contextMenu.min.js') }}"></script>
+  <script src=" {{ asset( 'js/modules/jquery.ui.position.min.js') }}"></script>
+  <script src=" {{ asset( 'js/modules/animatedModal.min.js') }}"></script>
+  <script src=" {{ asset( 'js/modules/vis.min.js') }}"></script>
+  <script src=" {{ asset( 'js/modules/clipboard.min.js') }}"></script>
+  <script src=" {{ asset( 'js/remixgraph.configuration.min.js') }}"></script>
+  <script src=" {{ asset( 'js/remixgraph.builder.min.js') }}"></script>
+  <script src=" {{ asset( 'js/remixgraph.visualization.min.js') }}"></script>
+
+  <script src="{{ asset('js/ImageUpload.min.js') }}"></script>
+  <script>
+    setImageUploadListener('{{ path('upload_project_thumbnail', { 'id': program.id }) }}',
+      '#change-project-thumbnail-button', '#project-thumbnail-big',
+        {{ constant('App\\Catrobat\\StatusCode::OK') }},
+        {{ constant('App\\Catrobat\\StatusCode::UPLOAD_EXCEEDING_FILESIZE') }},
+        {{ constant('App\\Catrobat\\StatusCode::UPLOAD_UNSUPPORTED_MIME_TYPE') }}
+    )
+  </script>
+
   <script src="{{ asset('js/Program.min.js') }}"></script>
   <script src="{{ asset('js/ProgramReport.min.js') }}"></script>
   <script>
@@ -538,7 +549,7 @@
     )
   </script>
 
-  <script src=" {{ asset('catblocks/CatBlocks.min.js') }}"></script>
+  <script src=" {{ asset('catblocks/CatBlocks.js') }}"></script>
     <script>
       const progPath = '{{ app.request.getSchemeAndHttpHost() ~ '/resources/extract/' ~ program.getExtractedDirectoryHash() ~ '/'}}';
       const progLang = 'en_GB';

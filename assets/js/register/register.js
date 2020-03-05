@@ -27,14 +27,14 @@ $(document).ready(function () {
     termsModalAgreeButton = 'registration_form'
     return termsModalAgreed // only submit after agreed terms of modal
   })
-  
+
   // Google Sign in
   $(document).on('click', '#btn-login_google', function () {
     termsModalAgreeButton = 'google_login'
   })
 })
 
-function openDialog(defaultText = chooseUserNameDialogText, defaultInputValue = '') {
+function openDialog (defaultText = chooseUserNameDialogText, defaultInputValue = '') {
   //
   // Choose username SweetAlert2 Dialog:
   //
@@ -56,31 +56,28 @@ function openDialog(defaultText = chooseUserNameDialogText, defaultInputValue = 
       }
     }
   }).then((result) => {
-
-      let username = result.value
-      let $url = Routing.generate('catrobat_oauth_login_username_available', { flavor: flavor })
-      $.post($url,
-        {
-          username: username
-        },
-        function (data) {
-          if (data['username_available'] === true)
-          {
-            // The user has to choose a valid username
-            return openDialog(usernameTaken, username)
-          }
-          // Register the user with google
-          let fbOrGoogle = $('#fb_google').val()
-          if (fbOrGoogle === 'g+')
-          {
-            sendCodeToServer(
-              $('#access_token_oauth').val(),
-              $('#id_oauth').val(),
-              username,
-              $('#email_oauth').val(),
-              $('#locale_oauth').val())
-          }
+    const username = result.value
+    const $url = Routing.generate('catrobat_oauth_login_username_available', { flavor: flavor })
+    $.post($url,
+      {
+        username: username
+      },
+      function (data) {
+        if (data.username_available === true) {
+          // The user has to choose a valid username
+          return openDialog(usernameTaken, username)
         }
-      )
+        // Register the user with google
+        const fbOrGoogle = $('#fb_google').val()
+        if (fbOrGoogle === 'g+') {
+          sendCodeToServer(
+            $('#access_token_oauth').val(),
+            $('#id_oauth').val(),
+            username,
+            $('#email_oauth').val(),
+            $('#locale_oauth').val())
+        }
+      }
+    )
   })
 }
