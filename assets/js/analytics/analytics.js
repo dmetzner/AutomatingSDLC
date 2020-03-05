@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 //
 // This file contains the classes for the
 //  * Event tracking and

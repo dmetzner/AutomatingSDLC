@@ -4,8 +4,8 @@
   "description": "Catroweb =========",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "standard 'assets/js/**/*.js'",
-    "fix": "standard --fix 'assets/js/**/*.js'"
+    "test": "npx eslint assets/js/**/*.js",
+    "fix": "npx eslint assets/js/**/*.js --fix"
   },
   "repository": {
     "type": "git",

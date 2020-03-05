@@ -3,6 +3,7 @@
  * REMIX GRAPH & NETWORK CONFIGURATION
  * ---------------------------------------------------------------------------------------------------------------------
  */
+/* eslint-disable no-unused-vars */
 const SCRATCH_PROJECT_BASE_URL = 'https://scratch.mit.edu/projects/'
 const SCRATCH_BASE_IMAGE_URL_TEMPLATE = 'https://cdn2.scratch.mit.edu/get_image/project/{}_140x140.png'
 const IMAGE_NOT_AVAILABLE_URL = '/images/default/not_available.png'
