@@ -1,19 +1,23 @@
-function MediaLib (package_name, flavor, assetsDir) {
+/* eslint-env jquery */
+/* global Routing */
+
+// eslint-disable-next-line no-unused-vars
+function MediaLib (packageName, flavor, assetsDir) {
   $(function () {
     // Removing the project navigation items and showing just the category menu items
-    var element = document.getElementById('project-navigation')
+    const element = document.getElementById('project-navigation')
     element.parentNode.removeChild(element)
 
-    getPackageFiles(package_name, flavor, assetsDir)
-    const $content = $('#content')
-    $content.find('#thumbsize-control input[type=radio]').change(function () {
-      $content.attr('size', this.value)
+    getPackageFiles(packageName, flavor, assetsDir)
+    const content = $('#content')
+    content.find('#thumbsize-control input[type=radio]').change(function () {
+      content.attr('size', this.value)
     })
     initTilePinchToZoom()
   })
 
-  function getPackageFiles (package_name, flavor, assetsDir) {
-    const url = Routing.generate('api_media_lib_package_bynameurl', { flavor: flavor, package: package_name }, false)
+  function getPackageFiles (packageName, flavor, assetsDir) {
+    const url = Routing.generate('api_media_lib_package_bynameurl', { flavor: flavor, package: packageName }, false)
     $.get(url, {}, pkgFiles => {
       pkgFiles.forEach(file => {
         if (file.flavor !== 'pocketcode' && file.flavor !== flavor) {
@@ -24,7 +28,7 @@ function MediaLib (package_name, flavor, assetsDir) {
         mediafileContainer.attr('href', file.download_url)
         mediafileContainer.attr('data-extension', file.extension)
         mediafileContainer.click(function () {
-          medialib_onDownload(this)
+          medialibOnDownload(this)
         })
 
         if (flavor !== 'pocketcode' && file.flavor === flavor) {
@@ -38,6 +42,7 @@ function MediaLib (package_name, flavor, assetsDir) {
         mediafileContainer.append($('<div class="name" />').text(name))
         mediafileContainer.addClass('showName')
 
+        let audio, previewBtn, image
         switch (file.extension) {
           case 'adp':
           case 'au':
@@ -73,23 +78,23 @@ function MediaLib (package_name, flavor, assetsDir) {
           case 'xm':
             mediafileContainer.attr('data-filetype', 'audio')
             mediafileContainer.append($('<i class="fas fa-file-audio"/>'))
-            const audio = new Audio(file.download_url)
-            const $previewBtn = $('<div class="audio-control fas fa-play" />')
-            $previewBtn.click(function () {
+            audio = new Audio(file.download_url)
+            previewBtn = $('<div class="audio-control fas fa-play" />')
+            previewBtn.click(function () {
               if (audio.paused) {
-                $previewBtn.removeClass('fa-play').addClass('fa-pause')
+                previewBtn.removeClass('fa-play').addClass('fa-pause')
                 audio.play()
               } else {
-                $previewBtn.removeClass('fa-pause').addClass('fa-play')
+                previewBtn.removeClass('fa-pause').addClass('fa-play')
                 audio.pause()
               }
               return false
             })
             audio.onended = function () {
-              $previewBtn.removeClass('fa-pause').addClass('fa-play')
+              previewBtn.removeClass('fa-pause').addClass('fa-play')
             }
 
-            mediafileContainer.append($previewBtn)
+            mediafileContainer.append(previewBtn)
             break
           case '3gp':
           case '3g2':
@@ -148,14 +153,14 @@ function MediaLib (package_name, flavor, assetsDir) {
             mediafileContainer.append($('<i class="fas fa-file-archive"/>'))
             break
           default:
-            const $image = $('<img src="' + assetsDir + 'thumbs/' + file.id + '.jpeg"/>')
-            $image.attr('title', file.name)
-            $image.attr('alt', file.name)
-            $image.on('error', function () {
+            image = $('<img src="' + assetsDir + 'thumbs/' + file.id + '.jpeg"/>')
+            image.attr('title', file.name)
+            image.attr('alt', file.name)
+            image.on('error', function () {
               mediafileContainer.addClass('showName')
 
               const pictureExtensions = ['bmp', 'cgm', 'g3', 'gif', 'ief', 'jpeg', 'ktx', 'png', 'btif', 'sgi', 'svg', 'tiff', 'psd', 'uvi', 'sub', 'djvu', 'dwg', 'dxf', 'fbs', 'fpx', 'fst', 'mmr', 'rlc', 'mdi', 'wdp', 'npx', 'wbmp', 'xif', 'webp', '3ds', 'ras', 'cmx', 'fh', 'ico', 'sid', 'pcx', 'pic', 'pnm', 'pbm', 'pgm', 'ppm', 'rgb', 'tga', 'xbm', 'xpm', 'xwd']
-              $image.remove()
+              image.remove()
 
               if (pictureExtensions.indexOf(file.extension) !== -1) {
                 mediafileContainer.prepend($('<i class="fas fa-file-image"/>'))
@@ -164,7 +169,7 @@ function MediaLib (package_name, flavor, assetsDir) {
               }
             })
             mediafileContainer.removeClass('showName')
-            mediafileContainer.append($image)
+            mediafileContainer.append(image)
             break
         }
 
@@ -189,24 +194,24 @@ function MediaLib (package_name, flavor, assetsDir) {
         $('#sidebar #menu-mediacat-' + catId).show()
       })
     }).fail(function () {
-      console.error('Error loading media lib package ' + package_name)
+      console.error('Error loading media lib package ' + packageName)
     })
   }
 
   function initTilePinchToZoom () {
-    let $mediafiles = null
+    let mediaFiles = null
 
     let active = false
-    let start_distance = null
-    let current_size = null
+    let startDistance = null
+    let currentSize = null
 
-    const border_spacing = 8
+    const borderSpacing = 8
 
     function refreshStyle () {
-      $mediafiles.css('width', current_size).css('height', current_size)
-      const inner_size = current_size - border_spacing
-      $mediafiles.find('> img').attr('style', 'max-width:' + inner_size + 'px !important; max-height:' + inner_size + 'px;')
-      $mediafiles.find('.fas, .far').css('font-size', current_size - 15)
+      mediaFiles.css('width', currentSize).css('height', currentSize)
+      const innerSize = currentSize - borderSpacing
+      mediaFiles.find('> img').attr('style', 'max-width:' + innerSize + 'px !important; max-height:' + innerSize + 'px;')
+      mediaFiles.find('.fas, .far').css('font-size', currentSize - 15)
     }
 
     document.addEventListener('touchstart', function (e) {
@@ -216,37 +221,37 @@ function MediaLib (package_name, flavor, assetsDir) {
         const touch1 = e.touches[0]
         const touch2 = e.touches[1]
 
-        const x_diff = touch2.clientX - touch1.clientX
-        const y_diff = touch2.clientY - touch1.clientY
+        const xDiff = touch2.clientX - touch1.clientX
+        const yDiff = touch2.clientY - touch1.clientY
 
-        start_distance = Math.sqrt((x_diff * x_diff) + (y_diff * y_diff))
+        startDistance = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff))
         active = true
         $('#thumbsize-control').hide()
 
-        if ($mediafiles == null || current_size == null) {
-          $mediafiles = $('.category > .files .mediafile')
-          current_size = $mediafiles.outerWidth()
+        if (mediaFiles == null || currentSize == null) {
+          mediaFiles = $('.category > .files .mediafile')
+          currentSize = mediaFiles.outerWidth()
         }
       }
     })
 
     document.addEventListener('touchmove', function (e) {
-      if (active && !!start_distance && e.touches.length === 2) {
+      if (active && !!startDistance && e.touches.length === 2) {
         const touch1 = e.touches[0]
         const touch2 = e.touches[1]
 
-        const x_diff = touch2.clientX - touch1.clientX
-        const y_diff = touch2.clientY - touch1.clientY
+        const xDiff = touch2.clientX - touch1.clientX
+        const yDiff = touch2.clientY - touch1.clientY
 
-        const distance = Math.sqrt((x_diff * x_diff) + (y_diff * y_diff))
-        const scale = distance / start_distance
+        const distance = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff))
+        const scale = distance / startDistance
 
-        current_size *= scale
+        currentSize *= scale
 
-        if (current_size < 40) {
-          current_size = 40
-        } else if (current_size > 200) {
-          current_size = 200
+        if (currentSize < 40) {
+          currentSize = 40
+        } else if (currentSize > 200) {
+          currentSize = 200
         }
         refreshStyle()
       }
@@ -258,21 +263,21 @@ function MediaLib (package_name, flavor, assetsDir) {
 
     function reset () {
       active = false
-      start_distance = null
+      startDistance = null
     }
   }
 }
 
-function medialib_onDownload (link) {
+function medialibOnDownload (link) {
   if (link.href !== 'javascript:void(0)') {
-    var download_href = link.href
+    const downloadHref = link.href
     link.href = 'javascript:void(0)'
 
     setTimeout(function () {
-      link.href = download_href
+      link.href = downloadHref
     }, 5000)
 
-    window.location = download_href
+    window.location = downloadHref
   }
   return false
 }

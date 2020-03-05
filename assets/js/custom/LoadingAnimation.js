@@ -1,3 +1,6 @@
+/* eslint-env jquery */
+
+// eslint-disable-next-line no-unused-vars
 const LoadingAnimation = function (color, loaderText) {
   color = typeof color !== 'undefined' ? color : '#177f8d'
   const self = this

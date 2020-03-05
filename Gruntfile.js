@@ -14,6 +14,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat')
   grunt.loadNpmTasks('grunt-contrib-uglify-es')
   grunt.loadNpmTasks('grunt-contrib-sass')
+  grunt.loadNpmTasks('grunt-contrib-watch')
   // define project configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -40,6 +41,13 @@ const COPY_CONFIG =
       cwd: 'node_modules/bootstrap/',
       src: '**',
       dest: PUBLIC_DIRECTORY + '/bootstrap/'
+    },
+    vis: { // @deprecated
+      // We need the whole dist folder because the css references multiple images
+      expand: true,
+      cwd: 'node_modules/vis/dist/',
+      src: '**',
+      dest: PUBLIC_DIRECTORY + '/vis/'
     },
     font_awesome: {
       expand: true,
@@ -118,14 +126,6 @@ const COPY_CONFIG =
     jquery_ui_position: {
       src: 'node_modules/jquery-contextmenu/dist/jquery.ui.position.min.js',
       dest: PUBLIC_DIRECTORY + '/js/modules/jquery.ui.position.min.js'
-    },
-    vis_js: { // @deprecated
-      src: 'node_modules/vis/dist/vis.min.js',
-      dest: PUBLIC_DIRECTORY + '/js/modules/vis.min.js'
-    },
-    vis_css: { // @deprecated
-      src: 'node_modules/vis/dist/vis.min.css',
-      dest: PUBLIC_DIRECTORY + '/css/modules/vis.min.css'
     },
     animatedModal_js: {
       src: 'node_modules/animatedmodal/animatedModal.min.js',

@@ -1,6 +1,8 @@
+/* eslint-disable */
+
 String.prototype.trunc = String.prototype.trunc || function (n) { return (this.length > n) ? this.substr(0, n - 1) + '...' : this }
 
-var NetworkDirector = function () {
+const NetworkDirector = function () {
   this.construct = function (builder) {
     builder.stepGroupNodes()
     builder.stepBuildNodes()
@@ -10,8 +12,8 @@ var NetworkDirector = function () {
   }
 }
 
-var NetworkBuilder = function (programID, remixGraphLayerId, remixGraphTranslations, remixData) {
-  var self = this
+const NetworkBuilder = function (programID, remixGraphLayerId, remixGraphTranslations, remixData) {
+  const self = this
   self.network = null
   self.nodes = new vis.DataSet()
   self.edges = new vis.DataSet()

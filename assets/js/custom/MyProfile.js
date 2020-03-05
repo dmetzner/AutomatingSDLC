@@ -1,37 +1,42 @@
-const MyProfile = function (profile_url, save_username,
-  save_email_url, save_country_url, save_password_url,
-  delete_url, delete_account_url,
-  toggle_visibility_url, upload_url,
-  statusCode_OK,
-  statusCode_USERNAME_ALREADY_EXISTS,
-  statusCode_USERNAME_MISSING,
-  statusCode_USERNAME_INVALID,
-  statusCode_USER_EMAIL_ALREADY_EXISTS,
-  statusCode_USER_EMAIL_MISSING,
-  statusCode_USER_EMAIL_INVALID,
-  statusCode_USER_COUNTRY_INVALID,
-  statusCode_USER_USERNAME_PASSWORD_EQUAL,
-  statusCode_USER_PASSWORD_TOO_SHORT,
-  statusCode_USER_PASSWORD_TOO_LONG,
-  statusCode_USER_PASSWORD_NOT_EQUAL_PASSWORD2,
-  statusCode_PASSWORD_INVALID,
+/* eslint-env jquery */
+/* global Swal */
+/* global Routing */
+
+// eslint-disable-next-line no-unused-vars
+const MyProfile = function (profileUrl, saveUsername,
+  saveEmailUrl, saveCountryUrl, savePasswordUrl,
+  deleteUrl, deleteAccountUrl,
+  toggleVisibilityUrl, uploadUrl,
+  statusCodeOk,
+  statusCodeUsernameAlreadyExists,
+  statusCodeUsernameMissing,
+  statusCodeUsernameInvalid,
+  statusCodeUserEmailAlreadyExists,
+  statusCodeUserEmailMissing,
+  statusCodeUserEmailInvalid,
+  statusCodeUserCountryInvalid,
+  statusCodeUsernamePasswordEqual,
+  statusCodeUserPasswordTooShort,
+  statusCodeUserPasswordTooLong,
+  statusCodeUserPasswordNotEqualPassword2,
+  statusCodePasswordInvalid,
   successText, checkMailText, passwordUpdatedText,
   programCanNotChangeVisibilityTitle,
   programCanNotChangeVisibilityText) {
   const self = this
-  self.profile_url = profile_url
-  self.profile_edit_url = profile_url
-  self.save_username = save_username
-  self.save_email_url = save_email_url
-  self.save_country_url = save_country_url
-  self.save_password_url = save_password_url
-  self.delete_url = delete_url
-  self.upload_url = upload_url
-  self.toggle_visibility_url = toggle_visibility_url
+  self.profileUrl = profileUrl
+  self.profile_edit_url = profileUrl
+  self.saveUsername = saveUsername
+  self.saveEmailUrl = saveEmailUrl
+  self.saveCountryUrl = saveCountryUrl
+  self.savePasswordUrl = savePasswordUrl
+  self.deleteUrl = deleteUrl
+  self.uploadUrl = uploadUrl
+  self.toggleVisibilityUrl = toggleVisibilityUrl
   self.country = null
   self.regex_email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   self.data_changed = false
-  self.delete_account_url = delete_account_url
+  self.deleteAccountUrl = deleteAccountUrl
   const blueColor = '#3085d6'
   const redColor = '#d33'
   const passwordEditContainer = $('#password-edit-container')
@@ -75,13 +80,11 @@ const MyProfile = function (profile_url, save_username,
   function stringTranslate (programName, catalogEntry) {
     const translations = []
     translations.push({ key: '%programName%', value: programName })
-    const translateString = Routing.generate('translate_word', {
+    return Routing.generate('translate_word', {
       word: catalogEntry,
       array: JSON.stringify(translations),
       domain: 'catroweb'
     }, false)
-
-    return translateString
   }
 
   function toggleEditSection (container, data = null) {
@@ -124,14 +127,14 @@ const MyProfile = function (profile_url, save_username,
         cancelButtonText: split[4]
       }).then((result) => {
         if (result.value) {
-          window.location.href = self.delete_url + '/' + id
+          window.location.href = self.deleteUrl + '/' + id
         }
       })
     })
   }
 
   self.toggleVisibility = function (id) {
-    $.get(self.toggle_visibility_url + '/' + id, {}, function (data) {
+    $.get(self.toggleVisibilityUrl + '/' + id, {}, function (data) {
       const visibilityLockId = $('#visibility-lock-' + id)
       const visibilityLockOpenId = $('#visibility-lock-open-' + id)
       const programName = $('#program-' + id).find('.program-name').text()
@@ -203,9 +206,9 @@ const MyProfile = function (profile_url, save_username,
         cancelButtonText: split[4]
       }).then((result) => {
         if (result.value) {
-          $.post(self.delete_account_url, null, function (data) {
+          $.post(self.deleteAccountUrl, null, function (data) {
             switch (parseInt(data.statusCode)) {
-              case statusCode_OK:
+              case statusCodeOk:
                 window.location.href = '../../'
             }
           })
@@ -220,17 +223,16 @@ const MyProfile = function (profile_url, save_username,
     $('#email-ajax').show()
 
     const email = $('#email')
-    const additionalEmail = $('#additional-email')
     $('.error-message').addClass('d-none')
 
-    const new_email = email.val()
-    const additional_email = additionalEmail.val()
-    $.post(self.save_email_url, {
-      firstEmail: new_email,
-      secondEmail: additional_email
+    const newEmail = email.val()
+    const additionalEmail = $('#additional-email').val()
+    $.post(self.saveEmailUrl, {
+      firstEmail: newEmail,
+      secondEmail: additionalEmail
     }, function (data) {
       switch (parseInt(data.statusCode)) {
-        case statusCode_OK:
+        case statusCodeOk:
           Swal.fire({
             title: successText,
             text: checkMailText,
@@ -241,7 +243,7 @@ const MyProfile = function (profile_url, save_username,
           })
           break
 
-        case statusCode_USER_EMAIL_ALREADY_EXISTS:
+        case statusCodeUserEmailAlreadyExists:
           if (parseInt(data.email) === 1) {
             $('.text-email1-exists').removeClass('d-none')
           }
@@ -250,11 +252,11 @@ const MyProfile = function (profile_url, save_username,
           }
           break
 
-        case statusCode_USER_EMAIL_MISSING:
+        case statusCodeUserEmailMissing:
           $('.text-email-missing').removeClass('d-none')
           break
 
-        case statusCode_USER_EMAIL_INVALID:
+        case statusCodeUserEmailInvalid:
           if (parseInt(data.email) === 1) {
             $('.text-email1-not-valid').removeClass('d-none')
           }
@@ -279,21 +281,21 @@ const MyProfile = function (profile_url, save_username,
     const username = $('#username')
     $('.error-message').addClass('d-none')
 
-    const new_username = username.val()
+    const newUsername = username.val()
 
-    $.post(self.save_username, {
-      username: new_username
+    $.post(self.saveUsername, {
+      username: newUsername
     }, function (data) {
       switch (parseInt(data.statusCode)) {
-        case statusCode_USERNAME_ALREADY_EXISTS:
+        case statusCodeUsernameAlreadyExists:
           $('.text-username-exists').removeClass('d-none')
           break
 
-        case statusCode_USERNAME_MISSING:
+        case statusCodeUsernameMissing:
           $('.text-username-missing').removeClass('d-none')
           break
 
-        case statusCode_USERNAME_INVALID:
+        case statusCodeUsernameInvalid:
           $('.text-username-not-valid').removeClass('d-none')
           break
 
@@ -310,11 +312,11 @@ const MyProfile = function (profile_url, save_username,
     $(this).hide()
     $('#country-ajax').show()
     const country = $('#select-country').find('select').val()
-    $.post(self.save_country_url, {
+    $.post(self.saveCountryUrl, {
       country: country
     }, function (data) {
       switch (parseInt(data.statusCode)) {
-        case statusCode_USER_COUNTRY_INVALID:
+        case statusCodeUserCountryInvalid:
           alert('invalid country')
           break
 
@@ -336,33 +338,33 @@ const MyProfile = function (profile_url, save_username,
     $('.error-message').addClass('d-none')
     password.parent().removeClass('password-failed')
     repeatPassword.parent().removeClass('password-failed')
-    const new_password = password.val()
-    const old_password = $('#old-password').val()
-    const repeat_password = repeatPassword.val()
+    const newPassword = password.val()
+    const oldPassword = $('#old-password').val()
+    const repeatPasswordVal = repeatPassword.val()
 
-    $.post(self.save_password_url, {
-      oldPassword: old_password,
-      newPassword: new_password,
-      repeatPassword: repeat_password
+    $.post(self.savePasswordUrl, {
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+      repeatPassword: repeatPasswordVal
     }, function (data) {
       switch (parseInt(data.statusCode)) {
-        case statusCode_USER_USERNAME_PASSWORD_EQUAL:
+        case statusCodeUsernamePasswordEqual:
           $('.text-password-isusername').removeClass('d-none')
           break
 
-        case statusCode_USER_PASSWORD_TOO_SHORT:
+        case statusCodeUserPasswordTooShort:
           $('.text-password-tooshort').removeClass('d-none')
           break
 
-        case statusCode_USER_PASSWORD_TOO_LONG:
+        case statusCodeUserPasswordTooLong:
           $('.text-password-toolong').removeClass('d-none')
           break
 
-        case statusCode_USER_PASSWORD_NOT_EQUAL_PASSWORD2:
+        case statusCodeUserPasswordNotEqualPassword2:
           $('.text-password-nomatch').removeClass('d-none')
           break
 
-        case statusCode_PASSWORD_INVALID:
+        case statusCodePasswordInvalid:
           $('.text-password-wrongpassword').removeClass('d-none')
           break
 

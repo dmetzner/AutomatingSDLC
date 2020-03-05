@@ -1,13 +1,17 @@
-const ProfileLoader = function (profile_id, url, profile_url, container, default_profile) {
+/* eslint-env jquery */
+/* global Routing */
+
+// eslint-disable-next-line no-unused-vars
+const ProfileLoader = function (profileId, url, profileUrl, container, defaultProfile) {
   const self = this
-  self.id = profile_id
+  self.id = profileId
   self.loaded = 0
   self.url = url
-  self.profileUrl = profile_url
+  self.profileUrl = profileUrl
   self.pageSize = 10
   self.page = 0
   self.container = container
-  self.defaultProfile = default_profile
+  self.defaultProfile = defaultProfile
   self.maximum = 0
 
   self.init = function () {

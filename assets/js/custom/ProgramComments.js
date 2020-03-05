@@ -1,10 +1,14 @@
+/* eslint-env jquery */
+/* global Swal */
+
+// eslint-disable-next-line no-unused-vars
 function ProgramComments (programId, visibleComments, showStep, minAmountOfVisibleComments,
   totalAmountOfComments, cancel, deleteIt, reportIt, areYouSure,
   noWayOfReturn, deleteConfirmation, reportConfirmation,
   popUpCommentReportedTitle, popUpCommentReportedText,
   popUpDeletedTitle, popUpDeletedText,
   noAdminRightsMessage, defaultErrorMessage,
-  statusCode_OK, statusCode_NOT_LOGGED_IN, statusCode_NO_ADMIN_RIGHTS) {
+  statusCodeOk, statusCodeNotLoggedIn, statusCodeNoAdminRights) {
   let amountOfVisibleComments
 
   $(function () {
@@ -55,7 +59,7 @@ function ProgramComments (programId, visibleComments, showStep, minAmountOfVisib
     showLess(showStep)
   })
 
-  if ((sessionStorage.getItem('temp_program_comment') != null) && (sessionStorage.getItem('temp_program_comment') != '')) {
+  if ((sessionStorage.getItem('temp_program_comment') != null) && (sessionStorage.getItem('temp_program_comment') !== '')) {
     document.getElementById('comment-message').value = sessionStorage.getItem('temp_program_comment')
     const commentWrapper = $('#user-comment-wrapper')
     const showCommentWrapperButton = $('#show-add-comment-button')
@@ -75,7 +79,7 @@ function ProgramComments (programId, visibleComments, showStep, minAmountOfVisib
       type: 'post',
       data: { Message: msg, ProgramId: programId },
       success: function (data) {
-        if (data === statusCode_NOT_LOGGED_IN) {
+        if (data === statusCodeNotLoggedIn) {
           redirectToLogin()
         } else {
           $('#comments-wrapper').load(' #comments-wrapper')
@@ -96,9 +100,9 @@ function ProgramComments (programId, visibleComments, showStep, minAmountOfVisib
       type: 'get',
       data: { ProgramId: programId, CommentId: commentId },
       success: function (data) {
-        if (data === statusCode_NOT_LOGGED_IN) {
+        if (data === statusCodeNotLoggedIn) {
           redirectToLogin()
-        } else if (data === statusCode_NO_ADMIN_RIGHTS) {
+        } else if (data === statusCodeNoAdminRights) {
           Swal.fire(noAdminRightsMessage)
         } else {
           $('#comment-' + commentId).remove()
@@ -117,7 +121,7 @@ function ProgramComments (programId, visibleComments, showStep, minAmountOfVisib
       type: 'get',
       data: { ProgramId: programId, CommentId: commentId },
       success: function (data) {
-        if (data === statusCode_NOT_LOGGED_IN) {
+        if (data === statusCodeNotLoggedIn) {
           redirectToLogin()
         } else {
           showSuccessPopUp(popUpCommentReportedTitle, popUpCommentReportedText)

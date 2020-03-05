@@ -1,7 +1,11 @@
+/* eslint-env jquery */
+/* global Swal */
+
+// eslint-disable-next-line no-unused-vars
 function ProgramReport (programId, reportUrl, loginUrl, reportSentText, errorText,
   reportButtonText, cancelText, reportDialogTitle, reportDialogReason,
   inappropriateLabel, copyrightLabel, spamLabel, dislikeLabel,
-  statusCode_OK, loggedIn) {
+  statusCodeOk, loggedIn) {
   const INAPPROPRIATE_VALUE = 'inappropriate'
   const COPYRIGHT_VALUE = 'copyright infringement'
   const SPAM_VALUE = 'spam'
@@ -86,7 +90,7 @@ function ProgramReport (programId, reportUrl, loginUrl, reportSentText, errorTex
       category: category,
       note: reason
     }, function (data) {
-      if (data.statusCode === statusCode_OK) {
+      if (data.statusCode === statusCodeOk) {
         Swal.fire({
           text: reportSentText,
           icon: 'success',

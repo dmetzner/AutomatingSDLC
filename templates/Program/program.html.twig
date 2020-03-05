@@ -3,7 +3,7 @@
 {% block head %}
   <link rel="stylesheet" href="{{ asset('css/'~theme()~'/program.css') }}"/>
   <link rel="stylesheet" href="{{ asset('css/modules/jquery.contextMenu.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('css/modules/vis.min.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('vis/vis.min.css') }}"/> {# We need acces to all images #}
   <link rel="stylesheet" href="{{ asset('css/'~theme()~'/remixgraph.css') }}"/>
   <link rel="stylesheet" href="{{ asset('css/'~theme()~'/loadinganimation.css') }}"/>
   <link rel="stylesheet" href="{{ asset('css/modules/animate.min.css') }}"/>
@@ -472,9 +472,9 @@
   <script src=" {{ asset( 'js/modules/jquery.contextMenu.min.js') }}"></script>
   <script src=" {{ asset( 'js/modules/jquery.ui.position.min.js') }}"></script>
   <script src=" {{ asset( 'js/modules/animatedModal.min.js') }}"></script>
-  <script src=" {{ asset( 'js/modules/vis.min.js') }}"></script>
+  <script src=" {{ asset( 'vis/vis.min.js') }}"></script>
   <script src=" {{ asset( 'js/modules/clipboard.min.js') }}"></script>
-  <script src=" {{ asset( 'js/remixgraph.configuration.min.js') }}"></script>
+{#  <script src=" {{ asset( 'js/remixgraph.configuration.min.js') }}"></script>#}
   <script src=" {{ asset( 'js/remixgraph.builder.min.js') }}"></script>
   <script src=" {{ asset( 'js/remixgraph.visualization.min.js') }}"></script>
 

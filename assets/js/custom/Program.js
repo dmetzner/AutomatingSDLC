@@ -1,32 +1,36 @@
-const Program = function (project_id, csrf_token, user_role, my_program, status_url, create_url, like_url,
-  like_detail_url, apk_preparing, apk_text, update_app_header, update_app_text,
-  btn_close_popup, like_action_add, like_action_remove, profile_url) {
+/* eslint-env jquery */
+/* global Swal */
+
+// eslint-disable-next-line no-unused-vars
+const Program = function (projectId, csrfToken, userRole, myProgram, statusUrl, createUrl, likeUrl,
+  likeDetailUrl, apkPreparing, apkText, updateAppHeader, updateAppText,
+  btnClosePopup, likeActionAdd, likeActionRemove, profileUrl) {
   const self = this
 
-  self.project_id = project_id
-  self.csrf_token = csrf_token
-  self.user_role = user_role
-  self.my_program = my_program
-  self.status_url = status_url
-  self.create_url = create_url
-  self.apk_preparing = apk_preparing
-  self.apk_text = apk_text
-  self.update_app_header = update_app_header
-  self.update_app_text = update_app_text
-  self.btn_close_popup = btn_close_popup
-  self.like_action_add = like_action_add
-  self.like_action_remove = like_action_remove
+  self.projectId = projectId
+  self.csrfToken = csrfToken
+  self.userRole = userRole
+  self.myProgram = myProgram
+  self.statusUrl = statusUrl
+  self.createUrl = createUrl
+  self.apkPreparing = apkPreparing
+  self.apkText = apkText
+  self.updateAppHeader = updateAppHeader
+  self.updateAppText = updateAppText
+  self.btnClosePopup = btnClosePopup
+  self.likeActionAdd = likeActionAdd
+  self.likeActionRemove = likeActionRemove
   self.apk_url = null
   self.apk_download_timeout = false
 
   self.getApkStatus = function () {
-    $.get(self.status_url, null, self.onResult)
+    $.get(self.statusUrl, null, self.onResult)
   }
 
   self.createApk = function () {
     $('#apk-generate').addClass('d-none')
     $('#apk-pending').removeClass('d-none')
-    $.get(self.create_url, null, self.onResult)
+    $.get(self.createUrl, null, self.onResult)
     self.showPreparingApkPopup()
   }
 
@@ -69,47 +73,47 @@ const Program = function (project_id, csrf_token, user_role, my_program, status_
 
   self.createLinks = function () {
     $('#description').each(function () {
-      $(this).html($(this).html().replace(/((http|https|ftp):\/\/[\w?=&.\/+-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g, '<a href="$1" target="_blank">$1</a> '))
+      $(this).html($(this).html().replace(/((http|https|ftp):\/\/[\w?=&./+-;#~%-]+(?![\w\s?&./;#~%"=-]*>))/g, '<a href="$1" target="_blank">$1</a> '))
     })
   }
 
   self.showUpdateAppPopup = function () {
-    const popup_background = self.createPopupBackgroundDiv()
-    const popup_div = self.createPopupDiv()
+    const popupBackground = self.createPopupBackgroundDiv()
+    const popupDiv = self.createPopupDiv()
     const body = $('body')
-    popup_div.append('<h2>' + self.update_app_header + '</h2><br>')
-    popup_div.append('<p>' + self.update_app_text + '</p>')
+    popupDiv.append('<h2>' + self.updateAppHeader + '</h2><br>')
+    popupDiv.append('<p>' + self.updateAppText + '</p>')
 
-    const close_popup_button = '<button id="btn-close-popup" class="btn btn-primary btn-close-popup">' + self.btn_close_popup + '</button>'
-    popup_div.append(close_popup_button)
+    const closePopupButton = '<button id="btn-close-popup" class="btn btn-primary btn-close-popup">' + self.btnClosePopup + '</button>'
+    popupDiv.append(closePopupButton)
 
-    body.append(popup_background)
-    body.append(popup_div)
+    body.append(popupBackground)
+    body.append(popupDiv)
 
     $('#popup-background, #btn-close-popup').click(function () {
-      popup_div.remove()
-      popup_background.remove()
+      popupDiv.remove()
+      popupBackground.remove()
     })
   }
 
   self.showPreparingApkPopup = function () {
-    const popup_background = self.createPopupBackgroundDiv()
-    const popup_div = self.createPopupDiv()
+    const popupBackground = self.createPopupBackgroundDiv()
+    const popupDiv = self.createPopupDiv()
     const body = $('body')
 
-    popup_div.append('<h2>' + self.apk_preparing + '</h2><br>')
-    popup_div.append('<i class="fa fa-spinner fa-pulse fa-2x fa-fw" aria-hidden="true">')
-    popup_div.append('<p>' + self.apk_text + '</p>')
+    popupDiv.append('<h2>' + self.apkPreparing + '</h2><br>')
+    popupDiv.append('<i class="fa fa-spinner fa-pulse fa-2x fa-fw" aria-hidden="true">')
+    popupDiv.append('<p>' + self.apkText + '</p>')
 
-    const close_popup_button = '<button id="btn-close-popup" class="btn btn-primary btn-close-popup">' + self.btn_close_popup + '</button>'
-    popup_div.append(close_popup_button)
+    const closePopupButton = '<button id="btn-close-popup" class="btn btn-primary btn-close-popup">' + self.btnClosePopup + '</button>'
+    popupDiv.append(closePopupButton)
 
-    body.append(popup_background)
-    body.append(popup_div)
+    body.append(popupBackground)
+    body.append(popupDiv)
 
     $('#popup-background, #btn-close-popup').click(function () {
-      popup_div.remove()
-      popup_background.remove()
+      popupDiv.remove()
+      popupBackground.remove()
     })
   }
 
@@ -121,7 +125,7 @@ const Program = function (project_id, csrf_token, user_role, my_program, status_
     return $('<div id="popup-background" class="popup-bg"></div>')
   }
 
-  self.create_cookie = function create_cookie (name, value, days2expire, path) {
+  self.createCookie = function createCookie (name, value, days2expire, path) {
     const date = new Date()
     date.setTime(date.getTime() + (days2expire * 24 * 60 * 60 * 1000))
     const expires = date.toUTCString()
@@ -130,7 +134,7 @@ const Program = function (project_id, csrf_token, user_role, my_program, status_
       'path=' + path + ';'
   }
 
-  self.create_cookie('referrer', document.referrer, 1, '/')
+  self.createCookie('referrer', document.referrer, 1, '/')
 
   self.showErrorAlert = function (message) {
     if (typeof message !== 'string' || message === '') {
@@ -149,7 +153,7 @@ const Program = function (project_id, csrf_token, user_role, my_program, status_
   self.$projectLikeDetail = undefined
 
   self.initProjectLike = function () {
-    let detail_opened = false
+    let detailOpened = false
 
     const $container = $('#project-like')
     const $buttons = $('#project-like-buttons', $container)
@@ -164,23 +168,23 @@ const Program = function (project_id, csrf_token, user_role, my_program, status_
         return
       }
       $detail.css('display', 'flex').hide().fadeIn()
-      detail_opened = true
+      detailOpened = true
     })
 
     $('body').on('mousedown', function () {
-      if (detail_opened) {
+      if (detailOpened) {
         $detail.fadeOut()
-        detail_opened = false
+        detailOpened = false
       }
     })
 
     $counter.on('click', function () {
-      $.getJSON(like_detail_url,
+      $.getJSON(likeDetailUrl,
         /** @param {{user: {id: string, name: string}, types: string[]}[]} data */
         function (data) {
           if (!Array.isArray(data)) {
             self.showErrorAlert()
-            console.error('Invalid data returned by like_detail_url', data)
+            console.error('Invalid data returned by likeDetailUrl', data)
             return
           }
 
@@ -213,9 +217,9 @@ const Program = function (project_id, csrf_token, user_role, my_program, status_
             // tab content
             data.forEach(function (like) {
               const $like = $('<div/>').addClass('reaction')
-              $like.append($('<a/>').attr('href', profile_url.replace('USERID', like.user.id)).text(like.user.name))
-              const $like_types = $('<div/>').addClass('types')
-              $like.append($like_types)
+              $like.append($('<a/>').attr('href', profileUrl.replace('USERID', like.user.id)).text(like.user.name))
+              const $likeTypes = $('<div/>').addClass('types')
+              $like.append($likeTypes)
 
               const iconMapping = {
                 thumbs_up: 'fa-thumbs-up',
@@ -225,7 +229,7 @@ const Program = function (project_id, csrf_token, user_role, my_program, status_
               }
 
               like.types.forEach((type) => {
-                $like_types.append($('<i/>').addClass('fas').addClass(iconMapping[type]))
+                $likeTypes.append($('<i/>').addClass('fas').addClass(iconMapping[type]))
               })
 
               $content.append($like)
@@ -247,18 +251,18 @@ const Program = function (project_id, csrf_token, user_role, my_program, status_
 
     $detail.find('.btn').on('click', function (event) {
       event.preventDefault()
-      const action = this.classList.contains('active') ? like_action_remove : like_action_add
+      const action = this.classList.contains('active') ? likeActionRemove : likeActionAdd
       self.sendProjectLike($(this).data('like-type'), action)
     })
   }
 
-  self.sendProjectLike = function (like_type, like_action) {
-    const url = like_url +
-      '?type=' + encodeURIComponent(like_type) +
-      '&action=' + encodeURIComponent(like_action) +
-      '&token=' + encodeURIComponent(csrf_token)
+  self.sendProjectLike = function (likeType, likeAction) {
+    const url = likeUrl +
+      '?type=' + encodeURIComponent(likeType) +
+      '&action=' + encodeURIComponent(likeAction) +
+      '&token=' + encodeURIComponent(csrfToken)
 
-    if (self.user_role === 'guest') {
+    if (self.userRole === 'guest') {
       window.location.href = url
       return false
     }
@@ -268,11 +272,11 @@ const Program = function (project_id, csrf_token, user_role, my_program, status_
       type: 'get',
       success: function (data) {
         // update .active of button
-        const $type_btn = self.$projectLikeDetail.find('.btn[data-like-type=' + like_type + ']')
-        if (like_action === like_action_add) {
-          $type_btn.addClass('active')
+        const typeBtn = self.$projectLikeDetail.find('.btn[data-like-type=' + likeType + ']')
+        if (likeAction === likeActionAdd) {
+          typeBtn.addClass('active')
         } else {
-          $type_btn.removeClass('active')
+          typeBtn.removeClass('active')
         }
 
         // update like count

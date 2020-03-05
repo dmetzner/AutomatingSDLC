@@ -1,14 +1,20 @@
-function Notification (new_notifications, old_notifications, markAsReadUrl, markAllAsReadUrl,
+/* eslint-env jquery */
+/* global Routing */
+/* global Swal */
+/* global FetchNotifications */
+
+// eslint-disable-next-line no-unused-vars
+function Notification (newNotifications, oldNotifications, markAsReadUrl, markAllAsReadUrl,
   deleteAllUrl, deleteNotificationUrl,
   popUpClearedAllMessagesTitle, popUpClearedAllMessagesText,
   somethingWentWrongError, notificationsClearError, notificationDeleteMessage,
   notificationDeleteAllMessage, confirmMessage, cancelMessage,
   deleteNotificationConfirmation, notificationDeletedMessage,
   notificationsAllMessagesDeleted, notificationsDeleteError,
-  countNotificationsUrl, notification_type) {
+  countNotificationsUrl, notificationType) {
   const self = this
-  self.notifications = parseInt(new_notifications)
-  self.old_notifications = parseInt(old_notifications)
+  self.notifications = parseInt(newNotifications)
+  self.oldNotifications = parseInt(oldNotifications)
   self.markAsReadUrl = markAsReadUrl
   self.deleteNotificationUrl = deleteNotificationUrl
   self.popUpClearedAllMessagesTitle = popUpClearedAllMessagesTitle
@@ -28,7 +34,7 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
     const markAllAsSeenButton = $('#mark-all-as-seen')
     const deleteAllButton = $('#delete-all')
 
-    if (self.notifications === 0 && self.old_notifications === 0) {
+    if (self.notifications === 0 && self.oldNotifications === 0) {
       markAllAsSeenButton.hide()
       deleteAllButton.hide()
       $('.no-notifications-placeholder').show()
@@ -39,7 +45,7 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
     } else {
       $('.no-notifications-placeholder').hide()
     }
-    if (self.old_notifications === 0) {
+    if (self.oldNotifications === 0) {
       $('#old-notification-header').hide()
     }
 
@@ -74,15 +80,15 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
           return
         }
 
-        self.old_notifications = self.notifications
+        self.oldNotifications = self.notifications
         self.notifications = 0
 
         $('#new-notifications-container').children().appendTo('#old-notifications-container')
 
         self.updateBadgeNumber('specificNotification')
-        const mark_all_as_read = 'markAllAsRead'
+        const markAllAsRead = 'markAllAsRead'
         self.showAllClearedPopUp()
-        self.manageDisplayedElements(mark_all_as_read)
+        self.manageDisplayedElements(markAllAsRead)
       },
       error: function () {
         Swal.fire(somethingWentWrongError, notificationsClearError, 'error')
@@ -111,12 +117,12 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
               return
             }
             self.notifications = 0
-            self.old_notifications = 0
+            self.oldNotifications = 0
 
             self.updateBadgeNumber('specificNotification')
-            self.showAllClearedPopUp('delete_all')
-            const delete_all = 'deleteAll'
-            self.manageDisplayedElements(delete_all)
+            self.showAllClearedPopUp('deleteAll')
+            const deleteAll = 'deleteAll'
+            self.manageDisplayedElements(deleteAll)
           },
           error: function () {
             Swal.fire(somethingWentWrongError, notificationsDeleteError, 'error')
@@ -133,7 +139,7 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
       success: function (data) {
         if (data.success) {
           self.notifications--
-          self.old_notifications++
+          self.oldNotifications++
 
           self.updateNotificationAmountText()
 
@@ -151,10 +157,10 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
 
             $('#mark-as-read-' + id).hide()
           })
-          const current_notification = document.getElementById('catro-notification-' + id)
+          const currentNotification = document.getElementById('catro-notification-' + id)
 
           $('#old-notifications-container').prepend('<div class="col-md-12">' +
-            current_notification.outerHTML + '</div>').hide().fadeIn('slow')
+            currentNotification.outerHTML + '</div>').hide().fadeIn('slow')
         } else {
           Swal.fire(somethingWentWrongError, notificationsClearError, 'error')
         }
@@ -165,45 +171,45 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
     })
   }
 
-  self.updateBadgeNumber = function (specific_notification) {
-    if (notification_type === 'allNotifications') {
+  self.updateBadgeNumber = function (specificNotification) {
+    if (notificationType === 'allNotifications') {
       const fetchNotifications = new FetchNotifications(countNotificationsUrl, 99, 10000)
       fetchNotifications.run('markAsRead')
     } else {
-      const userNotificationBadge = $('.' + notification_type)
-      const userNotificationBadge_all = $('.all-notifications')
-      const userNotificationBadge_dropdown = $('.all-notifications-dropdown')
-      if (specific_notification === 'specificNotification') {
-        self.updateBadgeNumberCurrentType(userNotificationBadge_all, specific_notification)
-        self.updateBadgeNumberCurrentType(userNotificationBadge_dropdown, specific_notification)
+      const userNotificationBadge = $('.' + notificationType)
+      const userNotificationBadgeAll = $('.all-notifications')
+      const userNotificationBadgeDropdown = $('.all-notifications-dropdown')
+      if (specificNotification === 'specificNotification') {
+        self.updateBadgeNumberCurrentType(userNotificationBadgeAll, specificNotification)
+        self.updateBadgeNumberCurrentType(userNotificationBadgeDropdown, specificNotification)
         userNotificationBadge.hide()
       } else {
-        self.updateBadgeNumberCurrentType(userNotificationBadge_all, specific_notification)
-        self.updateBadgeNumberCurrentType(userNotificationBadge, specific_notification)
-        self.updateBadgeNumberCurrentType(userNotificationBadge_dropdown, specific_notification)
+        self.updateBadgeNumberCurrentType(userNotificationBadgeAll, specificNotification)
+        self.updateBadgeNumberCurrentType(userNotificationBadge, specificNotification)
+        self.updateBadgeNumberCurrentType(userNotificationBadgeDropdown, specificNotification)
       }
     }
   }
 
-  self.updateBadgeNumberCurrentType = function (userNotificationBadge, specific_notification) {
-    const current_number = Number(userNotificationBadge.text())
-    if (specific_notification !== 'specificNotification') {
-      if (current_number > 1) {
-        userNotificationBadge.text(current_number - 1)
+  self.updateBadgeNumberCurrentType = function (userNotificationBadge, specificNotification) {
+    const currentNumber = Number(userNotificationBadge.text())
+    if (specificNotification !== 'specificNotification') {
+      if (currentNumber > 1) {
+        userNotificationBadge.text(currentNumber - 1)
       } else {
         userNotificationBadge.hide()
       }
     } else {
-      const userNotificationBadgeSpecific = $('.' + notification_type)
+      const userNotificationBadgeSpecific = $('.' + notificationType)
       userNotificationBadgeSpecific.load(location.href)
-      let current_number_specific = Number(userNotificationBadgeSpecific.text())
+      let currentNumberSpecific = Number(userNotificationBadgeSpecific.text())
 
-      if (Number.isNaN(current_number_specific)) {
-        current_number_specific = 0
+      if (Number.isNaN(currentNumberSpecific)) {
+        currentNumberSpecific = 0
       }
 
-      if (current_number - current_number_specific > 0) {
-        userNotificationBadge.text(current_number - current_number_specific)
+      if (currentNumber - currentNumberSpecific > 0) {
+        userNotificationBadge.text(currentNumber - currentNumberSpecific)
       } else {
         userNotificationBadge.hide()
       }
@@ -240,7 +246,7 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
 
   self.showAllClearedPopUp = function (type) {
     let message = self.popUpClearedAllMessagesText
-    if (type === 'delete_all') {
+    if (type === 'deleteAll') {
       message = self.notificationsAllMessagesDeleted
     } else if (type === 'delete_notification') {
       message = self.notificationDeletedMessage
@@ -290,7 +296,7 @@ function Notification (new_notifications, old_notifications, markAsReadUrl, mark
                 if (notificationsContainer.children().length === 0) {
                   if (oldNotificationsContainer.children().length === 0) {
                     $('#old-notification-header').hide()
-                    self.showAllClearedPopUp('delete_all')
+                    self.showAllClearedPopUp('deleteAll')
                     self.clearAll()
                   }
                   self.clearAll('delete')

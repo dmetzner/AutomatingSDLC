@@ -1,6 +1,10 @@
+/* eslint-env jquery */
+/* global Routing */
+
+// eslint-disable-next-line no-unused-vars
 function ProgramDescription (programId, showMoreButtonText, showLessButtonText,
-  statusCode_OK, statusCode_DESCRIPTION_TOO_LONG,
-  statusCode_RUDE_WORD_IN_DESCRIPTION) {
+  statusCodeOk, statusCodeDescriptionTooLong,
+  statusCodeRudeWordInDescription) {
   // Edit Description
   $(function () {
     const description = $('#description')
@@ -40,10 +44,10 @@ function ProgramDescription (programId, showMoreButtonText, showLessButtonText,
         { id: programId, newDescription: newDescription }, false)
 
       $.get(url, function (data) {
-        if (data.statusCode === statusCode_OK) {
+        if (data.statusCode === statusCodeOk) {
           location.reload()
-        } else if (data.statusCode === statusCode_DESCRIPTION_TOO_LONG ||
-          data.statusCode === statusCode_RUDE_WORD_IN_DESCRIPTION) {
+        } else if (data.statusCode === statusCodeDescriptionTooLong ||
+          data.statusCode === statusCodeRudeWordInDescription) {
           editDescription.addClass('danger')
           editDescriptionError.show()
           editDescriptionError.text(data.message)

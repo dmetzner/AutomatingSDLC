@@ -1,7 +1,9 @@
-const sound_map = {}
-let current_brick_stat_block = null
+/* eslint-env jquery */
+
+let currentBrickStatBlock = null
 let translations = {}
 
+// eslint-disable-next-line no-unused-vars
 function initCodeView (showCode, hideCode, showStats, hideStats) {
   translations = {
     showCode: showCode,
@@ -42,39 +44,20 @@ $(document).ready(function () {
   })
 
   $(document).on('click', '.brick-statistic-block', function () {
-    if (current_brick_stat_block !== null) {
-      current_brick_stat_block.find('.different-statistic-dropcontent').fadeToggle(150)
-      current_brick_stat_block.toggleClass('active')
+    if (currentBrickStatBlock !== null) {
+      currentBrickStatBlock.find('.different-statistic-dropcontent').fadeToggle(150)
+      currentBrickStatBlock.toggleClass('active')
     }
 
-    if ($(this).is(current_brick_stat_block)) {
-      current_brick_stat_block = null
+    if ($(this).is(currentBrickStatBlock)) {
+      currentBrickStatBlock = null
     } else {
       $(this).find('.different-statistic-dropcontent').fadeToggle(150)
       $(this).toggleClass('active')
-      current_brick_stat_block = $(this)
+      currentBrickStatBlock = $(this)
     }
   })
 })
-
-function initialSound (file_name, id) {
-  const audio = new Audio(file_name)
-  audio.play()
-  audio.addEventListener('ended', function () {
-    $('#soundStop-' + id).hide()
-    $('#sound-' + id).show()
-  })
-  sound_map[id] = audio
-  $('#sound-' + id).hide()
-  $('#soundStop-' + id).show()
-}
-
-function stopSound (id) {
-  sound_map[id].pause()
-  sound_map[id].currentTime = 0
-  $('#soundStop-' + id).hide()
-  $('#sound-' + id).show()
-}
 
 function expandCodeStatistics () {
   $('.show-hide-code-statistic-text').text(translations.hideStats)

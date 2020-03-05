@@ -3,12 +3,12 @@
  * REMIX GRAPH & NETWORK CONFIGURATION
  * ---------------------------------------------------------------------------------------------------------------------
  */
-var SCRATCH_PROJECT_BASE_URL = 'https://scratch.mit.edu/projects/'
-var SCRATCH_BASE_IMAGE_URL_TEMPLATE = 'https://cdn2.scratch.mit.edu/get_image/project/{}_140x140.png'
-var IMAGE_NOT_AVAILABLE_URL = '/images/default/not_available.png'
-var CATROBAT_NODE_PREFIX = 'catrobat'
-var SCRATCH_NODE_PREFIX = 'scratch'
-var NETWORK_OPTIONS = {
+const SCRATCH_PROJECT_BASE_URL = 'https://scratch.mit.edu/projects/'
+const SCRATCH_BASE_IMAGE_URL_TEMPLATE = 'https://cdn2.scratch.mit.edu/get_image/project/{}_140x140.png'
+const IMAGE_NOT_AVAILABLE_URL = '/images/default/not_available.png'
+const CATROBAT_NODE_PREFIX = 'catrobat'
+const SCRATCH_NODE_PREFIX = 'scratch'
+const NETWORK_OPTIONS = {
   nodes: {
     labelHighlightBold: false,
     borderWidth: 3,
@@ -37,7 +37,6 @@ var NETWORK_OPTIONS = {
     color: {
       color: '#000000',
       highlight: '#000000',
-      // highlight: '#000000',
       hover: '#000000',
       opacity: 1.0
     },

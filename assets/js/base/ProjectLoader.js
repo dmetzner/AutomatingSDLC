@@ -440,14 +440,13 @@ const ProjectLoader = function (container, url, recommendedByProjectId, recommen
   }
 
   async function getProjectLink (project, data) {
-    let link
+    let link = data.CatrobatInformation.BaseUrl + project.ProjectUrl
     switch (self.container) {
       case '#recommendations':
-        return data.CatrobatInformation.BaseUrl + project.ProjectUrl + '?rec_from=' + self.recommendedByProjectId
+        return link + '?rec_from=' + self.recommendedByProjectId
 
       case '#recommended':
       case '#specific-programs-recommendations':
-        link = data.CatrobatInformation.BaseUrl + project.ProjectUrl
         link += '?rec_by_page_id=' + self.recommendedByPageId
         if (self.recommendedByProjectId !== null) {
           link += '&rec_by_program_id=' + self.recommendedByProjectId

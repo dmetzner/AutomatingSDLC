@@ -1,6 +1,10 @@
+/* eslint-env jquery */
+/* global Routing */
+
+// eslint-disable-next-line no-unused-vars
 function ProgramCredits (programId, showMoreButtonText, showLessButtonText,
-  statusCode_OK, statusCode_CREDITS_TOO_LONG,
-  statusCode_RUDE_WORD_IN_CREDITS) {
+  statusCodeOk, statusCodeCreditsTooLong,
+  statusCodeRudeWordInCredits) {
   // Edit Credits
   $(function () {
     const credits = $('#credits')
@@ -42,10 +46,10 @@ function ProgramCredits (programId, showMoreButtonText, showLessButtonText,
       // let url = "/editProjectCredits/" + programId + "/" + newCredits;
 
       $.get(url, function (data) {
-        if (data.statusCode === statusCode_OK) {
+        if (data.statusCode === statusCodeOk) {
           location.reload()
-        } else if (data.statusCode === statusCode_CREDITS_TOO_LONG ||
-          data.statusCode === statusCode_RUDE_WORD_IN_CREDITS) {
+        } else if (data.statusCode === statusCodeCreditsTooLong ||
+          data.statusCode === statusCodeRudeWordInCredits) {
           editCredits.addClass('danger')
           editCreditsError.show()
           editCreditsError.text(data.message)

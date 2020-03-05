@@ -1,3 +1,6 @@
+/* eslint-env jquery */
+
+// eslint-disable-next-line no-unused-vars
 $(document).ready(function () {
   const toggleButton = $('.show-hide-password a')
   const toggleButtonIcon = $('.show-hide-password i')

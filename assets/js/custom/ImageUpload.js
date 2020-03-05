@@ -1,14 +1,17 @@
-function setImageUploadListener (upload_url, upload_button_container_id, image_container_id,
-  statusCode_OK, statusCode_UPLOAD_EXCEEDING_FILESIZE,
-  statusCode_UPLOAD_UNSUPPORTED_MIME_TYPE) {
-  $(upload_button_container_id).find('input[type=file]').change(function (data) {
+/* eslint-env jquery */
+
+// eslint-disable-next-line no-unused-vars
+function setImageUploadListener (uploadUrl, uploadButtonContainerId, imageContainerId,
+  statusCodeOK, statusCodeUploadExceedingFilesize,
+  statusCodeUploadUnsupportedMimeType) {
+  $(uploadButtonContainerId).find('input[type=file]').change(function (data) {
     $('.error-message').addClass('d-none')
 
     const file = data.target.files[0]
 
-    const image_upload = $(upload_button_container_id)
-    image_upload.find('span').hide()
-    image_upload.find('.button-show-ajax').show()
+    const imageUpload = $(uploadButtonContainerId)
+    imageUpload.find('span').hide()
+    imageUpload.find('.button-show-ajax').show()
 
     const reader = new FileReader()
 
@@ -17,24 +20,24 @@ function setImageUploadListener (upload_url, upload_button_container_id, image_c
     }
 
     reader.onload = function (event) {
-      $.post(upload_url, { image: event.currentTarget.result }, function (data) {
+      $.post(uploadUrl, { image: event.currentTarget.result }, function (data) {
         switch (parseInt(data.statusCode)) {
-          case statusCode_OK:
+          case statusCodeOK:
             $('.text-img-upload-success').removeClass('d-none')
             if (data.image_base64 === null) {
-              const src = $(image_container_id).attr('src')
+              const src = $(imageContainerId).attr('src')
               const d = new Date()
-              $(image_container_id).attr('src', src + '?a=' + d.getDate())
+              $(imageContainerId).attr('src', src + '?a=' + d.getDate())
             } else {
-              $(image_container_id).attr('src', data.image_base64)
+              $(imageContainerId).attr('src', data.image_base64)
             }
             break
 
-          case statusCode_UPLOAD_EXCEEDING_FILESIZE:
+          case statusCodeUploadExceedingFilesize:
             $('.text-img-upload-too-large').removeClass('d-none')
             break
 
-          case statusCode_UPLOAD_UNSUPPORTED_MIME_TYPE:
+          case statusCodeUploadUnsupportedMimeType:
             $('.text-mime-type-not-supported').removeClass('d-none')
             break
 
@@ -42,9 +45,9 @@ function setImageUploadListener (upload_url, upload_button_container_id, image_c
             $('.text-img-upload-error').removeClass('d-none')
         }
 
-        const image_upload = $(upload_button_container_id)
-        image_upload.find('span').show()
-        image_upload.find('.button-show-ajax').hide()
+        const imageUpload = $(uploadButtonContainerId)
+        imageUpload.find('span').show()
+        imageUpload.find('.button-show-ajax').hide()
       })
     }
     reader.readAsDataURL(file)

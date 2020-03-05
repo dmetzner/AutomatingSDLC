@@ -1,17 +1,20 @@
+/* eslint-env jquery */
+
+// eslint-disable-next-line no-unused-vars
 function FetchNotifications (countNotificationsUrl, maxAmountToFetch, refreshRate) {
   const self = this
   self.countNotificationsUrl = countNotificationsUrl
   self.maxAmountToFetch = maxAmountToFetch
   self.refreshRate = refreshRate
 
-  self.run = function (fetch_type) {
+  self.run = function (fetchType) {
     $.ajax({
       url: self.countNotificationsUrl,
       type: 'get',
       success: function (data) {
-        for (const notification_type in data.count) {
-          const userNotificationBadge = $('.' + notification_type)
-          const numOfNotifications = data.count[notification_type]
+        for (const notificationType in data.count) {
+          const userNotificationBadge = $('.' + notificationType)
+          const numOfNotifications = data.count[notificationType]
           if (numOfNotifications > 0) {
             const text = (numOfNotifications <= self.maxAmountToFetch)
               ? numOfNotifications.toString() : (self.maxAmountToFetch + '+')
@@ -22,7 +25,7 @@ function FetchNotifications (countNotificationsUrl, maxAmountToFetch, refreshRat
             userNotificationBadge.hide()
           }
         }
-        if (fetch_type != 'markAsRead') {
+        if (fetchType !== 'markAsRead') {
           setTimeout(self.run, refreshRate)
         }
       },
