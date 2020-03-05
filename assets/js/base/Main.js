@@ -1,6 +1,10 @@
-var Main = function (search_url) {
-  var self = this
-  self.search_url = search_url.replace(0, '')
+/* eslint-env jquery */
+/* global TextFill */
+
+// eslint-disable-next-line no-unused-vars
+const Main = function (searchUrl) {
+  const self = this
+  self.searchUrl = searchUrl.replace(0, '')
 
   $(window).ready(function () {
     self.setClickListener()
@@ -8,21 +12,21 @@ var Main = function (search_url) {
     self.initSidebarSwipe()
   })
 
-  var sidebar, sidebarToggleBtn
-  var fnCloseSidebar = function () {
+  let sidebar, sidebarToggleBtn
+  const fnCloseSidebar = function () {
     sidebar.removeClass('active')
     sidebarToggleBtn.attr('aria-expanded', false)
   }
-  var fnCloseSidebarDesktop = function () {
+  const fnCloseSidebarDesktop = function () {
     sidebar.addClass('inactive')
     $('body').removeClass('new-nav')
     sidebarToggleBtn.attr('aria-expanded', false)
   }
-  var fnOpenSidebar = function () {
+  const fnOpenSidebar = function () {
     sidebar.addClass('active')
     sidebarToggleBtn.attr('aria-expanded', true)
   }
-  var fnOpenSidebarDesktop = function () {
+  const fnOpenSidebarDesktop = function () {
     sidebar.removeClass('inactive')
     $('body').addClass('new-nav')
     sidebarToggleBtn.attr('aria-expanded', true)
@@ -71,33 +75,33 @@ var Main = function (search_url) {
     // search enter pressed
     $('input.input-search').keypress(function (event) {
       if (event.which === 13) {
-        const search_term = $(this).val()
-        if (!search_term) {
+        const searchTerm = $(this).val()
+        if (!searchTerm) {
           $(this).tooltip('show')
           return
         }
-        self.searchPrograms(search_term)
+        self.searchPrograms(searchTerm)
       }
     })
 
     // search button clicked (header)
     $('.btn-search').click(function () {
-      const search_field = $(this).parent().parent().find('input.input-search')
-      const search_term = search_field.val()
-      if (!search_term) {
-        search_field.tooltip('show')
+      const searchField = $(this).parent().parent().find('input.input-search')
+      const searchTerm = searchField.val()
+      if (!searchTerm) {
+        searchField.tooltip('show')
         return
       }
-      self.searchPrograms(search_term)
+      self.searchPrograms(searchTerm)
     })
   }
 
   self.searchPrograms = function (string) {
-    window.location.href = self.search_url + encodeURIComponent(string.trim())
+    window.location.href = self.searchUrl + encodeURIComponent(string.trim())
   }
 
   self.setLanguageSwitchListener = function () {
-    var select = $('#switch-language')
+    const select = $('#switch-language')
     select.change(function () {
       document.cookie = 'hl=' + $(this).val() + '; path=/'
       location.reload()
@@ -105,14 +109,14 @@ var Main = function (search_url) {
   }
 
   self.getCookie = function (cname) {
-    var name = cname + '='
-    var ca = document.cookie.split(';')
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i]
-      while (c.charAt(0) == ' ') {
+    const name = cname + '='
+    const ca = document.cookie.split(';')
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i]
+      while (c.charAt(0) === ' ') {
         c = c.substring(1)
       }
-      if (c.indexOf(name) != -1) {
+      if (c.indexOf(name) !== -1) {
         return c.substring(name.length, c.length)
       }
     }
@@ -120,53 +124,53 @@ var Main = function (search_url) {
   }
 
   self.initSidebarSwipe = function () {
-    var sidebar = $('#sidebar')
-    var sidebar_width = sidebar.width()
-    var sidebar_overlay = $('#sidebar-overlay')
+    const sidebar = $('#sidebar')
+    const sidebarWidth = sidebar.width()
+    const sidebarOverlay = $('#sidebar-overlay')
 
-    var cur_x = null
-    var start_time = null
-    var start_x = null; var start_y = null
+    let curX = null
+    let startTime = null
+    let startX = null; let startY = null
 
-    var opening = false
-    var closing = false
+    let opening = false
+    let closing = false
 
-    var desktop = false
+    let desktop = false
 
-    var touch_threshold = 25 // area where touch is possible
+    const touchThreshold = 25 // area where touch is possible
 
     function refrehSidebar () {
-      var left = (cur_x >= sidebar_width) ? 0 : cur_x - sidebar_width
+      const left = (curX >= sidebarWidth) ? 0 : curX - sidebarWidth
       sidebar.css('transition', 'none').css('left', left)
       if (!desktop) {
-        var opacity = (cur_x >= sidebar_width) ? 1 : cur_x / sidebar_width
-        sidebar_overlay.css('transition', 'all 10ms ease-in-out').css('display', 'block').css('opacity', opacity)
+        const opacity = (curX >= sidebarWidth) ? 1 : curX / sidebarWidth
+        sidebarOverlay.css('transition', 'all 10ms ease-in-out').css('display', 'block').css('opacity', opacity)
       }
     }
 
     document.addEventListener('touchstart', function (e) {
-      cur_x = null
+      curX = null
       closing = false
       opening = false
 
       if (e.touches.length === 1) {
-        var touch = e.touches[0]
+        const touch = e.touches[0]
 
         desktop = $(window).width() >= 768
 
-        var sidebar_opened = (desktop && !sidebar.hasClass('inactive')) || (!desktop && sidebar.hasClass('active'))
-        if (sidebar_opened) {
-          cur_x = touch.pageX
-          start_x = touch.pageX
-          start_y = touch.pageY
-          start_time = Date.now()
+        const sidebarOpened = (desktop && !sidebar.hasClass('inactive')) || (!desktop && sidebar.hasClass('active'))
+        if (sidebarOpened) {
+          curX = touch.pageX
+          startX = touch.pageX
+          startY = touch.pageY
+          startTime = Date.now()
           closing = true
         } else {
-          if (touch.pageX < touch_threshold) {
-            cur_x = touch.pageX
-            start_x = touch.pageX
-            start_y = touch.pageY
-            start_time = Date.now()
+          if (touch.pageX < touchThreshold) {
+            curX = touch.pageX
+            startX = touch.pageX
+            startY = touch.pageY
+            startTime = Date.now()
             opening = true
             refrehSidebar()
           }
@@ -175,15 +179,15 @@ var Main = function (search_url) {
     })
 
     document.addEventListener('touchmove', function (e) {
-      if (e.touches.length === 1 && (closing || opening) && !!cur_x) {
-        cur_x = e.touches[0].pageX
+      if (e.touches.length === 1 && (closing || opening) && !!curX) {
+        curX = e.touches[0].pageX
 
         if (closing) {
-          var touch_y = e.touches[0].pageY
-          var y_diff = Math.abs(touch_y - start_y)
-          var x_diff = Math.abs(cur_x - start_x)
+          const touchY = e.touches[0].pageY
+          const yDiff = Math.abs(touchY - startY)
+          const xDiff = Math.abs(curX - startX)
 
-          if (x_diff > y_diff * 1.25) {
+          if (xDiff > yDiff * 1.25) {
             refrehSidebar()
           } else {
             reset()
@@ -195,16 +199,16 @@ var Main = function (search_url) {
     })
 
     document.addEventListener('touchend', function (e) {
-      if (e.changedTouches.length === 1 && (closing || opening) && !!cur_x && start_time) {
-        var touch_x = e.changedTouches[0].pageX
-        var touch_y = e.changedTouches[0].pageY
-        var time_diff = Date.now() - start_time
-        var slow = time_diff > 100 // 100 ms
+      if (e.changedTouches.length === 1 && (closing || opening) && !!curX && startTime) {
+        const touchX = e.changedTouches[0].pageX
+        const touchY = e.changedTouches[0].pageY
+        const timeDiff = Date.now() - startTime
+        const slow = timeDiff > 100 // 100 ms
 
         if (closing) {
           if (
-            (slow && touch_x < sidebar_width / 2) ||
-            (!slow && touch_x < sidebar_width && touch_x < start_x && Math.abs(start_x - touch_x) > Math.abs(start_y - touch_y))
+            (slow && touchX < sidebarWidth / 2) ||
+            (!slow && touchX < sidebarWidth && touchX < startX && Math.abs(startX - touchX) > Math.abs(startY - touchY))
           ) {
             if (desktop) {
               fnCloseSidebarDesktop()
@@ -214,8 +218,8 @@ var Main = function (search_url) {
           }
         } else if (opening) {
           if (
-            (slow && touch_x > sidebar_width / 2) ||
-            (!slow && touch_x > touch_threshold && touch_x > start_x && Math.abs(start_x - touch_x) > Math.abs(start_y - touch_y))
+            (slow && touchX > sidebarWidth / 2) ||
+            (!slow && touchX > touchThreshold && touchX > startX && Math.abs(startX - touchX) > Math.abs(startY - touchY))
           ) {
             if (desktop) {
               fnOpenSidebarDesktop()
@@ -231,11 +235,11 @@ var Main = function (search_url) {
 
     function reset () {
       sidebar.css('left', '').css('transition', '')
-      sidebar_overlay.css('display', '').css('opacity', '').css('transition', '')
-      cur_x = null
-      start_time = null
-      start_x = null
-      start_y = null
+      sidebarOverlay.css('display', '').css('opacity', '').css('transition', '')
+      curX = null
+      startTime = null
+      startX = null
+      startY = null
 
       opening = false
       closing = false
@@ -285,16 +289,16 @@ $(function () {
 
   // -------------------------------------------------------------------------------------------------------------------
   // Search field
-  const search_input = $('.input-search')
+  const searchInput = $('.input-search')
 
-  search_input.tooltip({
+  searchInput.tooltip({
     trigger: 'manual',
     placement: 'bottom'
   })
 
-  search_input.on('shown.bs.tooltip', function () {
+  searchInput.on('shown.bs.tooltip', function () {
     setTimeout(function () {
-      search_input.tooltip('hide')
+      searchInput.tooltip('hide')
     }, 1000)
   })
 })

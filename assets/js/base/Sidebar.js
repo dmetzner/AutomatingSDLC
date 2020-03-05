@@ -1,3 +1,6 @@
+/* eslint-env jquery */
+
+// eslint-disable-next-line no-unused-vars
 function enableNavButtonIfCategoryContainsProjects (container, url) {
   if (setNavContainerWithSession(container)) {
     return
@@ -8,22 +11,23 @@ function enableNavButtonIfCategoryContainsProjects (container, url) {
   })
 }
 
-function enableNavButtonIfRecommendedCategoryContainsProjects (container, url, program_id) {
+// eslint-disable-next-line no-unused-vars
+function enableNavButtonIfRecommendedCategoryContainsProjects (container, url, programId) {
   if (setNavContainerWithSession(container)) {
     return
   }
 
-  $.get(url, { program_id: program_id }, function (data) {
+  $.get(url, { programId: programId }, function (data) {
     setNavContainerAndSession(container, data)
   })
 }
 
 function setNavContainerWithSession (container) {
-  const nav_item = sessionStorage.getItem(container)
+  const navItem = sessionStorage.getItem(container)
 
-  if (nav_item !== null) {
-    const nav_item_visible = parseInt(sessionStorage.getItem(container))
-    if (nav_item_visible === 1) {
+  if (navItem !== null) {
+    const navItemVisible = parseInt(sessionStorage.getItem(container))
+    if (navItemVisible === 1) {
       $(container).show()
     } else {
       $(container).hide()
@@ -42,6 +46,7 @@ function setNavContainerAndSession (container, data) {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 function manageNotificationsDropdown () {
   const notificationDropdownToggler = document.getElementById('notifications-dropdown-toggler')
   const notificationDropdownContent = document.getElementById('notifications-dropdown-content')
@@ -78,8 +83,8 @@ function expandNotificationDropdownMenu () {
   notificationDropdownArrow.classList.remove('fa-caret-left')
   notificationDropdownArrow.classList.add('fa-caret-down')
 
-  const notification_categories = notificationDropdownContent.getElementsByTagName('a')
-  Array.prototype.forEach.call(notification_categories, function (category) {
+  const notificationCategories = notificationDropdownContent.getElementsByTagName('a')
+  Array.prototype.forEach.call(notificationCategories, function (category) {
     category.style.visibility = 'visible'
   })
 }
@@ -92,8 +97,8 @@ function collapseNotificationDropdownMenu () {
   notificationDropdownArrow.classList.remove('fa-caret-down')
   notificationDropdownArrow.classList.add('fa-caret-left')
 
-  const notification_categories = notificationDropdownContent.getElementsByTagName('a')
-  Array.prototype.forEach.call(notification_categories, function (category) {
+  const notificationCategories = notificationDropdownContent.getElementsByTagName('a')
+  Array.prototype.forEach.call(notificationCategories, function (category) {
     category.style.visibility = 'hidden'
   })
 }

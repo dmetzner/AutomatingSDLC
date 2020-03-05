@@ -13,6 +13,7 @@
 
   <link rel="stylesheet" href="{{ asset('css/'~theme()~'/base.css') }}" media="screen"/>
 
+  {# Head block for child views #}
   {% block head %}{% endblock %}
 </head>
 
@@ -36,7 +37,11 @@
 
   <div id="app-version" style="display:none">{{ app_version }}</div>
 
-  {# Define scripts not in the head, but after the body to increase performance! #}
+  {#
+     !!Important!! Define scripts here and not in the head to prevent render-blocking resources
+      This should increase performance. As a sidenote. The JS block can't be used in twig templates that are included.
+      The scripts have to be in the file that is extending the base and have to be in the JS blocks, not in the head!
+  #}
   <script src="{{ asset('js/modules/jquery.min.js') }}"></script>
   <script src="{{ asset('js/modules/textfill.min.js') }}"></script>
   <script src="{{ asset('js/modules/bootstrap.min.js') }}"></script>
@@ -49,26 +54,16 @@
 
   <script async src="{{ asset('js/analytics.min.js') }}"></script>
 
-  {# Create the javascripts blocks where all the scripts written in the child views should appear really #}
-  {% block js %}{% endblock %}
-
+  {# SEARCH HEADER #}
   <script>
-    enableNavButtonIfCategoryContainsProjects('#nav-newest', '{{ path('api_recent_programs') }}')
-    enableNavButtonIfRecommendedCategoryContainsProjects(
-      '#nav-recommended',
-      '{{ path('api_recsys_general_projects') }}',
-        {{ constant('App\\Catrobat\\RecommenderSystem\\RecommendedPageId::INDEX_PAGE') }}
-    )
-    enableNavButtonIfCategoryContainsProjects('#nav-most-downloaded', '{{ path('api_most_downloaded_programs') }}')
-    enableNavButtonIfCategoryContainsProjects('#nav-most-viewed', '{{ path('api_most_viewed_programs') }}')
-    enableNavButtonIfCategoryContainsProjects('#nav-scratch-remixes', '{{ path('api_scratch_remix') }}')
-    enableNavButtonIfCategoryContainsProjects('#nav-random', '{{ path('api_random_programs') }}')
-    manageNotificationsDropdown()
+    $('#nav-search').submit(function (e) {
+      e.preventDefault()
+    })
   </script>
-
   <script>
     $(document).ready(function() {
       $('.search-icon-header').on('click', function() {
+        console.log("clicked")
         $(this).hide()
         const input_group = $("#search-input-group-header");
         input_group.removeClass('d-none')
@@ -83,6 +78,7 @@
     })
   </script>
 
+  {# Main Script #}
   <script>
     function scrollToHash() {
       if (window.location.hash && $(window.location.hash).offset()) {
@@ -97,6 +93,21 @@
     new Main('{{ path('search', {'q': 0 } ) }}')
   </script>
 
+  {# Sidebar #}
+  <script>
+    enableNavButtonIfCategoryContainsProjects('#nav-newest', '{{ path('api_recent_programs') }}')
+    enableNavButtonIfRecommendedCategoryContainsProjects(
+      '#nav-recommended',
+      '{{ path('api_recsys_general_projects') }}',
+        {{ constant('App\\Catrobat\\RecommenderSystem\\RecommendedPageId::INDEX_PAGE') }}
+    )
+    enableNavButtonIfCategoryContainsProjects('#nav-most-downloaded', '{{ path('api_most_downloaded_programs') }}')
+    enableNavButtonIfCategoryContainsProjects('#nav-most-viewed', '{{ path('api_most_viewed_programs') }}')
+    enableNavButtonIfCategoryContainsProjects('#nav-scratch-remixes', '{{ path('api_scratch_remix') }}')
+    enableNavButtonIfCategoryContainsProjects('#nav-random', '{{ path('api_random_programs') }}')
+    manageNotificationsDropdown()
+  </script>
+
   {% if app.user %}
     <script src="{{ asset('js/FetchNotifications.min.js') }}"></script>
     <script>
@@ -106,11 +117,9 @@
       })
     </script>
   {% endif %}
-  <script>
-    $('#nav-search').submit(function (e) {
-      e.preventDefault()
-    })
-  </script>
+
+  {# JS block where all the scripts written in the child views should appear #}
+  {% block js %}{% endblock %}
 
 </body>
 </html>

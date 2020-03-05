@@ -549,6 +549,16 @@
     )
   </script>
 
+  <script src="{{ asset('js/CodeView.min.js') }}"></script>
+  <script>
+    initCodeView(
+      '{{ "codeview.showCode"|trans({}, "catroweb") }}',
+      '{{ "codeview.hideCode"|trans({}, "catroweb") }}',
+      '{{ "codeview.showStatistics"|trans({}, "catroweb") }}',
+      '{{ "codeview.hideStatistics"|trans({}, "catroweb") }}',
+    )
+  </script>
+
   <script src=" {{ asset('catblocks/CatBlocks.js') }}"></script>
     <script>
       const progPath = '{{ app.request.getSchemeAndHttpHost() ~ '/resources/extract/' ~ program.getExtractedDirectoryHash() ~ '/'}}';
@@ -592,8 +602,6 @@
 
       };
     </script>
-
-
 
   <script>
 
