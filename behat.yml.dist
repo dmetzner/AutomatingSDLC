@@ -15,7 +15,7 @@ default:
         pretty:   false
         progress: true
         html:
-            output_path: "tests/testreports/behat/htmlTestReport"
+            output_path: "tests/behat/reports"
 
 
 # --------------------------------------------------------------------------------------------------
@@ -56,61 +56,61 @@ default:
             paths:    [ "tests/behat/features/admin" ]
             contexts:
                 - AdminFeatureContext:
-                    - "tests/testreports/screens/"
+                    - "tests/behat/screenshots/"
 
         api_general:
             paths:    [ "tests/behat/features/api/general" ]
             contexts:
                 - ApiFeatureContext:
-                    - "tests/testreports/behat/"
+                    - "tests/behat/reports"
 
         api_profile:
             paths:    [ "tests/behat/features/api/profile" ]
             contexts:
                 - ApiFeatureContext:
-                    - "tests/testreports/behat/"
+                    - "tests/behat/reports"
 
         api_project:
             paths:    [ "tests/behat/features/api/project" ]
             contexts:
                 - ApiFeatureContext:
-                    - "tests/testreports/behat/"
+                    - "tests/behat/reports"
 
         api_upload:
             paths:    [ "tests/behat/features/api/upload" ]
             contexts:
                 - ApiFeatureContext:
-                    - "tests/testreports/behat/"
+                    - "tests/behat/reports"
 
         ci:
             paths:    [ "tests/behat/features/ci" ]
             contexts:
                 - CiFeatureContext:
-                    - "tests/testreports/behat/"
+                    - "tests/behat/reports"
 
         flavor:
             paths:    [ "tests/behat/features/flavor" ]
             contexts:
                 - FlavorFeatureContext:
-                    - "tests/testreports/behat/"
+                    - "tests/behat/reports"
 
         web_general:
             paths:    [ "tests/behat/features/web/general" ]
             contexts:
                 - WebFeatureContext:
-                    - "tests/testreports/screens/"
+                    - "tests/testreports/screenshots/"
 
         web_profile:
             paths:    [ "tests/behat/features/web/profile" ]
             contexts:
                 - WebFeatureContext:
-                    - "tests/testreports/screens/"
+                    - "tests/testreports/screenshots/"
 
         web_project:
             paths:    [ "tests/behat/features/web/project" ]
             contexts:
                 - WebFeatureContext:
-                    - "tests/testreports/screens/"
+                    - "tests/testreports/screenshots/"
 
         gamejam:
             filters:
@@ -118,7 +118,7 @@ default:
             paths:    [ "tests/behat/features/gamejam" ]
             contexts:
                 - GamejamFeatureContext:
-                    - "tests/testreports/behat/"
+                    - "tests/behat/reports"
 
         gamejam_web:
             filters:
@@ -126,7 +126,7 @@ default:
             paths:    [ "tests/behat/features/gamejam" ]
             contexts:
                 - GamejamWebContext:
-                    - "tests/testreports/behat/"
+                    - "tests/behat/reports"
 
         gamejam_javascript:
             filters:
