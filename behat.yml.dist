@@ -98,19 +98,19 @@ default:
             paths:    [ "tests/behat/features/web/general" ]
             contexts:
                 - WebFeatureContext:
-                    - "tests/testreports/screenshots/"
+                    - "tests/behat/screenshots/"
 
         web_profile:
             paths:    [ "tests/behat/features/web/profile" ]
             contexts:
                 - WebFeatureContext:
-                    - "tests/testreports/screenshots/"
+                    - "tests/behat/screenshots/"
 
         web_project:
             paths:    [ "tests/behat/features/web/project" ]
             contexts:
                 - WebFeatureContext:
-                    - "tests/testreports/screenshots/"
+                    - "tests/behat/screenshots/"
 
         gamejam:
             filters:

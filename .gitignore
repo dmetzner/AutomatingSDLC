@@ -34,9 +34,9 @@ public/catblocks
 tests/behat/sqlite/**
 tests/style-report/**
 !tests/style-report/catroweb.xml
-tests/behat/reports**
+tests/behat/reports/**
+tests/behat/screenshots/**
 tests/testreports/coverage/**
-tests/testreports/screens/**
 
 ### var ###
 var/cache/**
