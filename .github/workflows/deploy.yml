@@ -42,7 +42,7 @@ jobs:
 
       - name: Copy ssh key into container
         run: |
-          docker cp ~/.ssh app.catroweb.test:~/.ssh
+          docker cp ~/.ssh app.catroweb.test:/root/.ssh
           docker exec app.catroweb.test ls -la ~
           docker exec app.catroweb.test ls -la /root/.ssh
 
