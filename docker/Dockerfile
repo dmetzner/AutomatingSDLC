@@ -72,8 +72,7 @@ RUN sed -i -r "s|(base_url:)(\s+.+)|base_url: http://app.catroweb.$APP_ENVIRONME
     sed -i -r "s|(database_host:)(\s+.+)|database_host: db.catroweb.$APP_ENVIRONMENT|g" config/packages/parameters.yml.dist && \
     sed -i -r "s|(database_port:)(\s+.+)|database_port: 3306|g" config/packages/parameters.yml.dist && \
     cp config/packages/parameters.yml.dist config/packages/parameters.yml && \
-    echo "SECURE_SCHEME=http" | tee -a .env.local .env.test.local .env.dev.local && \
-    echo "APP_ENV=$APP_ENVIRONMENT" > .env.local
+    echo "APP_ENV=$APP_ENVIRONMENT" >> .env.local
 
 # PERMISSIONS
 RUN sh docker/app/prepare-test-env.sh

@@ -22,17 +22,17 @@ jobs:
           sudo apt-get install openconnect
           printf '${{ secrets.VPN_PASSWD }}' | sudo openconnect vpn.tugraz.at --user=${{ secrets.VPN_USER }} & disown
 
+      - name: Set Config Secrets
+        run: |
+          printf '\nDEPLOY_GIT=https://github.com/Catrobat/Catroweb-Symfony.git\n' >> .env.local
+          printf 'DEPLOY_WEBTEST=${{ secrets.DEP_WEBTEST_HOST }}\n' >> .env.local
+          printf 'DEPLOY_WEBTEST_BRANCH="master"\n' >> .env.local
+
       - name: Build
         run: |
           cd docker
           docker-compose -f docker-compose.test.yml build
           docker-compose -f docker-compose.test.yml up -d
-
-      - name: Set Config Secrets
-        run: |
-          docker exec app.catroweb.test printf 'DEPLOY_GIT=https://github.com/Catrobat/Catroweb-Symfony.git' >> .env.local
-          docker exec app.catroweb.test printf 'DEPLOY_WEBTEST=${{ secrets.DEP_WEBTEST_HOST }}' >> .env.local
-          docker exec app.catroweb.test printf 'DEPLOY_WEBTEST_BRANCH="master"' >> .env.local
 
       - name: Deploy
         run:
