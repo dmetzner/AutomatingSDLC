@@ -18,19 +18,19 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Connect to TUG via VPN
-        env: # Set the secrets as environment variables
-          vpn_passwd: ${{ secrets.VPN_PASSWD }}
-          vpn_user: ${{ secrets.VPN_USER }}
+#        env: # Set the secrets as environment variables
+#          vpn_passwd: ${{ secrets.VPN_PASSWD }}
+#          vpn_user: ${{ secrets.VPN_USER }}
         run: |
           apt-get install openconnect
-          printf '${{ vpn_passwd }}' |  openconnect vpn.tugraz.at --user=${{ vpn_user }}
+          printf '${{ secrets.VPN_PASSWD }}' |  openconnect vpn.tugraz.at --user=${{ secrets.VPN_USER }}
 
       - name: Set Config Secrets
-        env: # Set the secrets as environment variables
-          dep_webtest_host: ${{ secrets.DEP_WEBTEST_HOST }}
+#        env: # Set the secrets as environment variables
+#          dep_webtest_host: ${{ secrets.DEP_WEBTEST_HOST }}
         run: |
           echo 'DEPLOY_GIT=https://github.com/Catrobat/Catroweb-Symfony.git' >> .env.local
-          echo 'DEPLOY_WEBTEST=${{ dep_webtest_host }}' >> .env.local
+          echo 'DEPLOY_WEBTEST=${{ secrets.DEP_WEBTEST_HOST }}' >> .env.local
           echo 'DEPLOY_WEBTEST_BRANCH="master"' >> .env.local
           cat .env.local
 
