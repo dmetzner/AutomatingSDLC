@@ -19,7 +19,7 @@ jobs:
 
       - name: Connect to TUG via VPN
         run: |
-          sudo apt-get install openconnect
+          sudo apt-get --yes --force-yes install openconnect
           printf '${{ secrets.VPN_PASSWD }}' | sudo openconnect vpn.tugraz.at --user=${{ secrets.VPN_USER }} & disown
 
       - name: Set Config Secrets
@@ -33,7 +33,7 @@ jobs:
           cd docker
           docker-compose -f docker-compose.test.yml build
           docker-compose -f docker-compose.test.yml up -d
-          docker exec app.catroweb.test apt-get install ssh
+          docker exec app.catroweb.test apt-get --yes --force-yes install ssh
 
       - name: Deploy
         run:
