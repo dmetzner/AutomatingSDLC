@@ -17,13 +17,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Install SSH & OpenConnect
-        run: |
-          sudo apt-get install ssh
-          sudo apt-get install openconnect
-
       - name: Connect to TUG via VPN
         run: |
+          sudo apt-get install openconnect
           printf '${{ secrets.VPN_PASSWD }}' | sudo openconnect vpn.tugraz.at --user=${{ secrets.VPN_USER }} & disown
 
       - name: Set Config Secrets
@@ -37,6 +33,7 @@ jobs:
           cd docker
           docker-compose -f docker-compose.test.yml build
           docker-compose -f docker-compose.test.yml up -d
+          docker exec app.catroweb.test apt-get install ssh
 
       - name: Deploy
         run:
