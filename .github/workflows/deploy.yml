@@ -28,12 +28,17 @@ jobs:
           printf 'DEPLOY_WEBTEST=${{ secrets.DEP_WEBTEST_HOST }}\n' >> .env.local
           printf 'DEPLOY_WEBTEST_BRANCH="master"\n' >> .env.local
 
-      - name: Build
+      - name: Build Container
         run: |
           cd docker
           docker-compose -f docker-compose.test.yml build
           docker-compose -f docker-compose.test.yml up -d
           docker exec app.catroweb.test apt-get --yes --force-yes install ssh
+
+      - name: xx
+        uses: webfactory/ssh-agent@v0.2.0
+        with:
+          ssh-private-key: ${{ secrets.DEP_WEBTEST_SSH_KEY }}
 
       - name: Deploy
         run:
