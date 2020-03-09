@@ -23,7 +23,7 @@ jobs:
 #          vpn_user: ${{ secrets.VPN_USER }}
         run: |
           sudo apt-get install openconnect
-          printf '${{ secrets.VPN_PASSWD }}' | sudo openconnect vpn.tugraz.at --user=${{ secrets.VPN_USER }}
+          printf '${{ secrets.VPN_PASSWD }}' | sudo openconnect vpn.tugraz.at --user=${{ secrets.VPN_USER }} & disown
 
       - name: Set Config Secrets
 #        env: # Set the secrets as environment variables
