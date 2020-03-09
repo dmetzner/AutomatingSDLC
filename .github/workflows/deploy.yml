@@ -30,9 +30,9 @@ jobs:
 
       - name: Set Config Secrets
         run: |
-          docker exec app.catroweb.test echo 'DEPLOY_GIT=https://github.com/Catrobat/Catroweb-Symfony.git' >> .env.local
-          docker exec app.catroweb.test echo 'DEPLOY_WEBTEST=${{ secrets.DEP_WEBTEST_HOST }}' >> .env.local
-          docker exec app.catroweb.test echo 'DEPLOY_WEBTEST_BRANCH="master"' >> .env.local
+          docker exec app.catroweb.test printf 'DEPLOY_GIT=https://github.com/Catrobat/Catroweb-Symfony.git' >> .env.local
+          docker exec app.catroweb.test printf 'DEPLOY_WEBTEST=${{ secrets.DEP_WEBTEST_HOST }}' >> .env.local
+          docker exec app.catroweb.test printf 'DEPLOY_WEBTEST_BRANCH="master"' >> .env.local
 
       - name: Deploy
         run:
