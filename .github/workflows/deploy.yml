@@ -35,10 +35,16 @@ jobs:
           docker-compose -f docker-compose.test.yml up -d
           docker exec app.catroweb.test apt-get --yes --force-yes install ssh
 
-      - name: xx
+      - name: Set private ssh key on Host
         uses: webfactory/ssh-agent@v0.2.0
         with:
           ssh-private-key: ${{ secrets.DEP_WEBTEST_SSH_KEY }}
+
+      - name: Copy ssh key into container
+        run: |
+          docker cp ~/.ssh app.catroweb.test:~/.ssh
+          docker exec app.catroweb.test ls -la ~
+          docker exec app.catroweb.test ls -la ~/.ssh
 
       - name: Deploy
         run:
