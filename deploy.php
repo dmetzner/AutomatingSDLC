@@ -16,9 +16,23 @@ set('application', getenv('APP_NAME'));
 set('repository', getenv('DEPLOY_GIT'));
 set('git_tty', false);
 
+// Current user name. Defaults to the current git user name
+set('user', function () {
+  return runLocally('git config --get user.name');
+});
+
+// Override user with env file
+set('user', function () {
+  return getenv('DEP_USER');
+});
+
+// speedup the native ssh client
+set('ssh_multiplexing', true);
+
+
 // Slack Data
 set('slack_webhook', getenv(('SLACK_WEBHOOK')));
-set('slack_text', 'Web-Team deploying `{{branch}}` to *{{target}}*');
+set('slack_text', '{{user}} deploying `{{branch}}` to *{{target}}*');
 set('slack_success_text', 'Deploy to *{{target}}* successful');
 set('slack_success_color', '#4BB543');
 
