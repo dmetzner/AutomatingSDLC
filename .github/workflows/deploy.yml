@@ -46,10 +46,7 @@ jobs:
       - name: Install SSH key in container
         run: |
           docker cp ~/.ssh app.catroweb.test:/root/.ssh
-#          docker exec app.catroweb.test mkdir -p /root/.ssh
           docker exec app.catroweb.test chmod 700 /root/.ssh
-#          printf '\nDEPLOY_GIT=https://github.com/Catrobat/Catroweb-Symfony.git\n' >> id_rsa_tmp
-#          printf '\nDEPLOY_GIT=https://github.com/Catrobat/Catroweb-Symfony.git\n' >> known_hosts_tmp
           docker exec app.catroweb.test chmod 644 /root/.ssh/known_hosts
           docker exec app.catroweb.test chmod 600 /root/.ssh/id_rsa
       - name: Deploy
