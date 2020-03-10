@@ -1,4 +1,4 @@
-
+x
 # Runs all PhpSpec tests via docker in the latest ubuntu build
 
 name: PhpSpec Tests
