@@ -50,7 +50,7 @@ jobs:
           docker exec app.catroweb.test chmod 700 /root/.ssh
           docker exec app.catroweb.test touch /root/.ssh/id_rsa
           docker exec app.catroweb.test chmod 600 /root/.ssh/id_rsa
-          docker exec app.catroweb.test bash -c "echo '${{ secrets.DEP_WEBTEST_SSH_KEY }}' > /root/.ssh/id_rsa"
+          docker exec app.catroweb.test bash -c "printf '${{ secrets.DEP_WEBTEST_SSH_KEY }}' > /root/.ssh/id_rsa"
       - name: Deploy
         run:
           docker exec app.catroweb.test bin/dep deploy web-test
