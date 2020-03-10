@@ -48,6 +48,7 @@ jobs:
           docker cp ~/.ssh app.catroweb.test:/root/.ssh
           docker exec app.catroweb.test chmod 700 /root/.ssh
           docker exec app.catroweb.test chmod 644 /root/.ssh/known_hosts
+          docker exec app.catroweb.test chmod 644 /root/.ssh/config
           docker exec app.catroweb.test chmod 600 /root/.ssh/id_rsa
       - name: Deploy
         run:
