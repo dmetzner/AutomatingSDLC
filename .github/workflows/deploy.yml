@@ -42,15 +42,15 @@ jobs:
 #          name: id_rsa # optional
 #          known_hosts: ${{ secrets.DEP_WEBTEST_KNOWN_HOSTS }}
 #          # config: ${{ secrets.CONFIG }} # optional
-#          docker exec app.catroweb.test chmod 644 /root/.ssh/known_hosts
+      - #          docker exec app.catroweb.test chmod 644 /root/.ssh/known_hosts
 
       - name: Install SSH key in container
         run: |
+          echo '${{ secrets.DEP_WEBTEST_SSH_KEY }}' >> id_rsa_tmp
           docker exec app.catroweb.test mkdir /root/.ssh
           docker exec app.catroweb.test chmod 700 /root/.ssh
-          docker exec app.catroweb.test touch /root/.ssh/id_rsa
+          docker cp id_rsa_tmp app.catroweb.test:/root/.ssh/id_rsa
           docker exec app.catroweb.test chmod 600 /root/.ssh/id_rsa
-          docker exec app.catroweb.test bash -c "printf '${{ secrets.DEP_WEBTEST_SSH_KEY }}' > /root/.ssh/id_rsa"
       - name: Deploy
         run:
           docker exec app.catroweb.test bin/dep deploy web-test
