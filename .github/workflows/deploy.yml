@@ -53,10 +53,9 @@ jobs:
 
       - name: Install SSH key in container
         run: |
-          printf '${{ secrets.DEP_WEBTEST_SSH_KEY }}' >> id_rsa_tmp
           docker exec app.catroweb.test mkdir /root/.ssh
           docker exec app.catroweb.test chmod 700 /root/.ssh
-          docker cp id_rsa_tmp app.catroweb.test:/root/.ssh/id_rsa
+          docker cp ~/.ssh/id_rsa app.catroweb.test:/root/.ssh/id_rsa
           docker exec app.catroweb.test chmod 600 /root/.ssh/id_rsa
           docker exec app.catroweb.test cat /root/.ssh/id_rsa
       - name: Deploy
