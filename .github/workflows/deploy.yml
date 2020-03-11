@@ -1,9 +1,11 @@
 
+# Todo: other Servers, describe everything
+
 name: Deployment
 
 on:
   push:
-#    branches: [ master ]
+    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -53,3 +55,5 @@ jobs:
       - name: Deploy
         run:
           docker exec app.catroweb.test bin/dep deploy web-test
+          docker exec app.catroweb.test bin/dep deploy android
+          docker exec app.catroweb.test bin/dep deploy catblocks

@@ -1,4 +1,4 @@
-x
+
 # Runs all Behat test suites parallel using the matrix strategy via docker in the latest ubuntu build.
 
 name: Behat Tests
