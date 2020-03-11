@@ -27,6 +27,8 @@ jobs:
           printf '\nDEPLOY_GIT=https://github.com/Catrobat/Catroweb-Symfony.git\n' >> .env.local
           printf 'DEPLOY_WEBTEST=${{ secrets.DEP_WEBTEST_HOST }}\n' >> .env.local
           printf 'DEPLOY_WEBTEST_BRANCH="master"\n' >> .env.local
+          printf 'DEP_USER="Catroweb Github Action"\n' >> .env.local
+          printf 'SLACK_WEBHOOK=${{ secrets.SLACK_WEBHOOK }}\n' >> .env.local
 
       - name: Build Container
         run: |
@@ -34,23 +36,6 @@ jobs:
           docker-compose -f docker-compose.test.yml build
           docker-compose -f docker-compose.test.yml up -d
           docker exec app.catroweb.test apt-get --yes --force-yes install ssh
-
-#      - name: Install SSH key on Host
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.DEP_WEBTEST_SSH_KEY }}
-#          name: id_rsa # optional
-#          known_hosts: ${{ secrets.DEP_WEBTEST_KNOWN_HOSTS }}
-          # config: ${{ secrets.CONFIG }} # optional
-#          docker exec app.catroweb.test chmod 644 /root/.ssh/known_hosts
-#
-#      - name: Debug - check connection
-#        run: |
-#          wget https://ifconfig.co/
-#          cat index.html
-#          echo "---"
-#          docker exec app.catroweb.test wget https://ifconfig.co/
-#          docker exec app.catroweb.test cat index.html
 
       - name: Install SSH key in container
         run: |
