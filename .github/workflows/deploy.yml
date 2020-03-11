@@ -44,6 +44,14 @@ jobs:
           # config: ${{ secrets.CONFIG }} # optional
 #          docker exec app.catroweb.test chmod 644 /root/.ssh/known_hosts
 
+      - name: Debug - check connection
+        run: |
+          wget https://ifconfig.co/
+          cat index.html
+          echo "---"
+          docker exec app.catroweb.test wget https://ifconfig.co/
+          docker exec app.catroweb.test cat index.html
+
       - name: Debug
         run: |
           cd ~/.ssh
