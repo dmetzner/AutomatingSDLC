@@ -35,12 +35,12 @@ jobs:
           docker-compose -f docker-compose.test.yml up -d
           docker exec app.catroweb.test apt-get --yes --force-yes install ssh
 
-      - name: Install SSH key on Host
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.DEP_WEBTEST_SSH_KEY }}
-          name: id_rsa # optional
-          known_hosts: ${{ secrets.DEP_WEBTEST_KNOWN_HOSTS }}
+#      - name: Install SSH key on Host
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.DEP_WEBTEST_SSH_KEY }}
+#          name: id_rsa # optional
+#          known_hosts: ${{ secrets.DEP_WEBTEST_KNOWN_HOSTS }}
           # config: ${{ secrets.CONFIG }} # optional
 #          docker exec app.catroweb.test chmod 644 /root/.ssh/known_hosts
 
@@ -52,20 +52,19 @@ jobs:
           docker exec app.catroweb.test wget https://ifconfig.co/
           docker exec app.catroweb.test cat index.html
 
-      - name: Debug
-        run: |
-          cd ~/.ssh
-          ls -la
-          echo "---"
-          cat id_rsa
-
       - name: Install SSH key in container
         run: |
           docker exec app.catroweb.test mkdir /root/.ssh
           docker exec app.catroweb.test chmod 700 /root/.ssh
-          docker cp ~/.ssh/id_rsa app.catroweb.test:/root/.ssh/id_rsa
+          mkdir ssh_tmp
+          echo "${{ secrets.DEP_WEBTEST_SSH_KEY }}" > ssh_tmp/id_rsa
+          docker cp ssh_tmp/id_rsa app.catroweb.test:/root/.ssh/id_rsa
           docker exec app.catroweb.test chmod 600 /root/.ssh/id_rsa
-          docker exec app.catroweb.test cat /root/.ssh/id_rsa
+          docker cp app.catroweb.test:/etc/ssh/ssh_config ssh_tmp
+          echo "    StrictHostKeyChecking no" >> ssh_tmp/ssh_config
+          docker cp ssh_tmp/ssh_config app.catroweb.test:/etc/ssh/ssh_config
+          rm -rf ssh_tmp
+
       - name: Deploy
         run:
           docker exec app.catroweb.test bin/dep deploy web-test
