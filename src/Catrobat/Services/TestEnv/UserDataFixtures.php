@@ -119,12 +119,18 @@ class UserDataFixtures
     return UserDataFixtures::$default_user;
   }
 
+  /**
+   * @return User|null
+   */
   public function getCurrentUser()
   {
     return UserDataFixtures::$current_user;
   }
 
-  public function setCurrentUser(User $current_user)
+  /**
+   * @param User|null $current_user
+   */
+  public function setCurrentUser($current_user)
   {
     UserDataFixtures::$current_user = $current_user;
   }

@@ -2,7 +2,6 @@ Feature:
 
   Background:
     Given the server name is "pocketcode.org"
-    And I use a secure connection
     And the token to upload an apk file is "UPLOADTOKEN"
 
   Scenario: Transmit data needed to build the apk to jenkins

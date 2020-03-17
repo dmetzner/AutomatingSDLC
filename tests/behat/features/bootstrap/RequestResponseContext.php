@@ -348,10 +348,10 @@ class RequestResponseContext implements KernelAwareContext
    */
   public function jenkinsUploadsTheApkFileToTheGivenUploadUrl()
   {
-    $filepath = $this->FIXTURES_DIR.'/test.catrobat';
+    $filepath = $this->FIXTURES_DIR.'test.catrobat';
     Assert::assertTrue(file_exists($filepath), 'File not found');
     $temp_path = $this->getTempCopy($filepath);
-    $this->request_files[] = [
+    $this->request_files = [
       new UploadedFile($temp_path, 'test.apk'),
     ];
     $id = 1;
@@ -968,8 +968,8 @@ class RequestResponseContext implements KernelAwareContext
   public function iUploadAStandardCatrobatProgram()
   {
     $user = $this->insertUser();
-    $program = $this->getStandardProgramFile();
-    $response = $this->upload($program, $user, '1');
+    $file = $this->getStandardProgramFile();
+    $response = $this->upload($file, $user, '1');
     Assert::assertEquals(200, $response->getStatusCode(), 'Wrong response code. '.$response->getContent());
   }
 
@@ -2890,4 +2890,16 @@ class RequestResponseContext implements KernelAwareContext
       ' BuildType/'.$build_type.' Theme/'.$theme;
     $this->iUseTheUserAgent($user_agent);
   }
+
+  /**
+   * @When /^I upload a catrobat program with the phiro app$/
+   */
+  public function iUploadACatrobatProgramWithThePhiroProApp()
+  {
+    $user = $this->insertUser();
+    $program = $this->getStandardProgramFile();
+    $response = $this->upload($program, $user, 1,'phirocode');
+    Assert::assertEquals(200, $response->getStatusCode(), 'Wrong response code. ' . $response->getContent());
+  }
+
 }

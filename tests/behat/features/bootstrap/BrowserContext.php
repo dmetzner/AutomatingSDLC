@@ -73,35 +73,35 @@ class BrowserContext extends MinkContext implements KernelAwareContext
   /**
    * @Given /^the element "([^"]*)" should not exist$/
    *
-   * @param mixed $element
+   * @param mixed $locator
    *
    * @throws ExpectationException
    */
-  public function theElementShouldNotExist($element)
+  public function theElementShouldNotExist($locator)
   {
-    $this->assertSession()->elementNotExists('css', $element);
+    $this->assertSession()->elementNotExists('css', $locator);
   }
 
   /**
    * @Given /^the element "([^"]*)" should exist$/
    *
-   * @param mixed $element
+   * @param mixed $locator
    *
    * @throws ElementNotFoundException
    */
-  public function theElementShouldExist($element)
+  public function theElementShouldExist($locator)
   {
-    $this->assertSession()->elementExists('css', $element);
+    $this->assertSession()->elementExists('css', $locator);
   }
 
   /**
    * @Given /^the element "([^"]*)" should not be visible$/
    *
-   * @param mixed $element
+   * @param mixed $locator
    */
-  public function theElementShouldNotBeVisible($element)
+  public function theElementShouldNotBeVisible($locator)
   {
-    $element = $this->getSession()->getPage()->find('css', $element);
+    $element = $this->getSession()->getPage()->find('css', $locator);
     Assert::assertNotNull($element);
     Assert::assertFalse($element->isVisible());
   }
@@ -109,30 +109,28 @@ class BrowserContext extends MinkContext implements KernelAwareContext
   /**
    * @Then /^the element "([^"]*)" should have attribute "([^"]*)" with value "([^"]*)"$/
    *
-   * @param $element
+   * @param $locator
    * @param $attribute
    * @param $value
    */
-  public function theElementShouldHaveAttributeWith($element, $attribute, $value)
+  public function theElementShouldHaveAttributeWith($locator, $attribute, $value)
   {
-    $element = $this->getSession()->getPage()->find('css', $element);
+    $element = $this->getSession()->getPage()->find('css', $locator);
 
-    Assert::assertNotNull($element, $element.' not found!');
+    Assert::assertNotNull($element, $locator.' not found!');
     Assert::assertTrue($element->hasAttribute($attribute), 'Element has no attribute '.$attribute);
-    Assert::assertContains($value, $element->getAttribute($attribute),
-      '<'.$attribute.'> does not contain '.$value
-    );
+    Assert::assertContains($value, $element->getAttribute($attribute), '<'.$attribute.'> does not contain '.$value);
     Assert::assertTrue($element->isVisible(), 'Element is not visible.');
   }
 
   /**
    * @Then /^at least one "([^"]*)" element should be visible$/
    *
-   * @param $element
+   * @param $locator
    */
-  public function atLeastOneElementShouldBeVisible($element)
+  public function atLeastOneElementShouldBeVisible($locator)
   {
-    $elements = $this->getSession()->getPage()->findAll('css', $element);
+    $elements = $this->getSession()->getPage()->findAll('css', $locator);
     foreach ($elements as $e)
     {
       /** @var NodeElement $e */
@@ -141,19 +139,19 @@ class BrowserContext extends MinkContext implements KernelAwareContext
         return;
       }
     }
-    Assert::assertTrue(false, 'No '.$element.' element currently visible.');
+    Assert::assertTrue(false, 'No '.$locator.' element currently visible.');
   }
 
   /**
    * @Then /^the element "([^"]*)" should have type "([^"]*)"$/
    *
-   * @param $element
+   * @param $locator
    * @param $expected_type
    */
-  public function theElementShouldHaveType($element, $expected_type)
+  public function theElementShouldHaveType($locator, $expected_type)
   {
     $page = $this->getMink()->getSession()->getPage();
-    $type = $page->find('css', $element)->getAttribute('type');
+    $type = $page->find('css', $locator)->getAttribute('type');
     Assert::assertEquals($expected_type, $type);
   }
 
@@ -174,12 +172,12 @@ class BrowserContext extends MinkContext implements KernelAwareContext
    * @Then /^I enter "([^"]*)" into visible "([^"]*)"$/
    *
    * @param mixed $text
-   * @param mixed $selector
+   * @param mixed $locator
    */
-  public function iEnterIntoVisibleField($text, $selector)
+  public function iEnterIntoVisibleField($text, $locator)
   {
-    $fields = $this->getSession()->getPage()->findAll('css', $selector);
-    Assert::assertLessThanOrEqual(1, count($fields), "No field with selector '{$selector}' found");
+    $fields = $this->getSession()->getPage()->findAll('css', $locator);
+    Assert::assertLessThanOrEqual(1, count($fields), "No field with selector '{$locator}' found");
     foreach ($fields as $field)
     {
       /** @var NodeElement $field */
@@ -321,14 +319,14 @@ class BrowserContext extends MinkContext implements KernelAwareContext
   /**
    * @Then I wait for the element :selector to be visible
    *
-   * @param $selector
+   * @param $locator
    *
    * @throws ResponseTextException
    */
-  public function iWaitForTheElementToBeVisible($selector)
+  public function iWaitForTheElementToBeVisible($locator)
   {
     /** @var NodeElement $element */
-    $element = $this->getSession()->getPage()->find('css', $selector);
+    $element = $this->getSession()->getPage()->find('css', $locator);
     $timeout_in_seconds = 15;
     for ($timer = 0; $timer < $timeout_in_seconds; ++$timer)
     {
@@ -339,22 +337,22 @@ class BrowserContext extends MinkContext implements KernelAwareContext
       sleep(1);
     }
 
-    $message = "The element '{$selector}' was not visible after a {$timeout_in_seconds} seconds timeout";
+    $message = "The element '{$locator}' was not visible after a {$timeout_in_seconds} seconds timeout";
     throw new ResponseTextException($message, $this->getSession());
   }
 
   /**
    * @Then I wait for the element :selector to contain :text
    *
-   * @param $selector
+   * @param $locator
    * @param $text
    *
    * @throws ResponseTextException
    */
-  public function iWaitForTheElementToContain($selector, $text)
+  public function iWaitForTheElementToContain($locator, $text)
   {
     /** @var NodeElement $element */
-    $element = $this->getSession()->getPage()->find('css', $selector);
+    $element = $this->getSession()->getPage()->find('css', $locator);
     $timeout_in_seconds = 15;
     for ($timer = 0; $timer < $timeout_in_seconds; ++$timer)
     {
