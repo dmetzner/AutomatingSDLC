@@ -91,3 +91,12 @@ services:
     arguments:
       - "%catrobat.test.directory.target%"
       - "%catrobat.file.extract.path%"
+
+  # ======== Data fixtures helper services
+  App\Catrobat\Services\TestEnv\ProjectDataFixtures:
+    class: App\Catrobat\Services\TestEnv\ProjectDataFixtures
+    public: true
+
+  App\Catrobat\Services\TestEnv\UserDataFixtures:
+    class: App\Catrobat\Services\TestEnv\UserDataFixtures
+    public: true

@@ -32,7 +32,6 @@ public/**
 !public/robots.txt
 
 ### tests ###
-tests/behat/sqlite/**
 tests/style-report/**
 !tests/style-report/catroweb.xml
 tests/testreports/behat/**

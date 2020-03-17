@@ -12,8 +12,8 @@ Feature: As a project owner, I should be able to give credits for my project.
       | 2  | project 2 | OtherUser |
       | 3  | project 3 | Catrobat  |
     And following projects are featured:
-      | id | project   | url | active | priority |
-      | 1  | project 1 |     | yes    | 1        |
+      | name      | active | priority |
+      | project 1 | 1      | 1        |
 
   Scenario: I should not see the report button for my own projects
     Given I log in as "Catrobat"
