@@ -312,14 +312,10 @@ trait SymfonySupport
     return $this->getUserDataFixtures()->insertUser($config, $andFlush);
   }
 
-  /**
-   * @param array $config
-   */
   public function assertUser(array $config = [])
   {
     $this->getUserDataFixtures()->assertUser($config);
   }
-
 
   public function computeAllLikeSimilaritiesBetweenUsers()
   {

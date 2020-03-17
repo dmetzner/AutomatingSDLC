@@ -1,0 +1,371 @@
+<?php
+
+use App\Catrobat\Services\TestEnv\SymfonySupport;
+use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\DriverException;
+use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\ResponseTextException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\Symfony2Extension\Context\KernelAwareContext;
+use PHPUnit\Framework\Assert;
+
+/**
+ * Class BrowserContext.
+ */
+class BrowserContext extends MinkContext implements KernelAwareContext
+{
+  use SymfonySupport;
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //  Session Handling
+  //--------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @BeforeScenario
+   */
+  public function setup()
+  {
+    $this->getMink()->restartSessions();
+    $this->getSession()->resizeWindow(320 + 15, 1024);
+  }
+
+  /**
+   * @AfterScenario
+   */
+  public function resetSession()
+  {
+    $this->getSession()->getDriver()->reset();
+  }
+
+  /**
+   * @Given I start a new session
+   */
+  public function iStartANewSession()
+  {
+    $this->getMink()->restartSessions();
+  }
+
+  /**
+   * @Then /^I ensure pop ups work$/
+   */
+  public function iEnsurePopUpsWork()
+  {
+    try
+    {
+      $this->getSession()->getDriver()->executeScript('window.confirm = function(){return true;}');
+    }
+    catch (UnsupportedDriverActionException | DriverException $e)
+    {
+      Assert::assertTrue(
+        false,
+        "Driver doesn't support JS injection. For Chrome this is needed since it cant deal with pop ups"
+      );
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //  Assert Page Content
+  //--------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @Given /^the element "([^"]*)" should not exist$/
+   *
+   * @param mixed $element
+   *
+   * @throws ExpectationException
+   */
+  public function theElementShouldNotExist($element)
+  {
+    $this->assertSession()->elementNotExists('css', $element);
+  }
+
+  /**
+   * @Given /^the element "([^"]*)" should exist$/
+   *
+   * @param mixed $element
+   *
+   * @throws ElementNotFoundException
+   */
+  public function theElementShouldExist($element)
+  {
+    $this->assertSession()->elementExists('css', $element);
+  }
+
+  /**
+   * @Given /^the element "([^"]*)" should not be visible$/
+   *
+   * @param mixed $element
+   */
+  public function theElementShouldNotBeVisible($element)
+  {
+    $element = $this->getSession()->getPage()->find('css', $element);
+    Assert::assertNotNull($element);
+    Assert::assertFalse($element->isVisible());
+  }
+
+  /**
+   * @Then /^the element "([^"]*)" should have attribute "([^"]*)" with value "([^"]*)"$/
+   *
+   * @param $element
+   * @param $attribute
+   * @param $value
+   */
+  public function theElementShouldHaveAttributeWith($element, $attribute, $value)
+  {
+    $element = $this->getSession()->getPage()->find('css', $element);
+
+    Assert::assertNotNull($element, $element.' not found!');
+    Assert::assertTrue($element->hasAttribute($attribute), 'Element has no attribute '.$attribute);
+    Assert::assertContains($value, $element->getAttribute($attribute),
+      '<'.$attribute.'> does not contain '.$value
+    );
+    Assert::assertTrue($element->isVisible(), 'Element is not visible.');
+  }
+
+  /**
+   * @Then /^at least one "([^"]*)" element should be visible$/
+   *
+   * @param $element
+   */
+  public function atLeastOneElementShouldBeVisible($element)
+  {
+    $elements = $this->getSession()->getPage()->findAll('css', $element);
+    foreach ($elements as $e)
+    {
+      /** @var NodeElement $e */
+      if ($e->isVisible())
+      {
+        return;
+      }
+    }
+    Assert::assertTrue(false, 'No '.$element.' element currently visible.');
+  }
+
+  /**
+   * @Then /^the element "([^"]*)" should have type "([^"]*)"$/
+   *
+   * @param $element
+   * @param $expected_type
+   */
+  public function theElementShouldHaveType($element, $expected_type)
+  {
+    $page = $this->getMink()->getSession()->getPage();
+    $type = $page->find('css', $element)->getAttribute('type');
+    Assert::assertEquals($expected_type, $type);
+  }
+
+  /**
+   * @Then /^the element "([^"]*)" should not have type "([^"]*)"$/
+   *
+   * @param $element
+   * @param $expected_type
+   */
+  public function theElementShouldNotHaveType($element, $expected_type)
+  {
+    $page = $this->getMink()->getSession()->getPage();
+    $type = $page->find('css', $element)->getAttribute('type');
+    Assert::assertNotEquals($expected_type, $type);
+  }
+
+  /**
+   * @Then /^I enter "([^"]*)" into visible "([^"]*)"$/
+   *
+   * @param mixed $text
+   * @param mixed $selector
+   */
+  public function iEnterIntoVisibleField($text, $selector)
+  {
+    $fields = $this->getSession()->getPage()->findAll('css', $selector);
+    Assert::assertLessThanOrEqual(1, count($fields), "No field with selector '{$selector}' found");
+    foreach ($fields as $field)
+    {
+      /** @var NodeElement $field */
+      if ($field->isVisible())
+      {
+        $field->setValue($text);
+
+        return;
+      }
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //  Error Logging
+  //--------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @AfterStep
+   */
+  public function makeScreenshot(AfterStepScope $scope)
+  {
+    if (!$scope->getTestResult()->isPassed())
+    {
+      $this->saveScreenshot(null, $this->SCREENSHOT_DIR);
+    }
+  }
+
+  /**
+   * @When /^I get page content$/
+   */
+  public function iGetPageContent()
+  {
+    var_dump($this->getSession()->getPage()->getContent());
+    die;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //  Interacting with the web page
+  //--------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @When /^I click "([^"]*)"$/
+   *
+   * @param $arg1
+   *
+   * @throws ElementNotFoundException
+   */
+  public function iClick($arg1)
+  {
+    $arg1 = trim($arg1);
+
+    $this->assertSession()->elementExists('css', $arg1);
+
+    $this
+      ->getSession()
+      ->getPage()
+      ->find('css', $arg1)
+      ->click()
+    ;
+  }
+
+  /**
+   * @When /^I click browser's back button$/
+   */
+  public function iClickBrowsersBackButton()
+  {
+    $this->getSession()->back();
+  }
+
+  /**
+   * @Given /^the element "([^"]*)" should be visible$/
+   *
+   * @param $element
+   */
+  public function theElementShouldBeVisible($element)
+  {
+    $element = $this->getSession()->getPage()->find('css', $element);
+    Assert::assertNotNull($element);
+    Assert::assertTrue($element->isVisible());
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //  WAIT - Sometimes it is necessary to wait to prevent timing issues
+  //--------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * {@inheritdoc}
+   */
+  public function iAmOnHomepage()
+  {
+    $this->visitPath('/');
+    $this->iWaitForThePageToBeLoaded();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function visit($page)
+  {
+    $this->visitPath($page);
+    $this->iWaitForThePageToBeLoaded();
+  }
+
+  /**
+   * Try to use this function only if it is not possible to define a waiting condition.
+   *
+   * @When /^I wait (\d+) milliseconds$/
+   *
+   * @param $milliseconds
+   */
+  public function iWaitMilliseconds($milliseconds)
+  {
+    $this->getSession()->wait($milliseconds);
+  }
+
+  /**
+   * Waits until a page is fully loaded.
+   *
+   * @Given I wait for the page to be loaded
+   */
+  public function iWaitForThePageToBeLoaded()
+  {
+    $this->getSession()->wait(15000, "document.readyState === 'complete'");
+    $this->iWaitForAjaxToFinish();
+  }
+
+  /**
+   * Wait for AJAX to finish.
+   *
+   * @Given /^I wait for AJAX to finish$/
+   */
+  public function iWaitForAjaxToFinish()
+  {
+    $this->getSession()->wait(15000,
+      '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))'
+    );
+  }
+
+  /**
+   * @Then I wait for the element :selector to be visible
+   *
+   * @param $selector
+   *
+   * @throws ResponseTextException
+   */
+  public function iWaitForTheElementToBeVisible($selector)
+  {
+    /** @var NodeElement $element */
+    $element = $this->getSession()->getPage()->find('css', $selector);
+    $timeout_in_seconds = 15;
+    for ($timer = 0; $timer < $timeout_in_seconds; ++$timer)
+    {
+      if ($element->isVisible())
+      {
+        return;
+      }
+      sleep(1);
+    }
+
+    $message = "The element '{$selector}' was not visible after a {$timeout_in_seconds} seconds timeout";
+    throw new ResponseTextException($message, $this->getSession());
+  }
+
+  /**
+   * @Then I wait for the element :selector to contain :text
+   *
+   * @param $selector
+   * @param $text
+   *
+   * @throws ResponseTextException
+   */
+  public function iWaitForTheElementToContain($selector, $text)
+  {
+    /** @var NodeElement $element */
+    $element = $this->getSession()->getPage()->find('css', $selector);
+    $timeout_in_seconds = 15;
+    for ($timer = 0; $timer < $timeout_in_seconds; ++$timer)
+    {
+      if ($element->getText() === $text)
+      {
+        return;
+      }
+      sleep(1);
+    }
+
+    $message = "The text '{$text}' was not found after a {$timeout_in_seconds} seconds timeout";
+    throw new ResponseTextException($message, $this->getSession());
+  }
+}

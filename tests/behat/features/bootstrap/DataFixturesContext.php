@@ -612,17 +612,6 @@ class DataFixturesContext implements KernelAwareContext
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
   /**
    * @Given /^there are like similar users:$/
    */

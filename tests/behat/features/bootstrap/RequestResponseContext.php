@@ -39,7 +39,6 @@ class RequestResponseContext implements KernelAwareContext
    */
   private $username;
 
-
   /**
    * @var string
    */
@@ -100,6 +99,11 @@ class RequestResponseContext implements KernelAwareContext
    * @var array
    */
   private $checked_catrobat_remix_backward_relations;
+
+  /**
+   * @var Program ToDo to fixtures
+   */
+  private $my_program;
 
   public function getKernelBrowser(): KernelBrowser
   {
@@ -347,7 +351,7 @@ class RequestResponseContext implements KernelAwareContext
     $filepath = $this->FIXTURES_DIR.'/test.catrobat';
     Assert::assertTrue(file_exists($filepath), 'File not found');
     $temp_path = $this->getTempCopy($filepath);
-    $this->request_files = [
+    $this->request_files[] = [
       new UploadedFile($temp_path, 'test.apk'),
     ];
     $id = 1;
@@ -978,7 +982,7 @@ class RequestResponseContext implements KernelAwareContext
     Assert::assertEquals(200, $response->getStatusCode());
     $responseArray = json_decode($response->getContent(), true);
     $returned_programs = $responseArray['CatrobatProjects'];
-    Assert::assertEmpty($returned_programs, "Projects were returned");
+    Assert::assertEmpty($returned_programs, 'Projects were returned');
   }
 
   /**
@@ -2177,11 +2181,6 @@ class RequestResponseContext implements KernelAwareContext
   }
 
   /**
-   * @var Program ToDo to fixtures
-   */
-  private $my_program;
-
-  /**
    * @Given /^I submit a program to this gamejam$/
    *
    * @throws Exception
@@ -2413,7 +2412,6 @@ class RequestResponseContext implements KernelAwareContext
     $this->submit($file, $this->getUserDataFixtures()->getCurrentUser());
   }
 
-
   /**
    * @When I fill out the google form
    */
@@ -2446,8 +2444,6 @@ class RequestResponseContext implements KernelAwareContext
       ->getResponse()
       ->getContent());
   }
-
-
 
   // to df ->
 
@@ -2778,6 +2774,38 @@ class RequestResponseContext implements KernelAwareContext
   }
 
   /**
+   * @Given /^I request from a (debug|release) build of the Catroid app$/
+   *
+   * @param $build_type
+   */
+  public function iRequestFromASpecificBuildTypeOfCatroidApp($build_type)
+  {
+    $this->iUseTheUserAgentParameterized('0.998', 'PocketCode', '0.9.60', $build_type);
+  }
+
+  /**
+   * @Given /^I request from an ios app$/
+   */
+  public function iRequestFromAnIOSApp()
+  {
+    // see org.catrobat.catroid.ui.WebViewActivity
+    $platform = 'iPhone';
+    $user_agent = ' Platform/'.$platform;
+    $this->iUseTheUserAgent($user_agent);
+  }
+
+  /**
+   * @Given /^I request from a specific "([^"]*)" themed app$/
+   *
+   * @param $theme
+   */
+  public function iUseASpecificThemedApp($theme)
+  {
+    $this->iUseTheUserAgentParameterized('0.998', 'PocketCode', '0.9.60',
+      'release', $theme);
+  }
+
+  /**
    * @param $filepath
    */
   private function sendUploadRequest($filepath)
@@ -2862,37 +2890,4 @@ class RequestResponseContext implements KernelAwareContext
       ' BuildType/'.$build_type.' Theme/'.$theme;
     $this->iUseTheUserAgent($user_agent);
   }
-
-  /**
-   * @Given /^I request from a (debug|release) build of the Catroid app$/
-   *
-   * @param $build_type
-   */
-  public function iRequestFromASpecificBuildTypeOfCatroidApp($build_type)
-  {
-    $this->iUseTheUserAgentParameterized('0.998', 'PocketCode', '0.9.60', $build_type);
-  }
-
-  /**
-   * @Given /^I request from an ios app$/
-   */
-  public function iRequestFromAnIOSApp()
-  {
-    // see org.catrobat.catroid.ui.WebViewActivity
-    $platform = 'iPhone';
-    $user_agent = ' Platform/'.$platform;
-    $this->iUseTheUserAgent($user_agent);
-  }
-
-  /**
-   * @Given /^I request from a specific "([^"]*)" themed app$/
-   *
-   * @param $theme
-   */
-  public function iUseASpecificThemedApp($theme)
-  {
-    $this->iUseTheUserAgentParameterized('0.998', 'PocketCode', '0.9.60',
-      'release', $theme);
-  }
-
 }
