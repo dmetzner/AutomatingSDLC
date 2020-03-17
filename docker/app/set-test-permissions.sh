@@ -8,6 +8,7 @@
 #
 mkdir -p var/log/test
 mkdir -p var/cache/test/sessions
+mkdir -p var/cache/test/profiler
 ## ~~
 
 # Symfony 4+ Permissions

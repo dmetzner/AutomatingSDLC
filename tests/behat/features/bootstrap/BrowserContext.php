@@ -14,6 +14,8 @@ use PHPUnit\Framework\Assert;
 
 /**
  * Class BrowserContext.
+ *
+ * Configures the Mink WebBrowser and provides basic utilities to check and interact with an web page.
  */
 class BrowserContext extends MinkContext implements KernelAwareContext
 {
@@ -184,49 +186,15 @@ class BrowserContext extends MinkContext implements KernelAwareContext
   }
 
   /**
-   * @Then /^I enter "([^"]*)" into visible "([^"]*)"$/
+   * @Given /^the element "([^"]*)" should be visible$/
    *
-   * @param mixed $text
-   * @param mixed $locator
+   * @param $element
    */
-  public function iEnterIntoVisibleField($text, $locator)
+  public function theElementShouldBeVisible($element)
   {
-    $fields = $this->getSession()->getPage()->findAll('css', $locator);
-    Assert::assertLessThanOrEqual(1, count($fields), "No field with selector '{$locator}' found");
-    foreach ($fields as $field)
-    {
-      /** @var NodeElement $field */
-      if ($field->isVisible())
-      {
-        $field->setValue($text);
-
-        return;
-      }
-    }
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  //  Error Logging
-  //--------------------------------------------------------------------------------------------------------------------
-
-  /**
-   * @AfterStep
-   */
-  public function makeScreenshot(AfterStepScope $scope)
-  {
-    if (!$scope->getTestResult()->isPassed())
-    {
-      $this->saveScreenshot(null, $this->SCREENSHOT_DIR);
-    }
-  }
-
-  /**
-   * @When /^I get page content$/
-   */
-  public function iGetPageContent()
-  {
-    var_dump($this->getSession()->getPage()->getContent());
-    die;
+    $element = $this->getSession()->getPage()->find('css', $element);
+    Assert::assertNotNull($element);
+    Assert::assertTrue($element->isVisible());
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -243,15 +211,8 @@ class BrowserContext extends MinkContext implements KernelAwareContext
   public function iClick($arg1)
   {
     $arg1 = trim($arg1);
-
     $this->assertSession()->elementExists('css', $arg1);
-
-    $this
-      ->getSession()
-      ->getPage()
-      ->find('css', $arg1)
-      ->click()
-    ;
+    $this->getSession()->getPage()->find('css', $arg1)->click();
   }
 
   /**
@@ -263,38 +224,29 @@ class BrowserContext extends MinkContext implements KernelAwareContext
   }
 
   /**
-   * @Given /^the element "([^"]*)" should be visible$/
+   * @Then /^I enter "([^"]*)" into visible "([^"]*)"$/
    *
-   * @param $element
+   * @param mixed $text
+   * @param mixed $locator
    */
-  public function theElementShouldBeVisible($element)
+  public function iEnterIntoVisibleField($text, $locator)
   {
-    $element = $this->getSession()->getPage()->find('css', $element);
-    Assert::assertNotNull($element);
-    Assert::assertTrue($element->isVisible());
+    $fields = $this->getSession()->getPage()->findAll('css', $locator);
+    Assert::assertLessThanOrEqual(1, count($fields), "No field with selector '{$locator}' found");
+    foreach ($fields as $field)
+    {
+      /** @var NodeElement $field */
+      if ($field->isVisible())
+      {
+        $field->setValue($text);
+        return;
+      }
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   //  WAIT - Sometimes it is necessary to wait to prevent timing issues
   //--------------------------------------------------------------------------------------------------------------------
-
-  /**
-   * {@inheritdoc}
-   */
-  public function iAmOnHomepage()
-  {
-    $this->visitPath('/');
-    $this->iWaitForThePageToBeLoaded();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function visit($page)
-  {
-    $this->visitPath($page);
-    $this->iWaitForThePageToBeLoaded();
-  }
 
   /**
    * Try to use this function only if it is not possible to define a waiting condition.
@@ -380,5 +332,29 @@ class BrowserContext extends MinkContext implements KernelAwareContext
 
     $message = "The text '{$text}' was not found after a {$timeout_in_seconds} seconds timeout";
     throw new ResponseTextException($message, $this->getSession());
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //  Error Logging
+  //--------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @AfterStep
+   */
+  public function makeScreenshot(AfterStepScope $scope)
+  {
+    if (!$scope->getTestResult()->isPassed())
+    {
+      $this->saveScreenshot(null, $this->SCREENSHOT_DIR);
+    }
+  }
+
+  /**
+   * @When /^I get page content$/
+   */
+  public function iGetPageContent()
+  {
+    var_dump($this->getSession()->getPage()->getContent());
+    die;
   }
 }
