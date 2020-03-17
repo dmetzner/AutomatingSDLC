@@ -27,10 +27,6 @@ chmod o+w public/resources_test/ -R
 # some test dirs must be writable
 chmod o+w tests -R
 
-# Make sure the sqlite db exists and has the right permissions
-touch tests/behat/sqlite/behattest.sqlite
-chmod o+w+x tests/behat/sqlite/ -R
-
 # Jwt tokens need ssh keys with full access
 mkdir -p config/jwt
 openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:catroweb

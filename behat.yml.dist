@@ -55,92 +55,97 @@ default:
         admin:
             paths:    [ "tests/behat/features/admin" ]
             contexts:
-                - AdminFeatureContext:
-                    - "tests/testreports/screens/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
         api-authentication:
             paths:    [ "tests/behat/features/api/authentication" ]
             contexts:
+                - RefreshEnvironmentContext
                 - DataFixturesContext
                 - RequestResponseContext
 
-        deprecated_api_general:
+        deprecated-api-general:
             paths:    [ "tests/behat/features/api/deprecated/general" ]
             contexts:
-                - ApiFeatureContext:
-                    - "tests/testreports/behat/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
-        deprecated_api_profile:
+        deprecated-api-profile:
             paths:    [ "tests/behat/features/api/deprecated/profile" ]
             contexts:
-                - ApiFeatureContext:
-                    - "tests/testreports/behat/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
-        deprecated_api_project:
+        deprecated-api-project:
             paths:    [ "tests/behat/features/api/deprecated/project" ]
             contexts:
-                - ApiFeatureContext:
-                    - "tests/testreports/behat/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
-        deprecated_api_upload:
+        deprecated-api-upload:
             paths:    [ "tests/behat/features/api/deprecated/upload" ]
             contexts:
-                - ApiFeatureContext:
-                    - "tests/testreports/behat/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
         ci:
             paths:    [ "tests/behat/features/ci" ]
             contexts:
-                - CiFeatureContext:
-                    - "tests/testreports/behat/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
         flavor:
             paths:    [ "tests/behat/features/flavor" ]
             contexts:
-                - FlavorFeatureContext:
-                    - "tests/testreports/behat/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
-        web_general:
+        web-general:
             paths:    [ "tests/behat/features/web/general" ]
             contexts:
-                - WebFeatureContext:
-                    - "tests/testreports/screens/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
-        web_profile:
+        web-profile:
             paths:    [ "tests/behat/features/web/profile" ]
             contexts:
-                - WebFeatureContext:
-                    - "tests/testreports/screens/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
-        web_project:
+        web-project:
             paths:    [ "tests/behat/features/web/project" ]
             contexts:
-                - WebFeatureContext:
-                    - "tests/testreports/screens/"
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
         gamejam:
-            filters:
-                tags: "~@web&&~@javascript"
             paths:    [ "tests/behat/features/gamejam" ]
             contexts:
-                - GamejamFeatureContext:
-                    - "tests/testreports/behat/"
-
-        gamejam_web:
-            filters:
-                tags: "@web~"
-            paths:    [ "tests/behat/features/gamejam" ]
-            contexts:
-                - GamejamWebContext:
-                    - "tests/testreports/behat/"
-
-        gamejam_javascript:
-            filters:
-                tags: "@javascript"
-            paths:    [ "tests/behat/features/gamejam" ]
-            contexts:
-                - GamejamJavascriptContext
-
+                - RefreshEnvironmentContext
+                - DataFixturesContext
+                - FeatureContext
+                - RequestResponseContext
 
 # --------------------------------------------------------------------------------------------------
 # Exclude specific tests based on their tags here:
