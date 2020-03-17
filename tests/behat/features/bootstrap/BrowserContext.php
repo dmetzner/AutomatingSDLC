@@ -143,6 +143,21 @@ class BrowserContext extends MinkContext implements KernelAwareContext
   }
 
   /**
+   * @Then /^no "([^"]*)" element should be visible$/
+   *
+   * @param $locator
+   */
+  public function atLeastOneElementShouldNotBeVisible($locator)
+  {
+    $elements = $this->getSession()->getPage()->findAll('css', $locator);
+    foreach ($elements as $element)
+    {
+      /* @var NodeElement $element */
+      Assert::assertFalse($element->isVisible(), 'Found visible '.$locator.' element.');
+    }
+  }
+
+  /**
    * @Then /^the element "([^"]*)" should have type "([^"]*)"$/
    *
    * @param $locator

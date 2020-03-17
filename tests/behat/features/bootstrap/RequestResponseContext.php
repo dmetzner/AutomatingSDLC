@@ -84,6 +84,7 @@ class RequestResponseContext implements KernelAwareContext
    */
   private $kernel_browser;
 
+
   // to df ->function
   /**
    * @var array
@@ -101,9 +102,10 @@ class RequestResponseContext implements KernelAwareContext
   private $checked_catrobat_remix_backward_relations;
 
   /**
-   * @var Program ToDo to fixtures
+   * @var Program
    */
   private $my_program;
+
 
   public function getKernelBrowser(): KernelBrowser
   {
