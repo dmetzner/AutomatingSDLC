@@ -131,6 +131,14 @@ class ProgramManager
   }
 
   /**
+   * @return FeaturedRepository
+   */
+  public function getFeaturedRepository()
+  {
+    return $this->featured_repository;
+  }
+
+  /**
    * Check visibility of the given project for the current user.
    *
    * @return bool
@@ -144,7 +152,7 @@ class ProgramManager
 
     if (!$project->isVisible())
     {
-      if (!$this->featured_repository->isFeatured($project))
+      if (!$this->featured_repository->isFeatured($project) || !$project->getApproved())
       {
         return false;
       }
@@ -202,6 +210,7 @@ class ProgramManager
       return null;
     }
 
+    /** @var Program $old_program */
     $old_program = $this->findOneByNameAndUser($extracted_file->getName(), $request->getUser());
     if (null !== $old_program)
     {
@@ -518,16 +527,18 @@ class ProgramManager
   }
 
   /**
-   * @param $array
-   *
-   * @return array|Program[]|StarterCategory[]
-   *
    * @internal
    * ATTENTION! Internal use only! (no visible/private/debug check)
+   *
+   * @param null $limit
+   * @param null $offset
+   *
+   * @return array|Program[]|StarterCategory[]
+   * @return array
    */
-  public function findBy($array)
+  public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
   {
-    return $this->program_repository->findBy($array);
+    return $this->program_repository->findBy($criteria);
   }
 
   /**
