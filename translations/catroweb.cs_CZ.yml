@@ -1,0 +1,856 @@
+---
+#---
+#homepage translation
+localLanguage: Angličtina
+username: Uživatelské jméno
+password: Heslo
+accountSettings: Account Settings
+email: E-mail
+aboutPocketCode: O Pocket Code
+aboutCatrobat: O Catrobat
+tutorials: Tutoriál
+googlePlay: Google Play
+iosAppStore: IOS App store
+passwordsNoMatch: Hesla se neshodují.
+error: Chyba
+cancel: Zrušit
+report: Nahlásit
+deleteIt: Yes, delete it!
+reportIt: Yes, report it!
+areYouSure: Are you sure?
+noWayOfReturn: There is no way to restore your actions!
+download: Download the project
+description: Popis
+noDescription: Žádný popis není k dispozici
+credits: Credits
+noCredits: No credits available.
+country: Stát
+loginText: Přihlásit
+privacyPolicy: Ochrana soukromí
+imprint: Tiráž
+somethingWentWrong: 'Ooooops něco se pokazilo.'
+pleaseTryAgain: 'Prosím, zkuste to znovu!'
+oldVersionError: 'Aktualizujte na nejnovější verzi Pocket Code!'
+more: 'více'
+less: 'Méně'
+show-more: 'Show more'
+show-less: 'Show less'
+ok: OK
+clickToDownloadProgram: 'To download the example project click %link_start% here %link_end%.'
+registrationError: 'Uživatelské jméno nebo e-mailová adresa je již použita.'
+notifications: 'Oznámení'
+allNotifications: 'All Notifications'
+FollowersNotifications: 'Followers'
+LikeNotifications: 'Likes'
+likesNotificationsTitle: 'Like Notifications'
+followersNotificationsTitle: 'Follower Notifications'
+commentsNotificationsTitle: 'Comment Notifications'
+CommentNotifications: 'Komentáře'
+oldnotification: 'Old Notifications'
+wellDone: "Výborně!"
+done: "Hotovo!"
+notificationsReadMessage: "It looks like you dont have any notifications."
+notificationsClearedMessage: "Všechna oznámení byly označeny jako přečtené."
+deleteNotificationConfirmation: "Are you sure?"
+notificationDeleteMessage: "Are you Sure you want to delete this Notification?"
+notificationDeleteAllMessage: "Are you Sure you want to delete all Notifications?"
+confirmMessage: "Yes, delete it"
+cancelMessage: "Zrušit"
+notificationsAllMessagesDeleted: "All notifications have been deleted."
+notificationDeletedMessage: "Notification has been successfully deleted."
+clearAllNotificationsButtonTitle: "Označit vše jako přečtené"
+deleteAllNotificationsButtonTitle: "Delete all"
+notificationsClearError: "Nelze označit oznámení jako přečtené!"
+notificationsDeleteError: "Unable to delete notifications!"
+pleaseWait: "Prosím čekejte..."
+indexPage:
+  recommendedSection:
+    info:
+      title: 'What projects are recommended here?'
+      description: 'The more Likes (including "Thumbs up", "Laugh", "Love" and "Woow!") your project receives, the higher it appears in this list.'
+programs:
+  welcome:
+    title: Welcome to Catrobat's %theme%
+    subtitle: Vytvářejte příběhy, hry a mnohem více...
+    download: Stáhněte si aplikaci
+    statistics: Více statistik
+  featured: Nabízený
+  newest: Newest projects
+  recommended: Recommended projects
+  noPrograms: There are currently no projects.
+  deleteConfirmation: |+
+    Are you sure?
+    Are you sure you want to delete "%programName%"?
+    There is no way to restore your actions!
+    Yes, delete it!
+    Cancel
+  changeVisibility: |+
+    Are you sure?
+    If you set '%programName%' to private, it will not be seen or found by other users.
+    You can still share the link of your project with your friends. You can toggle the visibility tapping the padlock icon.
+    If you set "%programName%" to public, it can be seen and found by other users.
+    Yes, set to public
+    Yes, set to private
+    No
+  reportCommentConfirmation: Are you sure you want to report this comment?
+  deleteCommentConfirmation: Are you sure you want to delete this comment?
+  deleteAccountConfirmation: |+
+    Account Deletion?
+    Are you sure that you want to delete your account? This will also delete your uploaded projects and comments!
+    There is no way to restore your actions!
+    Yes, delete it!
+    Cancel
+  tooLongDescription: The project description is too long!
+  rudeWordsInDescription: You can't use rude words in your description!
+  tooLongCredits: The project credits are too long!
+  rudeWordsInCredits: You can't use rude words in your credits!
+  most:
+    viewed: Nejnavštěvovanější
+    downloaded: Nejvíce stahované
+  random: Random projects
+  related: Related projects
+  downloads: '%downloads% stahování'
+  sample: Example projects
+  views: '%views% zobrazení'
+  likeThumbsUpDetailText: '{0}0 lidé dalo palec nahrů na tomto |{1}1 člověk dává palec nahorů na tomto |] 1, Inf]%persons% lidí dává palec nahorů na tomto'
+  likeSmileDetailText: '{0}0 lidí se tomuto smějí |{1}1 osoba se tomuto směje |] 1, Inf]%persons% se tomuto smějí'
+  likeLoveDetailText: '{0}0 lidé to milují |{1}1 člověk to miluje |] 1, Inf]%persons% lidí se to líbit'
+  likeWowDetailText: '{0}0 lidí tomuto říká, "Vau!" |{1}1 osoba tomuto říká "Vau!" |] 1, Inf]%persons% lidé tomuto říkají "Vau!"'
+  remixes: '{0}0 remixy |{1}1 remix |] 1, Inf]%remixes% remixy'
+  newRemixesNotificationTitle: '|{1} "%programName%" má 1 nový remix: |] 1, Inf] "%programName%" má nové remixy %remixes%:'
+  submitted: Submitted Projects
+  uploaded: Uploaded Projects
+  reportAsInappropriate: Nahlásit jako nevhodné
+  reportProgram: Report project
+  languageVersion: 'Catrobat jazyková verze: %languageVersion%'
+  reportLoginText: Please %login% to report this project.
+  reportDialogHeader: Why do you want to report this project?
+  reportDialogReason: Zadejte důvod
+  reportRadioButtonInappropriate: It's inappropriate
+  reportRadioButtonCopyright: Copyright infringement
+  reportRadioButtonSpam: It's spam
+  reportRadioButtonDislike: I don't like it
+  reportOwnProgram: You cannot flag your own project.
+  reportAlready: You've already flagged this project.
+  reportDone: You reported this project!
+  updateAppHeader: Aktualizace aplikace.
+  updateAppText: Please update your app to the newest version to be able to download this project.
+  btnClosePopup: Ok
+  checkout_this_program: Checkout this Catrobat project
+  show_more: Zobrazit více
+  comments: Komentáře
+  send: Odeslat
+  delete: Smazat
+  report: Nahlásit
+  report_popup: Komentář byl úspěšně nahlášen.
+  report_popup_header: Nahlášeno
+  deleted_popup: The comment was successfully deleted.
+  deleted_popup_header: Deleted
+  noAdminRights: You have no admin rights. Please Log in as an Admin.
+  editDescription: Edit the project Description
+  saveDescription: Save Description change
+  editCredits: Edit the project Credits
+  saveCredits: Save Credits change
+  addComment: Write a comment
+  thumbsUp: Thumbs up!
+  smile: Smile!
+  love: Love!
+  wow: Wooow!
+  linkTitle: Link
+  link: Copy project link to clipboard
+remixGraph:
+  showRemixGraph: 'Zobrazit graf Remixů'
+  by: 'o'
+  open: 'Otevřít '
+  showPaths: 'Zobrazit dráhy'
+  programNotAvailableErrorTitle: 'Promiň...'
+  programNotAvailableErrorDescription: 'The project is not available any more!'
+  programNotAvailable: 'Není k dispozici.'
+  programUnknownUser: 'Neznámý uživatel'
+noReply: This is an automated message - Please do not reply directly to this email.
+accountConfirmation:
+  subject: Your Catrobat Account Confirmation
+  message: |
+    Dear %username%.
+    To finish activating your account - please visit %confirmationUrl%
+    This link can only be used once to validate your account.
+    Best regards,
+    Your Catrobat Team.
+  messageHtml: |
+    <p>
+    Dear %username%.<br>
+    <br>
+    To finish activating your account - please click <a href=%confirmationUrl%>here.</a><br>
+    <br>
+    This link can only be used once to validate your account.<br>
+    <br>
+    Best regards,<br>
+    Your Catrobat Team.
+    </p>
+passwordRecovery:
+  subject: Vaše Catrobat heslo obnovení
+  message: |
+    Dear %username%.
+
+    You have requested to reset your password on %appplication_url% because you have forgotten your password.
+    If you did not request this, please ignore it. It will expire and become useless in 24 hours time.
+
+    To reset your password and create a new one, please visit the following page: %confirmationUrl%
+
+    You can use your username and your password at any time to access the %appplication_url% community.
+    To do so, just visit the following page: %loginPage%
+    To edit your profile details, go to this page: %profilePage%
+
+    Best regards,
+    Your Catrobat Team.
+  messageHtml: |
+    <p>
+    Dear %username%.<br>
+    <br>
+    You have requested to reset your password on <a href=%appplication_url%>Pocket Code</a> because you have forgotten your password.
+    If you did not request this, please ignore it. It will expire and become useless in 24 hours time.<br>
+    <br>
+    To reset your password and create a new one, please click <a href=%confirmationUrl%>here.</a><br>
+    <br>
+    You can use your username and your password at any time to access the <a href=%appplication_url%>Pocket Code</a> community.<br>
+    To do so, just visit the following page: <a href=%loginPage%>Login Page</a><br>
+    To edit your profile details, go to this <a href=%profilePage%>page</a>.<br>
+    <br>
+    Best regards,<br>
+    Your Catrobat Team.
+    </p>
+profile:
+  edit: Edit your profile
+  saveChanges: Uložit změny
+  newPass: nové heslo
+  repeatPass: Opakujte heslo
+  oldPass: old password
+  firstEmail: Můj první email
+  secondEmail: Můj druhý e-mail
+  myPrograms: My projects
+  follows: Follows
+  follower: Follower
+  unfollowUser: Unfollow this user!
+  followUser: Follow this user!
+  amountOfPrograms: Amount of projects
+  form:
+    passwordTooShort: Nové heslo musí mít alespoň %length% znaků.
+    passwordTooLong: Nové heslo může mít maximálně %length% znaků.
+    passwordIsUsername: Heslo se musí lišit od uživatelského jména.
+    passwordWrong: Nesprávné heslo
+    emailNotValid: Tato e-mailová adresa není platná.
+    emailMissing: Chyba při aktualizaci této e-mailové adresy. Musíš mít alespoň jednu ověřenou e-mailovou adresu.
+    emailExists: Tato e-mailová adresa je již zaregistrována.
+    usernameNotValid: This username is not valid.
+    usernameMissing: You must have a username.
+    usernameExists: This username already exists.
+    submitSuccess: Uloženo!
+  reallyDeleteProgram: Do you really want to delete your project
+  programsOf: Projects of
+  changePicture: Změnit obrázek
+  avatar:
+    noImage: No Image!
+    pictureTooLarge: Zvolený obrázek je příliš velký, nepoužívejte prosím obrázky větší než 5 MB.
+    uploadError: Omlouváme se, ale došlo k potížím během odesílání!
+    noSupport: Tento typ obrázku není podporován, zkus prosím jiný obrázek.
+myprofile:
+  editProfile: Upravit profil
+  edit: Úpravy
+  done: Hotovo
+  checkMail: An email was sent to your email address. Please check your inbox.
+  passwordUpdated: Your password was successfully updated.
+  avatar: Obrázek
+  email: E-mail
+  editAvatar: Upravit obrázek
+  editUsername: Upravit uživatelské jméno
+  editPassword: Změnit heslo
+  editCountry: Změnit stát
+  editEmail: Změnit E-Mail
+  deleteAccount: Smazat účet
+  deleteAccountText: Are you sure that you want to delete your accout? This will delete your uploaded projects and comments!
+  editAccountSettings: Edit account settings
+  notChangeVisibility: Can not change visibility
+  notChangeVisibilityReason: The language version of your project is too high and thus it can not be set to visible.
+licenseToPlay:
+  link: 'Licence'
+  title: 'Licence k hraní - cituj zdroje a sdílej'
+  text1: Imagine that each Catrobat project is a cake, a very special cake that comes with its recipe (programming blocks). All members of the Catrobat community share their cakes along with their recipes. This means that you can enjoy the cakes and learn how to make them yourself!
+  text2: 'Neexistují žádné tajné recepty: návody jak upéct tyto dortíky jsou otevřeny pro každého, k použití, předělání, úpravě a slouží jako inspirace pro nové nápady... Mám na mysli dortíky.'
+  text3: "Můžeš jíst tyto dortíky, stejně jako kopírovat recepty jiných lidí k vytvoření vlastního, možná s jinými přísadami. Tato svoboda je podmíněna dvěma malými požadavky:"
+  text4: "Při zakládání komunity Catrobat jsme se rozhodli přijmout tento přístup, protože jsme přesvědčeni, že podporuje učení a tvořivost v rámci komunity. Sdílením receptů a ingrediencí (skriptů a kreseb) mohou lidé stavět na nápadech jiných a prospěch z toho budou mít všichni."
+  text5: In designing the Catrobat website, we included features to encourage people to share and to give credit to others. On each project page, you can always download the original scripts for the project. If you remix a project (modifying the scripts or artwork, and sharing the result), we encourage you to give credit in the Project Notes, mentioning the people and project that inspired you.
+  text6: 'Další informace o podmínkách použití on-line komunity Catrobat nalezneš na %link-termsOfUse%.'
+  list1:
+    item1: sdílej své dortíky spolu s receptem
+    item2: cituj ty, kteří tě inspirovali
+  version: Verze 1.1, 2. dubna 2013
+termsOfUse:
+  title: Podmínky použití
+  headline: Vítejte do Catrobot Community!
+  text1: 'As part of the Catrobat community, you are sharing projects and ideas with people:'
+  text2: "Potřebujeme vaši pomoc, aby se tato komunita stala podpůrným místem pro každého člena. Zde je, jak můžete pomoci:"
+  text3: "Through the Catrobat project we want to foster cooperation and allow everyone's creativity to combine for the benefit of all of humanity. You also can become an active member of the Catrobat community by giving your projects back to the community as a gift, in the same way as other active members are giving their projects to you:"
+  text4: 'Náš dárek pro vás:'
+  text5: 'Naše podmínky používání a služby:'
+  list1:
+    item1: z mnoha různých zemí a kultur
+    item2: of all ages (from young children to teens and grandparents)
+    item3: with all levels of experience
+  list2:
+    item1: Be respectful. When sharing projects, please remember that people of many different ages and backgrounds will see your contributions.
+    item2: "Give credit. Feel free to make modified versions of other people's projects - just make sure to give them credit. One place to give credit is in your project's credits section. Please see the paragraph below this dotted list for details about modifying projects of other users."
+    item3: "Buďte upřímní. Nevydávejte se za někoho, kdo nejste nebo neklamte komunitu."
+    item4: "Keep personal information private. Don't share your email address, phone number, or other personal contact information."
+    item5: "Help keep the site friendly. If you feel others would find a project or comment mean, insulting, too violent, or otherwise inappropriate, just click the 'report as inappropriate' button and leave a short explanation. The Catrobat team will review your report and may remove any project, comment, or post."
+  list3:
+    item1: "By uploading a project to our websites, you accept and agree to put this work under certain free licenses of uploaded Catrobat projects. Similar to the free licenses under which the Catrobat system itself is available to you, these free licenses of uploaded Catrobat projects give everyone the right to learn from work previously uploaded by others and to adapt and remix that work to build their own new fascinating games, animations, and other projects. This allows everyone to 'stand on the shoulders of one's peers', one of them being you! Your work will thus benefit the whole world and remain free for everyone to use, a bit similar to text and pictures freely contributed to Wikipedia by volunteers from all over the world. Think of it as your present to humanity: you give to everyone, and all others that upload their work to our websites give to you. Thus an uploaded project is a gift of great value which its owner is giving to you for free, with the condition that you participate in the community on the same terms."
+    item2: You do not have to accept the gift; if you do, certain rules apply. The benefits of these rules are that you can learn from the work and build upon it to make even cooler stuff yourself, which you can then, e.g., again upload to our websites as your own. Another benefit is that these licenses make sure that you cannot be held liable for any problems arising to others through their use of your project.
+    item3: "One important additional condition is that you clearly give attribution to the authors on whose works you based your own work. At the same time, we will work hard so that your work will be clearly appreciated by others to having been contributed by you, by giving attribution to the unique name you have freely chosen to represent you in Catrobat's community, and by giving others the opportunity to express their gratitude to you in public ways for having given your work to everyone, and in particular to them."
+    item4: 'Please consult %link-licenseUploaded% for the precise legal terms and conditions.'
+  list4:
+    item1: "We offer all our own software and Internet resources related to the Catrobat system, e.g., the software written by the Catrobat team, our websites and Internet resources, our own source code related to the Catrobat system, and all additional included materials such as, e.g., pictures, sounds, and texts, now and in the future to you under Catrobat's free licenses."
+    item2: These licenses make all parts of Catrobat both free of charge to you as well as free in the sense of giving you the freedom to use them however you like, with only a few restrictions ensuring, among others, that the Catrobat system will forever remain free and useful for everyone.
+    item3: 'Please consult %link-licenseToPlay% for the precise legal terms and conditions. The source code of the Catrobat system as well as many other documents and resources are available via %link-developer%.'
+  list5:
+    item1: 'If you, or, if you are below 13 years of age, your parents or legal guardians, are associated with an organization involved in or responsible for dragnet type privacy violations and/or bulk or mass surveillance, then you are not allowed to use our software applications and to access our services. The precise details of this restriction and certain exceptions to it are delineated in Sections 4.a and 4.b on our %link-termsOfUse%.'
+    item2: If you are under 13 years of age, then you have to ask your parents or legal guardians whether they allow you to use Catrobat’s Software Applications and Services.
+    item3: "We reserve the rights to reject, delete, or hide projects, user accounts, and any digital materials uploaded to Catrobat's websites at any time in our sole discretion, for instance if we find that a project contains inappropriate material or that a user infringes on the rights of other persons."
+    item4: "All of Catrobat's software and Internet resources are offered in the hope that they will be useful, but without any warranty."
+    item5: 'Please consult our %link-termsOfUse% developer.catrobat.org/terms_of_use_and_service for precise formulations of above points and some additional legal terms and conditions.'
+  bottom1: Check back here from time-to-time, because we are always trying to improve our Terms of Use.
+  bottom2: 'Please mail any suggestions regarding these Terms of Use to %email-webmaster%.'
+  version: Version 1.3, 4 March 2014
+help:
+  stepByStep:
+    title: "Úvod krok za krokem"
+    start: "Starting position:"
+    description: |
+      Here you create your first project, an interactive postcard using the following walkthrough videos.
+      You have to follow the instructions given to you.
+      During the creation of the postcard, the basics of Pocket Code that you need for your future projects are mediated.
+      After these guided videos, all other activities will give you more freedom to create your own personal Pocket Code projects.
+    step1:
+      title: 'Make a new project'
+      detail:
+        text1: 'Tap on "New".'
+        text2: 'Enter a project name, select "Create empty project" and tap "OK".'
+    step2:
+      title: "Create a new object"
+      detail:
+        text1: 'Tap:'
+        text2: 'Choose the source of the first look of your new object.'
+        text3: 'Enter an object name and tap "OK" to create the object.'
+        special1: 'Draw a new look.'
+        special2: 'Choose from gallery.'
+        special3: 'Take a picture.'
+    step3:
+      title: "Start Moving"
+      detail:
+        text1: 'Tap:'
+        text2: 'The first brick we use is out of the category "Motion".'
+        text3: 'Choose the "Glide" brick. The object will move to the new position defined with the brick on the stage.'
+        text4: 'The brick is now floating. To paste it, move the brick to the desired position. You can also move already inserted bricks by tapping the brick until it is floating again.'
+        text5: 'Tap "Play" to go to the stage and see the object gliding.'
+        text6: 'Use the Android Back Button to get back from the stage.'
+    step4:
+      title: "Change Look"
+      description: "You can change the look of your object."
+      detail:
+        text1: 'Choose the "Switch to look" brick. With this brick you can choose a look or create a new one.'
+        text2: 'Snap the brick underneath the "Glide" - brick.'
+        text3: 'Tap into the dropdown field to create a new look.'
+        text4: 'Choose the source of the image like before.'
+        text5: 'Now you have to select the new image.'
+        text6: 'Tap play to see the behaviour on the stage.'
+    step5:
+      title: "Vyslovit"
+      description: "Now you will find out how to make an object talk."
+      detail:
+        text1: 'Choose the "Speak" brick. The object speaks the text, when this brick is executed.'
+        text2: 'Snap the brick underneath the "Switch to look" brick.'
+        text3: 'Tap play to see the behaviour on the stage.'
+    step6:
+      title: 'Again and again'
+      description: "This step shows you how to repeat behaviour of objects."
+      detail:
+        text1: 'Choose the "Forever" brick. Everything in the loop repeats forever.'
+        text2: 'Snap the “Forever” brick underneath the "When project started" - brick.'
+        text3: 'Add another "Glide" brick.'
+        text4: 'Snap the "Glide" brick aboth the "End of loop" brick.'
+        text5: 'Tap into the text field of the x and y value and set to 0.'
+        text6: 'Tap play to see the behaviour on the stage.'
+    step7:
+      title: "Tapping is everything"
+      description: 'You can also control the behaviour of the object when the project is running on the stage.'
+      detail:
+        text1: 'Choose the "When tapped" brick. Every brick underneath the "When tapped" will be executed one time when you tap the object on the stage.'
+        text2: 'Place the "When tapped" underneath the other bricks.'
+        text3: 'Choose the "Turn right" brick and snap it underneath the "When tapped" brick.'
+        text4: 'Now you have this script.'
+        text5: 'Tap play to see the behaviour on the stage. If you now tap on the object, it spins.'
+    step8:
+      title: "Copy, delete or edit a brick"
+      detail:
+        text1: 'Single tap on the left side of each brick opens the context menu. There you can move, copy, delete or edit the values of the brick with the formula editor.'
+    step9:
+      title: "Navigation in the app"
+      detail:
+        text1: 'Use the Android Back Button to navigate in the app.'
+        text2: 'Go back one screen to the overview of your object. Here you can go into the scripts and also to an powerful representation of the looks and sounds of the object. There you can rename, copy add or delete looks and sounds.'
+        text3: 'Use again the Android Back Button to get to the overview of your objects and your background.'
+    step10:
+      title: "Change the background"
+      description: "This is the overview of your objects and your project's background."
+      detail:
+        text1: 'The background is like an object, but you just can have one background.'
+        text2: 'You can add scripts, sounds and look in the same way to the background object.'
+    step11:
+      title: "Main Menu"
+      description: "Use the Android Back Button to get to this screen."
+      detail:
+        text1: 'Continue with your currently opened project.'
+        text2: 'Add a new project.'
+        text3: 'See all your local projects.'
+        text4: 'Go to the help site and discuss with other users.'
+        text5: 'Explore the world of the Pocket Code projects. Download and remix projects you like.'
+        text6: 'Upload the project that is currently opened.'
+  tutorialcards:
+    title: "Tutoriál"
+    description1: "Tyto tutoriály ti ukážou, jak používat účinné triky v Pocket Code."
+    getReady: "Get Ready:"
+    tryCode: "Try this code:"
+    doIt: "Do it:"
+    tip: "Extra Tip:"
+    card1:
+      title: "Změnit velikost"
+      description: "Změň velikost objektu."
+      one: "Vlož objekt, kterého chceš změnit velikost, např. Animal."
+      two: "Vlož následující kostky do skriptů objektu, abys ho zmenšil (na 20 % původní velikosti) po poklepání."
+    card2:
+      title: "Change Look"
+      description: "Změň vzhled objektu."
+      one: "Vlož objekt, kterému chceš změnit vzhled, např. items."
+      two: "Vlož další obrázky do vzhledu objektu."
+      three: "Vlož následující kostky do skriptů objektu, aby neustále měnil svůj vzhled po jedné sekundě."
+    card3:
+      title: "Animace"
+      description: "Animace objektů"
+      one: "Přidej objekt, který chceš, aby se pohyboval."
+      two: "Vlož další obrázek, který bude představovat pohyb, do vzhledu objektu."
+      three: "Vlož následující kostky do skriptů objektu, abys neustále měnil polohu objektu po určité době. Navíc můžeš zajistit, aby se odrážel po dotyku okraje obrazovky."
+    card4:
+      title: "Hýbat"
+      description: "Nech svůj objekt proplouvat obrazovkou."
+      one: "Přidej objekt, který chceš, aby se pohyboval na obrazovce, např. plane."
+      two: "Vlož následující kostky a urči oblast, v které by se měl objekt pohybovat."
+    card5:
+      title: "Přehrát zvuk"
+      description: "Přehraj zvuk klepnutím na objekt."
+      one: "Přidej objekt, který chceš, aby přehrál zvuk."
+      two: "Vlož následující kostky, abys přehrál zvuk. Vyber zvuk ze své knihovny, knihovny médií Pocket Code nebo nahraj vlastní zvuk."
+    card6:
+      title: "Vyslovit"
+      description: "Nech svůj objekt promluvit."
+      one: "Přidej objekt, který chceš, aby mluvil, např. Carrie."
+      two: "Vlož následující kostky, abys mohl spustit zvuk."
+    card7:
+      title: "Senzory"
+      description: "Ovládej objekt pomocí senzoru náklonu."
+      one: "Přidej objekt, který chceš, aby se pohyboval na obrazovce."
+      two: "Vlož následující kostky, abys ovládal objekt pomocí senzorů tvého telefonu. Proto vyber \"sklon_x\" a \"sklon_y\". Abys posunul objektem o náklon telefonu, přidej \"-sklon_x\" a \"-sklon_y\" k souřadnicím objektu. Jestliže je pohyb objektu příliš citlivý na náklon, vyděl sklon například 10."
+    card8:
+      title: "Kompas"
+      description: "Vytvoř si svůj vlastní kompas"
+      one: "Přidej objekt, který bude znázorňovat střelku kompasu."
+      two: "Vlož následující kostky, abys nastavil orientaci objektu. Poté vlož nekonečnou smyčku."
+    card9:
+      title: "Vysílat"
+      description: "Posílej zprávy z jednoho objektu do druhého."
+      one: "Přidej nový objekt, např. Alice, který by měl vyslat zprávu. Potom přidej druhé pozadí ke vzhledu pozadí. Jakmile toto pozadí příjme vyslanou zprávu, změní svůj vzhled."
+      two: "Přidej kostku \"Vysílat\" a urči, co by se mělo stát, když ten druhý objekt příjme zprávu."
+      three: "V tomto případě se pozadí změní, když klepneš na objekt v přední vrstvě."
+    card10:
+      title: "Zobrazit proměnné"
+      description: "Zobraz hodnotu proměnné."
+      one: "Přidej objekt, který chceš, aby se pohyboval pomocí senzorů tvého telefonu (podívej se na %tutorial_card_link_7% Tutoriál č. 7 %link_end%). Poté přidej druhé pozadí, na které by se mělo změnit, když příjme vyslanou zprávu."
+      two: "Vlož následující kostky, aby se aktuální pozice x a y pohybujícího se objektu vložily do proměnných."
+      three: "Pomocí \"Show variable\" můžeš zobrazit hodnoty proměnných na obrazovce."
+    card11:
+      title: "Detekce srážky"
+      description: "Detekuj srážku dvou objektů."
+      one: "Přidej dva objekty, z nichž jeden, např. Alex, by se měl pohybovat pomocí senzorů telefonu. (podívej se na %tutorial_card_link_7% Tutoriál č.7 %link_end%)."
+      two: "Ulož aktuální pozici x a y pohybujícího se objektu Alex (podívej se na %tutorial_card_link_10% Tutoriál č. 10 %link_end%) a vlož následující skripty. Sleduj, až se objekty začnou překrývat. V tomto případě by měl nepohyblivý objekt zmizet."
+    card12:
+      title: "Rozpoznávání obličeje"
+      description: "Ovládání objektu pomocí funkce rozpoznávání tváře."
+      one: "Nejprve se v Nastavení ujisti, že je funkce detekce obličeje zapnutá."
+      two: "Přidej nový objekt a vlož následující kostky, aby se po rozeznání tváře tento objekt ukázal. Přidej funkci rozpoznávání tváře do nekonečné smyčky. Pokud kamera rozpozná obličej, hodnota proměnné je \"TRUE\", jinak je \"FALSE\"."
+  starterPrograms:
+    title: "Starter Projects"
+    description: "Try out these starter projects. Look inside to make changes and add your ideas."
+    categories:
+      games: "Hry"
+      animations: "Animace"
+      interactive: "Interaktivní umění a příběhy"
+      music: "Hudba a tanec"
+  gameJam:
+    title: "How to upload a Pocket Code game to the Game Jolt Site?"
+    text0: "First congratulations on your game! Now you can upload it on %link% in order to create a stand-alone Android app, which you then can upload on the Game Jolt site."
+    title1: "Registration"
+    text1: "First you need to create an account. After that you can upload your created project. Don’t worry it is easy and you only need to think of a username and a password. After filling out both, click on ‘Login or Register’. That’s it!"
+    title2: "Nahrát"
+    text2: "After the registration process you are able to upload your game. Just think about a name and add a description. Also add #AliceJam150 in the description field."
+    title3: "Search for your project"
+    text3: "Go to your Pocket Code profile where all your projects are listed or search directly for your project by using the search and your project name."
+    title4: "Create Android app"
+    text4: "Directly on the project detail page you can create an Android app. By clicking on ‘Prepare app’ the app will be built."
+    title5: "Download app"
+    text5: "After the building process you can download your project as an app. This downloaded app needs to be uploaded again directly on the Game Jolt Site in order to participate in the %link%."
+    title6: "Register/Login at GameJolt.com"
+    text6: "Visit %link% and click on ‘Log In’ or 'Sign Up!' in the menu. If you already have an account just log in, if not, you need to register with your Email address, Username and Password."
+    title7: "Upload your game on the Game Jolt Site"
+    text7: "After you're logged in, go to your dashboard. There you can add your game. First you have to click on ‘Accept rules’. Then fill out the game information. As Engine/Language/Creation Tool choose 'Other' and add to the field Other Engine/Language/Tool 'Android'. As 'Development' status choose 'Finished/Stable'. Make sure to include #AliceJam150 in the description so it appears on the %link% page."
+    text7_1: "Before you can publish your game, follow the next steps. You must at least add a ‘thumbnail image’, set a ‘maturity rating’, and upload your games by clicking on ‘build/files’."
+    text7_2: "Click on ‘Add Package’ and fill fill out the package information. Save it and add the release. "
+    text7_3: "Now you can upload the apk of your project. You find the downloaded app in your download folder. It is best to use a data explorer (e.g. es data explorer)."
+    text7_4: "Note: If the app is missing its suffix ‘.apk’, you have to add ‘.apk’ manually. Just rename the file. Now you should be able to upload it."
+    text7_5: "After the upload click on ‘OK’ to publish your game. This will later show people a link to download your game."
+    text7_6: "You have now uploaded your first game on the Game Jolt site and set it as active. Congratulations!"
+    text7_7: "Other people will now be able to find your game and it will appear on the %link% page."
+  aliceGameJamTutorialcards:
+    title1: "Vítej ve světě pohádek"
+    subtitle1: "Animuj postavičky a ovládej je poklepnutím"
+    description1: |
+      Nauč se oživit jednu ze svých postaviček jednoduchou animací a ovládni pohyb svých postaviček, když na ně poklepeš. Toto video ti ukáže, jak můžeš jednoduše animovat své postavičky použitím různých vzhledů. Dále ti ukážeme, jak vytvořit událost "po poklepnutí" a jak posílat zprávy mezi objekty.
+    title2: "Zachraň Alici!"
+    subtitle2: "Použij senzory náklonu a detekuj srážku objektů"
+    description2: "Tady se naučíš, jak řídit postavičku pomocí senzorů náklonu tvého telefonu. Můžeš řídit Alicin pohyb nakláněním svého mobilu doleva nebo doprava. Zhlédni náš tutoriál a nech objekty náhodně padat z nebe a získej zkušenosti s detekcí srážek s jinými objekty."
+    title3: "Kloboučník - udeř a běž"
+    subtitle3: "Vytvoř pohyblivou krajinu a ovládej Kloboučníkův pohyb"
+    description3: "V tomto tutoriálu se naučíš vytvořit krajinu, která vypadá, jako by se hýbala. Uděláme to pohybem objektů podél obrazovky k vytvoření iluze pohybu. Také ti ukážeme, jak pohybovat Kloboučníkem nakláněním telefonu."
+    title4: "Kloboučník - udeř a běž"
+    subtitle4: "Nech Kloboučníka střílet na zlé karty"
+    description4: "V tomto tutoriálu ti ukážeme, jak vytvořit nepřátele, kteří se budou náhodně pohybovat proti tvé postavičce. Kromě toho se naučíš, jak nechat Kloboučníka střílet čajové sušenky a pomocí detekce srážky ověřit, zda byli nepřátelé zasaženi."
+    title5: "Tref Šklíbu"
+    subtitle5: "Vytvoř skóre pomocí proměnných"
+    description5: "V tomto tutoriálu ti ukážeme, jak použít proměnné k vytvoření skóre. Skóre jsou užitečné prvky v hrách. Naše skóre ti ukáže, kolikrát jsi trefil kočku."
+    title6: "Králičí závod"
+    subtitle6: "Vytvoř pohyblivé pozadí"
+    description6: |
+      Tento tutoriál ti ukáže, jak vytvořit vertikálně se pohybující pozadí posouváním grafiky určitým způsobem. Další věcí, kterou tě naučíme, je vytvoření postavičky skákajíci při poklepání na ni. Aby byla hra trochu obtížnější, ukážeme ti, jak zpomalovat tvou postavičku v průběhu hry.
+    download: "Download the project"
+oauth:
+  username_header: Thank you for signing up to Pocket Code!
+  username_chooser: 'Please choose a username:'
+  username_hint: The username should not be your real name.
+  usernameTaken: Username already taken, please choose a different one.
+search:
+  dotdotdot: Hledat...
+  search: Hledat
+  results: Výsledky vyhledávání
+  resultcount: Bylo nalezeno %count% výsledků
+  fail: Please enter at least a single search term
+menu:
+  profile: Můj profil
+  login: Přihlásit se
+  logout: Odhlásit se
+  admin: Admin
+  home: Home
+  helpAndTutorials: Help & Tutorials
+login:
+  login: Přihlásit se
+  passOrUser: Your password or username was incorrect.
+  noUsername: Your username or email address was not found.
+  forgotPass: Forgot password or username?
+  recoverPass: Recover password
+  recoverPassSend: An email was sent to your email address. Please check your inbox.
+  alreadyReset: The password for this user has already been requested within the last 24 hours.
+  confirmationSend: An email to confirm your registration was sent to your mail address. Please check your inbox and activate your account.
+  userOrEmail: Username or Email
+  changePass: Change password
+  createAccount: Create an account
+  noAccount: Don't have an account!
+  alreadyAccount: Already having an account?
+  or: OR
+  username: Uživatelské jméno
+  email: E-mail
+  passwordFirst: Heslo
+  passwordSecond: Password Confirm
+apk:
+  download: Download as app
+  prepare: 'Prepare app'
+  preparing: 'Preparing app'
+  text: 'The process may take a while'
+#api
+errors:
+  username:
+    blank: Username must not be blank
+    invalid: Your username is invalid
+    exists: This username already exists.
+    not_exists: This username does not exist.
+    not_email: The username must not be an email address.
+    size: The username must have at least 3 character and not more than 180
+  password:
+    blank: The password is missing.
+    short: 'Your password must have at least {{ limit }} characters.'
+  description:
+    rude: Description must not contain rude wordes.
+  credit:
+    rude: Credits must not contain rude words.
+  country:
+    blank: The country is missing.
+    invalid: Invalid country
+  email:
+    blank: email must not be blank
+    invalid: Your email seems to be invalid
+    exists: Tato e-mailová adresa je již zaregistrována.
+  id:
+    blank: Open Authentication ID must not be blank
+  login: The password or username was incorrect.
+  post-data: POST-Data not correct or missing!
+  checksum:
+    missing: Client did not send fileChecksum! Are you using an outdated version of Pocket Code?
+    invalid: invalid checksum
+  xml:
+    invalid: invalid code xml
+    missing: 'unknown error: project_xml_not_found!'
+  file:
+    unexpected: unexpected file found
+    invalid: invalid file
+  image.missing: Project XML mentions a file which does not exist in project-folder
+  unknown: unknown error
+  token: 'Authentication of device failed: invalid auth-token!'
+  uploadTokenAuthFailed: 'Upload Token auth failed.'
+  programname:
+    rude: Project name must not contain rude wordes.
+  program:
+    invalid: Invalid project.
+  languageversion:
+    tooold: 'Sorry, your project contains an old version of the Catrobat language! Are you using the latest version of Pocket Code?'
+  programversion:
+    tooold: 'Sorry, you are using an old version of Pocket Code. Please update to the latest version.'
+  authentication:
+    title: Autentizace selhala
+    webview: |
+      Your user credentials are wrong.
+      Please try to log in again in the app.
+success:
+  text: Success
+  registration: Registration successful!
+  token: ok
+  upload: Your project was uploaded successfully!
+  imgUpload: Your image was uploaded successfully!
+  report: Your report was successfully sent!
+time:
+  minutes.ago: 'Před {0} < 1 minutou |Před {1}1 |] 1, Inf] %count% min'
+  hours.ago: 'Před {1}1 hodinou|] 1, Inf] %count% hodinami'
+  days.ago: 'Před {1}1 dnem |]1,Inf] %count% dny'
+  months.ago: 'Před {1}1 měsícem |]1,Inf] %count% měsíci'
+  years.ago: 'Před {1}1 rokem |] 1, Inf] více než 1 rokem'
+failure:
+  upload: There was an error during the upload of your app.
+#languages and countries
+language:
+  arabic: Arabic
+  bulgarian: Bulgarian
+  catalan: Catalan
+  chinese_simplified_han: Chinese (Simplified Han)
+  chinese_traditional_han: Chinese (Traditional Han)
+  croatian: Croatian
+  czech: Czech
+  danish: Danish
+  dutch: Dutch
+  english_united_kingdom: English (United Kingdom)
+  english_united_states: English (United States)
+  estonian: Estonian
+  filipino: Filipino
+  finnish: Finnish
+  french: French
+  german: German
+  greek: Greek
+  hebrew: Hebrew
+  hindi: Hindi
+  hungarian: Hungarian
+  indonesian: Indonesian
+  italian: Italian
+  japanese: Japanese
+  korean: Korean
+  latvian: Latvian
+  lithuanian: Lithuanian
+  malay: Malay
+  norwegian: Norwegian
+  persian: Persian
+  polish: Polish
+  portuguese_brazil: Portuguese (Brazil)
+  portuguese_portugal: Portuguese (Portugal)
+  romanian: Romanian
+  russian: Russian
+  serbian: Serbian
+  slovak: Slovak
+  slovenian: Slovenian
+  spanish_latin_america: Spanish (Latin America)
+  spanish_spain: Spanish (Spain)
+  swedish: Swedish
+  thai: Thai
+  turkish: Turkish
+  ukrainian: Ukrainian
+  vietnamese: Vietnamese
+ci:
+  generate: Generate Apk
+  pending: Generating Apk
+  download: Download Apk
+gamejam:
+  nojam: Sorry, there is no game jam at this time
+  submit: Submit to %gamejamname%
+  whats: What's the %gamejamname%?
+  submitown:
+    header: be aware
+    subheader: You can only submit your own projects
+    text: |
+      But why not create your own!
+      Take part in the %gamejamtag%
+tag-text: Tags
+extenstion-text: Extensions
+tags:
+  constant:
+    tag1: Game
+    tag2: Animace
+    tag3: Story
+    tag4: Music
+    tag5: Art
+    tag6: Experimental
+    tag7: Tutorial
+admin:
+  maintain:
+    diskMaintenance: Disk maintenance
+    ramMaintenance: RAM maintenance
+    noRemovableObjects: No removable objects available.
+    removableObjects: Removable objects
+    manualBackups: Manual backups
+    noRemovableBackupObjects: No removable backup files on this server.
+    btnCreateBackup: Create backup
+    btnDownloadBackup: Download backup
+    btnRestoreBackup: Restore backup
+    btnDeleteBackup: Delete backup
+    createBackupConfirmationTitle: Create backup file
+    createBackupConfirmationText: This process may take a while. The page will reload afterwards!
+recommender:
+  similarPrograms: Similar projects
+  mostDownloadedProgramsOfUsersThatAlsoDownloadedOtherPrograms: Users Who Downloaded This Project Also Downloaded
+  moreFromThisUser: More from %username%
+pmd:
+  submitBtn: Submit your project
+  submitBox:
+    header: Submission
+    text: You are about to submit your project. Please enter the project code and click send.
+    btnText: Submit
+  successful:
+    text: Your project upload was successful.
+  failed:
+    text: Project upload failed.
+codeview:
+  showCode: 'Zobrazit zdrojový kód'
+  hideCode: 'Hide code'
+  showStatistics: 'Show code statistics'
+  hideStatistics: 'Hide code statistics'
+  cantDisplayCode: "Code can't be displayed"
+  cantDisplayStatistics: "Code can't be displayed"
+  totalNumberOf: 'Total number of'
+  scenes: 'scenes'
+  scripts: 'scripts'
+  bricks: 'bricks'
+  objects: 'actors and objects'
+  looks: 'looks'
+  sounds: 'sounds'
+  globals: 'globals'
+  locals: 'locals'
+  eventBricks: 'Event Bricks'
+  controlBricks: 'Control Bricks'
+  motionBricks: 'Motion Bricks'
+  soundBricks: 'Sound Bricks'
+  looksBricks: 'Looks Bricks'
+  penBricks: 'Pen Bricks'
+  dataBricks: 'Data Bricks'
+  specialBricks: 'Special Bricks'
+footer:
+  usefulLinks: Užitečné odkazy
+  legalities: Právní věci
+  communityStats: Statistika webu
+  download: Get the App
+privacy-policy:
+  header: Ochrana soukromí
+  version: Version 2.2, 17 October 2019
+  text1: Abychom ti mohli nabídnout všechny výhody našich služeb a vytvořit související účet, musíme od tebe shromáždit některá data.
+  text2: To maintain and improve our services (apps and websites) and to do scientific research on ICT and STEM/STEAM education, we use Google Analytics, Crashlytics, and Firebase, all by Google LLC (USA), as well as Dynatrace by Dynatrace LLC (USA) to get metadata about the usage of our services, e.g., crash information, timestamps, visited pages/screens, usage of our apps and services, used operating system, and information about the network provider. This analysis and the collected data is not linked to your profile and does not contain any personal information (last bits of the IP address get anonymized). However, the collected data will get transferred to the service-providers (Google LLC, USA and Dynatrace LLC, USA). Data processing is based on agreements with Google LLC and Dynatrace LLC. This relationship to the service providers conforms to the European Union's General Data Protection Regulation (EU GDPR) and EU-USA "Privacy Shield" agreement.
+  text3: K vytvoření a používání účtu v našich systémech a k tvému informování o nezbytných změnách tvého účtu e-mailem, např. aktualizacích nebo porušení našich smluvních podmínek, pravidel komunity nebo naší politiky budeme uchovávat tvé uživatelské jméno a e-mailovou adresu, pokud nám ji poskytneš. Pokud jsi připojil svůj účet přes Google Plus nebo Facebook, uchováváme navíc identifikační klíč spojený s tvým účtem na těchto službách. Nepoužijeme tato data k jiným účelům (např. marketingovým), pokud nám to výslovně nedovolíš.
+  text4: Na stránce svého účtu na naší sdílející platformě nám můžeš dobrovolně poskytnout zemi svého pobytu. Bude zobrazena u tvého veřejného profilu a bude použita pouze pro naše statistické a výzkumné účely. Můžeš ji kdykoliv odebrat v nastavení svého profilu.
+  text5: Můžeš kdykoliv zrušit využití svých osobních dat náležících k tvému účtu smazáním svého účtu přes svou profilovou stránku na https://share.catrob.at/. Po smazání svého účtu budeš stále moci využívat poskytované služby, ale nebudeš moci spolupracovat např. nahráváním programy, komentováním nebo lajkováním. Také veškerý poskytnutý obsah spojený s tvým účtem, např. nahrané programy, komentáře atd. bude smazán.
+  text6: K zabránění zneužití našich služeb, např. nahráváním nelegálních programů nebo komentářů, všechna uživateli generovaná veřejná data (nahrávky, komentáře) budou interně uchována v databázi společně s časovou značkou a použitou internetovou adresou. Tato data nebudou použita nebo předána žádné instituci, pokud se zjevně nebude jednat o dostatečně nelegální jednání a oficiálně pověřené zákonné instituce si je vyžádají v souladu s platnými zákony. Každý takový případ bude námi nejdříve pečlivě individuálně prověřen.
+  text7: Na stránce https://catrob.at/newsletter se můžeš dobrovolně přihlásit k odběru Catrobat Newsletteru, poskytovaného námi prostřednictvím služby MailChimp (The Rocket Science Group LLC d/b/a MailChimp, USA). Na tvou e-mailovou adresu ti budou zasílány informace o projektech Catrobatu a jeho službách. Můžeš se kdykoliv odhlásit z jeho odběru pomocí "unsubscribe" linku v zápatí každého newsletteru. Tento newsletter poskytuje MailChimp, s nímž máme dohodu o zpracování dat a který podléhá Obecnému nařízení EU na ochranu osobních údajů a dohodě EU-USA "Privacy Shield". Pro více informací o MailChimp se prosím podívej na stránku MailChimp na sekci Privacy Policy and Terms of Use.
+  text8: Všechny služby jsou poskytovány open source projektem Catrobat pod hlavičkou International Catrobat Association – Verein zur Förderung freier Software, neziskovou nevládní organizací registrovanou v Grazu, Rakousko, Evropská unie. Naše politika respektuje zákony EU a Rakouska o ochraně dat (GDPR). Pokud nás chceš kontaktovat, pošli prosím e-mail na adresu contact@catrobat.org nebo napiš na adresu Catrobat, c/o Institute of Software Technology, Graz University of Technology, Inffeldgasse 16b, A-8010 Graz, Austria (European Union).
+  text9: V případě, že jsi mladší 14 let, tak musí být tyto podmínky přijaty tvým zákonným zástupcem (obvykle rodičem).
+  text10: Catrobat's official English language privacy policy is available on the web under https://catrob.at/privacypolicy.
+  disagree-text: Without approval, we can't create an account but the core features are still accessible.
+catro-notifications:
+  markAsRead: "Mark as read"
+  summary: "{0}You have no new Notifications|{1}You have %amount% new Notification!|]1,Inf]You have %amount% new Notifications!"
+  comment:
+    title: 'New comment for project %program_name%!'
+    message: 'User %user_link% commented on your project %program_link%.'
+  like:
+    title: 'New like for project %program_name%!'
+    message: 'User %user_link% liked your project %program_link%.'
+  follow:
+    title: 'New Follower!'
+    message: 'User %user_link% follows you now.'
+  program-upload:
+    title: 'New Project from someone you follow'
+    message: 'User %user_link% created a new Project %program_link%'
+clipboard:
+  success: Link to project copied to clipboard!
+  fail: Failed to copy link to clipboard! :(
+next: Další
+previous: Previous
+help-cards:
+  headings:
+    starters: Starters
+    tutorials: Tutoriál
+    stepbystep: Step by Step
+    getinvolvedGoogle: Get it on Google Play
+    getinvolvedApple: Get it on IOS
+    discord: Join on Discord
+    game_design: Game Design
+    education: Education platform
+    discuss: Discuss
+  text:
+    starters: "Try out and remix with %theme%"
+    tutorials: "Effective tricks in %theme%"
+    stepbystep: "Do 10 easy steps in %theme%"
+    getinvolved: Download the app and get started
+    discord: Join the community on discord
+    game_design_1: Effective tricks for
+    game_design_2: creating a game
+    education: Beginner's course & great resources
+    discuss_1: Get in touch with other
+    discuss_2: users
+media-packages:
+  title: Media-Packages
+  description: In the following categories you can find additional actors and objects to add to you PocketCode projects.
+  thumb-size:
+    description: Preview Size
+    sm: small
+    md: medium
+    lg: large
+  theme-special: "%flavor% Theme Special"
+flavor:
+  pocketcode: Pocket Code
+  pocketalice: Pocket Alice
+  pocketgalaxy: Galaxy Jam
+  phirocode: PhiroCode
+  luna: Luna & Cat
+  create@school: Create@School
+copyright: 'Copyright &copy %year% <a href="http://www.catrobat.org">Catrobat</a>. All rights reserved.'
+agree: Souhlasím
+disagree: Nesouhlasím
+profileLoader:
+  noProfiles: There are currently no profiles.

@@ -1,40 +1,86 @@
-/web/bundles/
-/app/bootstrap.php.cache
-/app/cache/*
-/app/config/parameters.yml
-/app/config/parameters_dev.yml
-/app/config/parameters_test.yml
-/app/logs/*
-/build/
-/vendor/
-/bin/
-!/bin/recsys-similarity-computation-service.jar
-/composer.phar
-/coverage
-/phpspec.yml
+### Catroweb ###
 .idea/
-app/config/deploy.rb
-crowdin.yaml
-crowdin-cli.jar
-/screens
-/output
-/behat.yml
-/.externalToolBuilders
-/.settings
-/.buildpath
-/.rsync_cache
-Catroweb.iml
-Catroweb-Symfony.iml
-.idea/vcs.xml
-/node_modules/
-.project
-# Created by https://www.gitignore.io/api/sass
+composer.phar
+phpspec.yml
+phpunit.xml
+*.local
+
+### backups ###
+backups/**
+
+### config ###
+config/packages/parameters.yml
+config/packages/dev/parameters.yml
+config/packages/test/parameters.yml
 
 ### Sass ###
 .sass-cache/
 *.css.map
 
+### Node ###
+node_modules/
 
-# End of https://www.gitignore.io/api/sass
-/web/bootstrap_vendor
+### public ###
+public/**
+!public/.well-known
+!public/resources
+!public/resources_test
+!public/index.php
+!public/index_test.php
+!public/robots.txt
+
+### tests ###
+tests/style-report/**
+!tests/style-report/catroweb.xml
+tests/testreports/behat/**
+tests/testreports/coverage/**
+tests/testreports/screens/**
+
+### var ###
+var/cache/**
+var/log/**
+
+### vendor ###
+vendor/
+
+### root ###
+*.sh
 crowdin.yml
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> behat/symfony2-extension ###
+behat.yml
+###< behat/symfony2-extension ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+### docker ###
+!/docker/app/startup.sh
+!/docker/app/wait-for-it.sh
+!/docker/app/set-permissions.sh
+!/docker/app/execute-tests.sh
+
+###> friendsofphp/php-cs-fixer ###
+/.php_cs
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

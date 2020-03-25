@@ -1,0 +1,23 @@
+<div class="d-none error-message text-img-upload-too-large alert alert-danger">
+  {{ 'profile.avatar.pictureTooLarge'|trans({}, 'catroweb') }}
+</div>
+<div class="d-none error-message text-img-upload-error alert alert-danger">
+  {{ 'profile.avatar.uploadError'|trans({}, 'catroweb') }}
+</div>
+<div class="d-none error-message text-mime-type-not-supported alert alert-danger">
+  {{ 'profile.avatar.noSupport'|trans({}, 'catroweb') }}
+</div>
+<div class="d-none error-message text-img-upload-success alert alert-success">
+  {{ 'success.imgUpload'|trans({}, 'catroweb') }}
+</div>
+
+<img alt="avatar" id="avatar-img"
+     src="{% if app.user.avatar is not empty %}{{ app.user.avatar }}{% else %}{{ asset('images/default/avatar_default.png') }}{% endif %}">
+
+<div id="avatar-upload" class="upload-image">
+  <div>
+    <input type="file" name="file">
+    <a href="">{{ 'profile.changePicture'|trans({}, 'catroweb') }}</a>
+    <div class="button-show-ajax"><i class="fa fa-spinner fa-pulse fa-2x fa-fw" aria-hidden="true"></i></div>
+  </div>
+</div>

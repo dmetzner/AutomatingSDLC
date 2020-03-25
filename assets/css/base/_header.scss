@@ -1,0 +1,117 @@
+@import '../../../public/bootstrap/scss/functions';
+@import 'variables';
+@import 'mixins';
+@import '../../../public/bootstrap/scss/variables';
+@import '../../../public/bootstrap/scss/mixins';
+@import 'theme_settings';
+
+$nav-font-size: $default-font-size + 0.25;
+$searchbar-font-size: $default-font-size + 0.125;
+$logo-width: 300px;
+
+#header-logo {
+  padding-top: 25px;
+  width: 100%;
+  text-align: center;
+}
+
+header {
+  padding: 0;
+  z-index: 9001;
+
+  nav {
+    #header-left, #header-right {
+      display: table-cell;
+      vertical-align: middle;
+      width: 100%;
+    }
+
+    #header-top {
+      width: 100%;
+      height: 20px;
+      overflow: hidden;
+      margin-bottom: 10px;
+
+      > div {
+        float: right;
+        margin-left: 15px;
+        font-weight: bold;
+
+        a {
+          text-decoration: none;
+        }
+      }
+
+      #social-like {
+        margin-left: 15px;
+      }
+    }
+
+    #btn-sidebar-toggle {
+      border: none;
+      outline: none;
+      margin-right: .5rem;
+    }
+
+    .search-icon-header {
+      color: $navbar-dark-color;
+      text-decoration: none;
+      font-size: 2.0em;
+      margin: auto 0.25rem auto auto;
+      align-items: center;
+
+      &:hover {
+        color: rgba($white, .9);
+      }
+
+      @include transition(color 0.5s ease);
+    }
+
+    .img-undo-search {
+      display: none;
+    }
+
+    .btn-search {
+      background-color: rgba(0, 0, 0, 0.05);
+      border-color: rgba(0, 0, 0, 0.1);
+      border-left: none;
+      color: $default-background-color !important;
+
+      &:focus, &:active, &:hover, &:active:focus {
+        background-color: rgba(0, 0, 0, 0.1) !important;
+        border: 1px rgba(0, 0, 0, 0.2) solid;
+        border-left: none;
+      }
+    }
+
+    .search-input-header {
+      background-color: rgba(0, 0, 0, 0.05);
+      border-color: rgba(0, 0, 0, 0.1);
+      color: white;
+
+      &::placeholder {
+        color: white !important;
+      }
+
+      &:focus {
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px rgba(0, 0, 0, 0.2) solid;
+        color: white;
+
+        & + .btn-search {
+          background-color: rgba(0, 0, 0, 0.1);
+          border-color: rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+
+    #search-input-group-header {
+      margin-top: 0.2rem;
+      @include media-breakpoint-up(md) {
+        margin-top: 0;
+        width: initial;
+      }
+    }
+
+  }
+}

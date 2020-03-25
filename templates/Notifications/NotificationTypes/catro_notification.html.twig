@@ -1,0 +1,9 @@
+{% extends 'Notifications/NotificationTypes/baseNotification.html.twig' %}
+
+{% block notification_title%}
+  {{ notification.title }}
+{% endblock %}
+
+{% block notification_body%}
+  {{ notification.message | raw}}
+{% endblock %}

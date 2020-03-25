@@ -1,114 +1,140 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "description": "The \"Symfony Standard Edition\" distribution",
     "type": "project",
-    "license": [
-        "MIT"
-    ],
-    "autoload": {
-        "psr-0": {
-            "": "src/",
-            "SymfonyStandard": "app/"
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
-    },
+    "license": "proprietary",
+
     "require": {
-        "php": ">=7.1",
-        "symfony/symfony": "3.4.*",
-
-        "symfony/swiftmailer-bundle": "^3.2",
-        "symfony/webpack-encore-pack": "^1.0",
-        "symfony/monolog-bundle": "^3.3",
-
+        "php": ">=7.4",
+        "ext-SimpleXML": "*",
+        "ext-gd": "*",
+        "ext-imagick": "*",
+        "ext-json": "*",
+        "ext-ldap": "*",
+        "ext-mbstring": "*",
+        "ext-pcntl": "*",
+        "ext-posix": "*",
+        "ext-zip": "*",
+        "catrobat/capi": "^1.0.29",
+        "doctrine/data-fixtures": "^1.4",
+        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^2.1",
+        "doctrine/migrations": "^2.2",
+        "doctrine/orm": "^2.7",
+        "eightpoints/guzzle-bundle": "^8.0",
+        "fr3d/ldap-bundle": "^4.0",
+        "friendsofsymfony/jsrouting-bundle": "^2.5",
+        "friendsofsymfony/rest-bundle": "^2.7",
         "friendsofsymfony/user-bundle": "^2.1",
-        "friendsofsymfony/rest-bundle": "^2.3",
-        "friendsofsymfony/jsrouting-bundle": "^2.2",
-        "sonata-project/user-bundle": "^4.2",
-        "sonata-project/admin-bundle": "^3.37",
-        "sonata-project/doctrine-orm-admin-bundle": "^3.6",
-        "sonata-project/datagrid-bundle": "^2.3",
-        "fr3d/ldap-bundle": "^3.0",
-
-        "sensio/distribution-bundle": "^5.0",
-        "sensio/framework-extra-bundle": "^5.2",
+        "google/apiclient": "^2.4",
         "incenteev/composer-parameter-handler": "^2.1",
-
-        "facebook/graph-sdk": "^5.6",
-        "symfony/assetic-bundle": "^2.8",
-        "google/apiclient": "^2.2",
-        "willdurand/geocoder-bundle": "^5.1",
-        "geocoder-php/host-ip-provider": "^4.0",
-        "eightpoints/guzzle-bundle": "^7.3",
-
-        "doctrine/doctrine-bundle": "^1.9",
-        "doctrine/orm": "^2.6",
-        "doctrine/doctrine-fixtures-bundle": "^3.0",
-        "doctrine/data-fixtures": "^1.3",
-        "doctrine/migrations": "^1.8",
-        "doctrine/doctrine-migrations-bundle": "^1.3",
-
-        "hwi/oauth-bundle": "*@dev",
-        "knplabs/knp-paginator-bundle": "dev-master",
-        "braincrafted/bootstrap-bundle": "dev-master",
-        "twitter/bootstrap": "2.3.*",
-        "ircmaxell/password-compat": "~1.0",
+        "lexik/jwt-authentication-bundle": "^2.6",
         "liip/theme-bundle": "dev-master",
-        "twbs/bootstrap": "^3.3",
-        "dmore/behat-chrome-extension": "^1.2",
-        "symfony/polyfill-iconv": "^1.8",
-
-        "ext-json": "^1.5",
-        "ext-SimpleXML": "^7.1",
-        "geocoder-php/ip-info-provider": "^0.1.0"
+        "php-http/guzzle6-adapter": "^2.0",
+        "php-http/message": "^1.8",
+        "sensio/framework-extra-bundle": "*",
+        "sonata-project/admin-bundle": "3.57",
+        "sonata-project/doctrine-orm-admin-bundle": "3.13",
+        "sonata-project/user-bundle": "4.5",
+        "symfony/acl-bundle": "*",
+        "symfony/browser-kit": "*",
+        "symfony/console": "*",
+        "symfony/dotenv": "*",
+        "symfony/flex": "^1.6",
+        "symfony/framework-bundle": "*",
+        "symfony/intl": "*",
+        "symfony/maker-bundle": "*",
+        "symfony/monolog-bundle": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/profiler-pack": "*",
+        "symfony/swiftmailer-bundle": "*",
+        "symfony/twig-pack": "^1.0",
+        "symfony/yaml": "*",
+        "twbs/bootstrap": "4.1.3"
     },
     "require-dev": {
-        "behat/behat": "^3.5",
-        "behat/symfony2-extension": "^2.1",
+        "behat/behat": "^3.6",
+        "behat/mink": "1.7",
         "behat/mink-extension": "^2.3",
-        "behat/mink-browserkit-driver": "^1.3",
-        "behat/mink-goutte-driver": "^1.2",
-        "behat/mink-selenium2-driver": "^1.3",
-        "symfony/phpunit-bridge": "*",
-        "phpunit/phpunit": "^7.3",
-        "phpspec/phpspec": "^4.0",
+        "behat/symfony2-extension": "^2.1",
         "bossa/phpspec2-expect": "^3.0",
-        "leanphp/phpspec-code-coverage": "^4.2",
-        "sensio/generator-bundle": "^3.1",
-        "sensiolabs/behat-page-object-extension": "^2.1",
-        "vipsoft/doctrine-data-fixtures-extension": "3.0.*@dev"
+        "deployer/deployer": "^6.7",
+        "deployer/recipes": "^6.2",
+        "dmore/behat-chrome-extension": "^1.3",
+        "dmore/chrome-mink-driver": "^2.7",
+        "emuse/behat-html-formatter": "@dev",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpcheckstyle/phpcheckstyle": "^0.14.8",
+        "phpspec/phpspec": "^6.1",
+        "phpunit/phpunit": "^8.1",
+        "symfony/phpunit-bridge": "*",
+        "vipsoft/doctrine-data-fixtures-extension": "3.0.*@dev",
+        "wapmorgan/php-code-fixer": "dev-master"
     },
+
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+
+    "config": {
+        "platform": {
+            "php": "7.4",
+            "ext-gd": "7.4",
+            "ext-imagick": "3.4.4",
+            "ext-ldap": "2.4",
+            "ext-json": "1.7.0",
+            "ext-mbstring": "7.4",
+            "ext-pcntl": "7.4",
+            "ext-posix": "7.4",
+            "ext-zip": "1.15.4"
+        },
+        "bin-dir": "bin",
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+            "": "tests/"
+        }
+    },
+
+
     "scripts": {
-        "post-root-package-install": [
-            "SymfonyStandard\\Composer::hookRootPackageInstall"
-        ],
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+
         "post-install-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+            "@auto-scripts"
         ]
     },
-    "config": {
-        "bin-dir": "bin"
-    },
+
     "extra": {
-        "symfony-web-dir": "web",
+        "symfony": {
+            "allow-contrib": false
+        },
         "symfony-app-dir": "app",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        }
-    }
+        "symfony-web-dir": "public",
+        "symfony-var-dir": "var",
+        "symfony-bin-dir": "bin",
+        "symfony-assets-install": "relative",
+        "public-dir": "public"
+    },
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/HCrane/CAPI"
+    }]
 }

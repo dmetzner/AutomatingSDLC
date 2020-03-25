@@ -1,3 +1,10 @@
+![Behat Tests](https://github.com/Catrobat/Catroweb-Symfony/workflows/Behat%20Tests/badge.svg)
+![PhpSpec Tests](https://github.com/Catrobat/Catroweb-Symfony/workflows/PhpSpec%20Tests/badge.svg)
+![PhpUnit Tests](https://github.com/Catrobat/Catroweb-Symfony/workflows/PhpUnit%20Tests/badge.svg)
+
+
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
 Catroweb
 =========
 
@@ -9,9 +16,13 @@ The Community website with sample programs can be found at [https://share.catrob
 
 **Please report all bugs on our [Jira Bugtracker](https://jira.catrob.at/secure/CreateIssue.jspa?pid=10301&issuetype=1)**
 
-###How to get started:
+## How to get started: 
 
 You can find all important HowTo's in our [wiki](https://github.com/Catrobat/Catroweb-Symfony/wiki)
 Make sure every test works before making pull requests!
 
 **Have fun!**
+
+
+# License #
+[License](https://catrob.at/licenses) of our project (mainly AGPL v3).

@@ -1,0 +1,136 @@
+<div class="row">
+  <div class="col-12 mb-2">
+    <h1 id="profile-edit-header" class="header">
+      {{ "menu.profile"|trans({}, "catroweb") }}
+    </h1>
+  </div>
+
+  <div class="col-12 mb-2">
+
+    <div class="row">
+
+      <div class="col-12 col-sm-5 col-md-4 col-lg-3 avatar-container mt-2">
+        {% include 'UserManagement/Profile/avatarEdit.html.twig' %}
+      </div>
+
+      <div class="col-12 col-sm-7 col-md-8 col-lg-9 mt-sm-2">
+
+        <div id="username-wrapper">
+          <div class="edit-category-title">
+            <span class="edit-title"
+            ><i class="fas fa-envelope"></i> {{ 'username'|trans({}, 'catroweb') }}</span>
+              <a class="edit-category-button"
+                 data-toggle="tooltip" title="{{ 'myprofile.editUsername'|trans({}, 'catroweb') }}">
+                <i id="edit-username-button" class="far fa-edit catro-icon-button"></i>
+              </a>
+          </div>
+
+          <div id="username-edit-container" class="edit-container">
+            {% include 'UserManagement/Profile/usernameEdit.html.twig' %}
+          </div>
+
+          <div class="profile-data">
+            <div id="username">
+              {{ username }}
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div id="email-wrapper">
+          <div class="edit-category-title">
+            <span class="edit-title"
+            ><i class="fas fa-envelope"></i> {{ 'email'|trans({}, 'catroweb') }}</span>
+            {% if not app.user.limited %}
+              <a class="edit-category-button"
+                 data-toggle="tooltip" title="{{ 'myprofile.editEmail'|trans({}, 'catroweb') }}">
+                <i id="edit-email-button" class="far fa-edit catro-icon-button"></i>
+              </a>
+            {% endif %}
+          </div>
+
+          {% if not app.user.limited %}
+            <div id="email-edit-container" class="edit-container">
+              {% include 'UserManagement/Profile/emailEdit.html.twig' %}
+            </div>
+          {% endif %}
+
+          <div class="profile-data">
+            <div id="first-mail">
+              <span class="edit-subtitle">{{ 'profile.firstEmail'|trans({}, 'catroweb') }}:</span>
+              {{ firstMail }}
+            </div>
+            <div id="second-mail" class="mt-2">
+              <span class="edit-subtitle">{{ 'profile.secondEmail'|trans({}, 'catroweb') }}:</span>
+              {{ secondMail }}
+            </div>
+          </div>
+        </div>
+
+        {% if (not app.user.limited) %}
+
+          <hr>
+
+          <div id="password-wrapper">
+            <div class="edit-category-title">
+              <span class="edit-title"
+              ><i class="fas fa-key"></i> {{ 'password'|trans({}, 'catroweb') }}</span>
+              <a class="edit-category-button"
+                 data-toggle="tooltip" title="{{ 'myprofile.editPassword'|trans({}, 'catroweb') }}">
+                <i id="edit-password-button" class="far fa-edit catro-icon-button"></i>
+              </a>
+            </div>
+            <div id="password-edit-container" class="edit-container">
+              {% include 'UserManagement/Profile/passwordEdit.html.twig' %}
+            </div>
+          </div>
+
+        {% endif %}
+
+        <hr>
+
+        <div id="country-wrapper">
+          <div class="edit-category-title">
+          <span class="edit-title"
+          ><i class="fas fa-globe-africa"></i> {{ 'country'|trans({}, 'catroweb') }}</span>
+            {% if not app.user.limited %}
+              <a class="edit-category-button" data-toggle="tooltip" title="todo">
+                <i id="edit-country-button" class="far fa-edit catro-icon-button"></i>
+              </a>
+            {% endif %}
+          </div>
+          <div id="country" class="profile-data">
+            {{ country }}
+          </div>
+          {% if not app.user.limited %}
+            <div id="country-edit-container" class="edit-container">
+              {% include 'UserManagement/Profile/countryEdit.html.twig' %}
+            </div>
+          {% endif %}
+        </div>
+
+        {% if not app.user.limited %}
+          <hr>
+
+          <div id="account-settings-wrapper">
+            <div class="edit-category-title">
+              <span class="edit-title"
+              ><i class="fas fa-cogs"></i> {{ 'accountSettings'|trans({}, 'catroweb') }}</span>
+              <a class="edit-category-button"
+                 data-toggle="tooltip" title="{{ 'myprofile.editAccountSettings'|trans({}, 'catroweb') }}">
+                <i id="account-settings-button" class="far fa-edit catro-icon-button"></i>
+              </a>
+            </div>
+            <div id="account-settings-container" class="edit-container">
+              {% include 'UserManagement/Profile/accountSettings.html.twig' %}
+            </div>
+          </div>
+
+        {% endif %}
+
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,108 @@
+# In this file we can overwrite services an parameters defined in services.yml
+# Services and parameters defined in this file will only be used in the 'test' environment.
+
+parameters:
+  catrobat.file.extract.dir:   "%catrobat.pubdir%resources_test/extract/"
+  catrobat.file.storage.dir:   "%catrobat.pubdir%resources_test/projects/"
+  catrobat.screenshot.dir:     "%catrobat.pubdir%resources_test/screenshots/"
+  catrobat.screenshot.path:    "resources_test/screenshots/"
+  catrobat.thumbnail.dir:      "%catrobat.pubdir%resources_test/thumbnails/"
+  catrobat.thumbnail.path:     "resources_test/thumbnails/"
+  catrobat.featuredimage.dir:  "%catrobat.pubdir%resources_test/featured/"
+  catrobat.featuredimage.path: "resources_test/featured/"
+  catrobat.exampleimage.dir:   "%catrobat.pubdir%resources_test/example/"
+  catrobat.exampleimage.path:  "resources_test/example/"
+  catrobat.apk.dir:            "%catrobat.pubdir%resources_test/apk/"
+  catrobat.mediapackage.dir:   "%catrobat.pubdir%resources_test/mediapackage/"
+  catrobat.mediapackage.path:  "resources_test/mediapackage/"
+  catrobat.backup.dir:         "%catrobat.pubdir%resources_test/backups/"
+  catrobat.snapshot.dir:       "%catrobat.pubdir%resources_test/snapshots/"
+  catrobat.logs.dir:           "%kernel.project_dir%/tests/testdata/DataFixtures/GeneratedFixtures/log/"
+  catrobat.testreports.behat:  "tests/testreports/behat/"
+  catrobat.testreports.screenshot:  "tests/testreports/screens/"
+
+
+  jenkins:
+    url: https://jenkins.catrob.at/buildByToken/buildWithParameters
+    job: "Build-Program"
+    token: "SECRETTOKEN"
+    id_parameter_name: "PROJECT"
+    download_url_parameter_name: "download"
+    upload_url_paramenter: "upload"
+    uploadtoken: "UPLOADTOKEN"
+
+services:
+
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true       # Automatically injects dependencies in your services.
+    autoconfigure: false # Automatically registers your services as commands, event subscribers, etc.
+    public: true         # Since we are overriding only public services
+
+  #
+  #  How To overwrite services?
+  #
+  #  When Overwriting a service make sure the new <service>.php class extends the real service
+  #  This allows easy dependency injections. When the real service is needed in the test service
+  #  you need to define it as <service>.inner and hand it over as first argument. This way all other
+  #  arguments can still be auto wired and circles are avoided.
+  #
+
+  # ======== Overwriting the token generator
+  token_generator.inner:
+    class: App\Catrobat\Services\TokenGenerator
+
+  App\Catrobat\Services\TokenGenerator:
+    class: App\Catrobat\Services\TestEnv\ProxyTokenGenerator
+    autowire: false
+    arguments:
+      - '@token_generator.inner'
+
+  # ======== Overwriting the oauth service
+
+  oauth_service.inner:
+    class: App\Catrobat\Services\OAuthService
+
+  App\Catrobat\Services\OAuthService:
+    class: App\Catrobat\Services\TestEnv\FakeOAuthService
+    arguments:
+      - '@oauth_service.inner'
+
+  # ======== Overwriting the statistics service
+
+  statistics.inner:
+    class: App\Catrobat\Services\StatisticsService
+
+  App\Catrobat\Services\StatisticsService:
+    class: App\Catrobat\Services\TestEnv\FakeStatisticsService
+    arguments:
+      - "@statistics.inner"
+
+  # ======== Overwriting the jenkins dispatcher
+
+  App\Catrobat\Services\Ci\JenkinsDispatcher:
+    class: App\Catrobat\Services\TestEnv\FakeJenkinsDispatcher
+    arguments:
+      - "%jenkins%"
+
+  # ======== Overwriting the ldap driver
+
+  fr3d_ldap.ldap_driver:
+    class: App\Catrobat\Services\TestEnv\LdapTestDriver
+
+  # ========
+
+  App\Catrobat\Services\CatrobatFileExtractor:
+    class: App\Catrobat\Services\CatrobatFileExtractor
+    arguments:
+      - "%catrobat.test.directory.target%"
+      - "%catrobat.file.extract.path%"
+
+  # ======== Data fixtures helper services
+  App\Catrobat\Services\TestEnv\DataFixtures\ProjectDataFixtures:
+    class: App\Catrobat\Services\TestEnv\DataFixtures\ProjectDataFixtures
+    public: true
+
+  App\Catrobat\Services\TestEnv\DataFixtures\UserDataFixtures:
+    class: App\Catrobat\Services\TestEnv\DataFixtures\UserDataFixtures
+    public: true

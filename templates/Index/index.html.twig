@@ -1,0 +1,218 @@
+{% extends 'Default/base.html.twig' %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ asset('css/'~theme()~'/index.css') }}" media="screen"/>
+{% endblock %}
+
+{% block body %}
+
+  {% if not app.user %}
+    {{ include('Index/welcome-section.html.twig') }}
+  {% endif %}
+
+  <div id="featuredPrograms">
+    {% if featured|length > 0 %}
+      <h1>{{ "programs.featured"|trans({}, "catroweb") }}</h1>
+      {{ include('Index/programs_carousel.html.twig',
+        { 'carousel' :
+          {
+            'id' : 'feature-slider',
+            'slideCount' : featured|length,
+            'slides' : featured,
+            'classes' : '',
+            'controls' : true
+          }
+        }
+      ) }}
+    {% endif %}
+
+  </div>
+
+  {% if theme() == 'pocketgalaxy' %}
+
+    <div id="submissions">
+      <h1>{{ "programs.submitted"|trans({}, "catroweb") }}</h1>
+      <div class="programs"></div>
+    </div>
+
+    <div id="sample">
+      <h1>{{ "programs.sample"|trans({}, "catroweb") }}</h1>
+      <div class="programs"></div>
+    </div>
+
+    <div id="related">
+      <h1>{{ "programs.related"|trans({}, "catroweb") }}</h1>
+      <div class="programs"></div>
+    </div>
+
+  {% else %}
+
+    <div id="newest" style="display:none">
+      <h1>{{ "programs.newest"|trans({}, "catroweb") }}</h1>
+      <div class="programs"></div>
+    </div>
+
+    <div id="example" style="display:none">
+      <h1>{{ "programs.example"|trans({}, "catroweb") }}</h1>
+      <div class="programs"></div>
+    </div>
+
+    <div id="recommended" style="display:none">
+      <h1>{{ "programs.recommended"|trans({}, "catroweb") }}
+        <i id="help-button" class="help-icon fa fa-question-circle ml-1 catro-icon-button"
+           data-toggle="tooltip" title="Help"
+           data-help-title="{{ "indexPage.recommendedSection.info.title"|trans({}, "catroweb") }}"
+           data-help-description="{{ "indexPage.recommendedSection.info.description"|trans({}, "catroweb") }}">
+        </i>
+      </h1>
+      <div class="programs"></div>
+    </div>
+
+    <div id="mostDownloaded" style="display:none">
+      <h1>{{ "programs.most.downloaded"|trans({}, "catroweb") }}</h1>
+      <div class="programs"></div>
+    </div>
+
+    <div id="mostViewed" style="display:none">
+      <h1>{{ "programs.most.viewed"|trans({}, "catroweb") }}</h1>
+      <div class="programs"></div>
+    </div>
+
+    <div id="scratchRemixes" style="display:none">
+      <h1>{{ "programs.scratchremixes"|trans({}, "catroweb") }}</h1>
+      <div class="programs"></div>
+    </div>
+
+    <div id="random" style="display:none">
+      <h1>{{ "programs.random"|trans({}, "catroweb") }}</h1>
+      <div class="programs"></div>
+    </div>
+
+  {% endif %}
+{% endblock %}
+
+{% block js %}
+  <script>
+    {% if theme() == 'pocketgalaxy' %}
+    let sample = new ProjectLoader('#sample', '{{ path('api_gamejam_sample_programs') }}?q=GalaxyGameJam')f
+    let submissions = new ProjectLoader('#submissions', '{{ path('api_gamejam_submissions') }}?q=GalaxyGameJam')
+    let related = new ProjectLoader('#related', '{{ path('api_search_programs') }}?q=galaxy')
+
+    sample.init()
+    submissions.init()
+    related.init()
+
+    {% else %}
+    let newest = new ProjectLoader('#newest', '{{ path('api_recent_programs') }}')
+    let recommendedByPageId = {{ constant('App\\Catrobat\\RecommenderSystem\\RecommendedPageId::INDEX_PAGE') }};
+    let recommended = new ProjectLoader('#recommended', '{{ path('api_recsys_general_projects') }}', undefined, recommendedByPageId)
+    let mostDownloaded = new ProjectLoader('#mostDownloaded', '{{ path('api_most_downloaded_programs') }}')
+    let mostViewed = new ProjectLoader('#mostViewed', '{{ path('api_most_viewed_programs') }}')
+    let scratchRemixes = new ProjectLoader('#scratchRemixes', '{{ path('api_scratch_remix') }}')
+    let random = new ProjectLoader('#random', '{{ path('api_random_programs') }}')
+    let example = new ProjectLoader('#example', '{{ path('api_example_programs') }}')
+
+    newest.init()
+    recommended.init()
+    mostDownloaded.init()
+    mostViewed.init()
+    scratchRemixes.init()
+    random.init()
+    example.init()
+
+    {% endif %}
+
+
+    function performClickStatisticRequest(href, type, isRecommendedProgram, userSpecificRecommendation, programID)
+    {
+      let url = "{{ path('click_stats') }}"
+      let params = {}
+
+      if (!isRecommendedProgram)
+      {
+        url = "{{ path('homepage_click_stats') }}"
+        if (['featured', 'example', 'newest', 'mostDownloaded', 'mostViewed', 'random'].indexOf(type) === -1)
+        {
+          alert('You clicked at a program of an unknown section!')
+          return
+        }
+        params = {type: type, programID: programID}
+      }
+      else
+      {
+        params = {
+          type             : type,
+          recFromID        : 0,
+          recID            : programID,
+          isScratchProgram : 0,
+          recIsUserSpecific: userSpecificRecommendation
+        }
+      }
+
+      $.post(url, params, function (data) {
+        if (data === 'error')
+        {
+          console.log('No click statistic is created!')
+        }
+      }).always(function () {
+        window.location.href = href
+      })
+      .fail(function (data) {
+        console.log(data)
+      })
+
+    }
+
+    $(document).on('click', '.program', function () {
+      let clicked_program_id = this.id.replace('program-', '')
+      this.className += ' visited-program'
+      let stored_visits = sessionStorage.getItem('visits')
+
+      if (!stored_visits)
+      {
+        let new_visits = [clicked_program_id]
+        sessionStorage.setItem('visits', JSON.stringify(new_visits))
+      }
+      else
+      {
+        let parsed_visits = JSON.parse(stored_visits)
+        if (!($.inArray(clicked_program_id, parsed_visits) >= 0))
+        {
+          parsed_visits.push(clicked_program_id)
+          sessionStorage.setItem('visits', JSON.stringify(parsed_visits))
+        }
+      }
+    })
+
+    $(document).one('click', '#feature-slider > div > div > a', function (event) {
+      event.preventDefault()
+      let href = $(this).attr('href')
+      let programID = ((href.indexOf('project') > 0) ? (href.split('project/')[1]).split('?')[0] : 0)
+      let type = 'featured'
+       performClickStatisticRequest(href, type, false, 0, programID)
+    })
+
+    $(document).one('click', '.rec-programs', function (event) {
+      event.preventDefault()
+      let isRecommendedProgram = $(this).hasClass('homepage-recommended-programs')
+      let type = (isRecommendedProgram ? 'rec_homepage' : $(this).parent('.program').parent('.programs').parent().attr('id'))
+      let href = $(this).attr('href')
+      let recommendedProgramID = ((href.indexOf('project') > 0) ? (href.split('project/')[1]).split('?')[0] : 0)
+      let userSpecificRecommendation = ((href.indexOf('rec_user_specific=') > 0) ? parseInt((href.split('rec_user_specific=')[1].match(/[0-9]+/))[0]) : 0)
+      performClickStatisticRequest(href, type, isRecommendedProgram, userSpecificRecommendation, recommendedProgramID)
+    })
+
+    $(document).on('click', '#help-button', function () {
+      Swal.fire({
+          title            : $(this).attr('data-help-title'),
+          text             : $(this).attr('data-help-description'),
+          showCancelButton : false,
+          confirmButtonText: "{{ "ok"|trans({}, "catroweb") }}",
+          closeOnConfirm   : true,
+          icon             : 'question',
+        }
+      )
+    })
+
+  </script>
+{% endblock %}
