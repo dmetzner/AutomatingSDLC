@@ -1,7 +1,7 @@
 FROM composer AS composer-build
 COPY composer.json composer.lock ./
-RUN composer install --no-scripts --prefer-dist
 
+RUN composer install --no-scripts --prefer-dist --no-interaction
 
 FROM node AS node-build
 WORKDIR /app
