@@ -1,7 +1,10 @@
 FROM composer AS composer-build
 COPY composer.json composer.lock ./
 
-RUN if [ "$GITHUB_AUTH" != "" ]; then composer config -g github-oauth.github.com $GITHUB_AUTH ; fi
+ARG GITHUB_AUTH
+RUN if [ "$GITHUB_AUTH" != "" ]; \
+    then composer config -g github-oauth.github.com $GITHUB_AUTH; \
+    fi
 
 RUN composer install --no-scripts --prefer-dist --no-interaction
 
