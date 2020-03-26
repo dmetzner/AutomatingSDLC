@@ -1,9 +1,9 @@
 FROM composer AS composer-build
 COPY composer.json composer.lock ./
 
-ARG COMPOSER_AUTH='{"github-oauth": {"github.com": ""}}'
+RUN if [ "$GITHUB_AUTH" != "" ]; then composer config -g github-oauth.github.com $GITHUB_AUTH ; fi
 
-RUN composer install --no-scripts --prefer-dist --no-interaction config -g github-oauth.github.com $GITHUB_OAUTH
+RUN composer install --no-scripts --prefer-dist --no-interaction
 
 FROM node AS node-build
 WORKDIR /app
