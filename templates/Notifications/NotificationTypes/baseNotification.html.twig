@@ -1,8 +1,3 @@
-{% block head %}
-  <link rel="stylesheet" href="{{ asset('css/'~theme()~'/profile.css') }}" media="screen"/>
-{% endblock %}
-
-
 <div class="card mb-3 notification-container" id="catro-notification-{{ notification.id }}">
 
   <h5 class="card-header notification-header">
@@ -29,26 +24,28 @@
         </p>
       </div>
     </div>
+
+    <div class="notification-button-container">
     {% if not(notificationType == "allNotifications" and instance is empty) %}
       {% if (notificationType == "followers" and ((instance is empty) or not (instance[notification.id] == "program")))
         or (notificationType == "allNotifications" and instance[notification.id] == "follow") %}
         {% if app.user == null or app.user.id != notification.follower.id %}
           <div id="follow-icon" class="notification-follow-btn">
             {% if notification.follower.hasFollower(app.user) %}
-              <a id="follow-btn-notif">
-                <button id="mark-as-read-" class="btn btn-primary notification-follows"
+              <div id="follow-btn-notif">
+                <button id="mark-as-read-" class="btn btn-outline-primary notification-follows"
                         onclick="followers.unfollow('{{ notification.follower.id }}',
                             '{{ notification.follower.username }}')">
                   {{ 'follower.follows'|trans({}, 'catroweb') }}
                 </button>
-              </a>
+              </div>
             {% else %}
-              <a id="follow-btn-notif">
-                <button id="mark-as-read-" class="btn btn-default notification-follow"
+              <div id="follow-btn-notif">
+                <button id="mark-as-read-" class="btn btn-primary notification-follow"
                         onclick="followers.follow('{{ notification.follower.id }}')">
                   {{ 'follower.follow'|trans({}, 'catroweb') }}
                 </button>
-              </a>
+              </div>
             {% endif %}
           </div>
         {% endif %}
@@ -58,20 +55,20 @@
         {% if app.user == null or app.user.id != notification.program.user.id %}
           <div id="follow-icon" class="notification-follow-btn">
             {% if notification.program.user.hasFollower(app.user) %}
-              <a id="follow-btn-notif">
-                <button id="mark-as-read-" class="btn btn-primary notification-follows"
+              <div id="follow-btn-notif">
+                <button id="mark-as-read-" class="btn btn-outline-primary notification-follows"
                         onclick="followers.unfollow('{{ notification.program.user.id }}',
                             '{{ notification.program.user.username }}')">
                   {{ 'follower.follows'|trans({}, 'catroweb') }}
                 </button>
-              </a>
+              </div>
             {% else %}
-              <a id="follow-btn-notif">
-                <button id="mark-as-read-" class="btn btn-default notification-follow"
+              <div id="follow-btn-notif">
+                <button id="mark-as-read-" class="btn btn-primary notification-follow"
                         onclick="followers.follow('{{ notification.program.user.id }}')">
                   {{ 'follower.follow'|trans({}, 'catroweb') }}
                 </button>
-              </a>
+              </div>
             {% endif %}
           </div>
         {% endif %}
@@ -80,16 +77,16 @@
         {% if app.user == null or app.user.id != notification.getLikeFrom.id %}
           <div id="follow-icon" class="notification-follow-btn">
             {% if notification.getLikeFrom.hasFollower(app.user) %}
-              <a id="follow-btn-notif">
-                <button id="mark-as-read-" class="btn btn-primary notification-follows"
+              <div id="follow-btn-notif">
+                <button id="mark-as-read-" class="btn btn-outline-primary notification-follows"
                         onclick="followers.unfollow('{{ notification.getLikeFrom.id }}',
                             '{{ notification.getLikeFrom.username }}')">
                   {{ 'follower.follows'|trans({}, 'catroweb') }}
                 </button>
-              </a>
+              </div>
             {% else %}
               <a id="follow-btn-notif">
-                <button id="mark-as-read-" class="btn btn-default notification-follow"
+                <button id="mark-as-read-" class="btn btn-primary notification-follow"
                         onclick="followers.follow('{{ notification.getLikeFrom.id }}')">
                   {{ 'follower.follow'|trans({}, 'catroweb') }}
                 </button>
@@ -103,16 +100,16 @@
         {% if app.user == null or app.user.id != notification.comment.user.id %}
           <div id="follow-icon" class="notification-follow-btn">
             {% if notification.comment.user.hasFollower(app.user) %}
-              <a id="follow-btn-notif">
-                <button id="mark-as-read-" class="btn btn-primary notification-follows"
+              <div id="follow-btn-notif">
+                <button id="mark-as-read-" class="btn btn-outline-primary notification-follows"
                         onclick="followers.unfollow('{{ notification.comment.user.id }}',
                             '{{ notification.comment.username }}')">
                   {{ 'follower.follows'|trans({}, 'catroweb') }}
                 </button>
-              </a>
+              </div>
             {% else %}
               <a id="follow-btn-notif">
-                <button id="mark-as-read-" class="btn btn-default notification-follow"
+                <button id="mark-as-read-" class="btn btn-primary notification-follow"
                         onclick="followers.follow('{{ notification.comment.user.id }}')">
                   {{ 'follower.follow'|trans({}, 'catroweb') }}
                 </button>
@@ -144,7 +141,7 @@
       {% endif %}
 
     {% endif %}
-
+    </div>
   </div>
 
 </div>

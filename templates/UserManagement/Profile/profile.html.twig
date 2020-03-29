@@ -6,20 +6,18 @@
 
 {% block body %}
 
-  <div class="row">
-    <div class="col-12 mb-2">
-      <h1 id="profile-header" class="header">
-        {{ profile.username }}
-      </h1>
-    </div>
+  <h1 id="profile-header" class="header">
+    {{ profile.username }}
+  </h1>
 
+  <div class="row my-2">
     <div class="col-12 col-sm-5 col-md-4 col-lg-3 avatar-container mt-2">
       <img alt="user-image" id="user-image"
            src="{% if profile.avatar is not empty %}{{ profile.avatar }}{% else %}{{ asset('images/default/avatar_default.png') }}{% endif %}"/>
     </div>
 
     <div id="user-information"
-         class="col-8 col-sm-5 col-md-6 col-lg-7 ml-3 ml-sm-0 mt-4 mt-sm-2 user-info">
+         class="col-8 col-sm-5 col-md-6 col-lg-7 pl-3 pl-sm-0 mt-2 user-info">
       <p>
         <strong>
           {{ "profile.amountOfPrograms"|trans({}, "catroweb") }}:
@@ -33,36 +31,35 @@
         </strong>
         {{ follower_count }}
       </p>
-      <p>
-        <i class="fas fa-globe-africa"></i>
-        <strong>
-          {{ "country"|trans({}, "catroweb") }}:
-        </strong>
-        {{ country }}
-      </p>
+      {% if country %}
+        <p>
+          <i class="fas fa-globe-africa"></i>
+          <strong>
+            {{ "country"|trans({}, "catroweb") }}:
+          </strong>
+          {{ country }}
+        </p>
+      {% endif %}
     </div>
 
-    <div id="profile-follow" class="col-2 mt-4 mt-sm-1 center">
-        <div id="follow-icon">
-          {% if app.user != null and profile.hasFollower(app.user)%}
-            <a id="follow-btn" class="pull-right">
-              <button id="profile-follow-btn" class="btn btn-primary profile-follows"
-                      onclick="followers.unfollow('{{ profile.id }}','{{ profile.username }}')">
-                {{ 'follower.follows'|trans({}, 'catroweb') }}
-              </button>
-            </a>
-          {% else %}
-            <a id="follow-btn" class="pull-right">
-              <button id="profile-follow-btn" class="btn btn-default profile-follow"
-                      onclick="followers.follow('{{ profile.id }}')">
-
-                {{ 'follower.follow'|trans({}, 'catroweb') }}
-              </button>
-            </a>
-          {% endif %}
-        </div>
+    <div id="follow-btn" class="col-4 col-sm-2 mt-2 text-right follow-button-container">
+      {% if app.user == null or app.user.id != profile.id %}
+        {% if profile.hasFollower(app.user) %}
+          <button id="profile-follow-btn" class="btn btn-outline-primary profile-follows"
+                  onclick="followers.unfollow('{{ profile.id }}','{{ profile.username }}')">
+            {{ 'follower.follows'|trans({}, 'catroweb') }}
+          </button>
+        {% else %}
+          <button id="profile-follow-btn" class="btn btn-primary profile-follow"
+                  onclick="followers.follow('{{ profile.id }}')">
+            {{ 'follower.follow'|trans({}, 'catroweb') }}
+          </button>
+        {% endif %}
+      {% endif %}
     </div>
+  </div>
 
+  <div class="row">
     <div class="col-12 mt-3">
 
       <h1 id="profile-programs">
@@ -73,7 +70,6 @@
       </div>
 
     </div>
-
   </div>
 
 
