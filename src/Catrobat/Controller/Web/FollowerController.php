@@ -92,7 +92,7 @@ class FollowerController extends AbstractController
       $followerCountry = '';
       try
       {
-        $followerCountry = Countries::getName(strtoupper($user->getCountry()));
+        $followerCountry = $user->getCountry() !== 'AQ' ? Countries::getName(strtoupper($user->getCountry())) : '';
       }
       catch (MissingResourceException $e)
       {
@@ -114,7 +114,7 @@ class FollowerController extends AbstractController
       $followingCountry = '';
       try
       {
-        $followingCountry = Countries::getName(strtoupper($user->getCountry()));
+        $followingCountry = $user->getCountry() !== 'AQ' ? Countries::getName(strtoupper($user->getCountry())) : '';
       }
       catch (MissingResourceException $e)
       {

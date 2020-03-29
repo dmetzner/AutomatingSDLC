@@ -1,0 +1,50 @@
+{% if user %}
+  <div class="follower-item">
+    <div class="row no-gutters">
+      <div class="col-2 my-auto">
+        <a href="{{ path('profile', { "id" : user.id }) }}">
+          <img class="img-fluid round"
+               src="{% if user.avatar is not empty %}{{ user.avatar }}
+                          {% else %}{{ asset('images/default/avatar_default.png') }}{% endif %}"
+               alt="User Image">
+        </a>
+      </div>
+      <div class="col-6 pl-3 my-auto">
+        <a href="{{ path('profile', { "id" : user.id }) }}">
+          <span class="h3">{{ user.username }}</span>
+          <div class="text-muted">
+            {% if user.country %}
+              <span class="mr-3">{{ user.country }}</span>
+            {% endif %}
+            <span>{{ user.projects }} {{ "follower.amountOfPrograms"|trans({}, "catroweb") }}</span>
+          </div>
+
+          {% if app.user.hasFollower(user.profile) %}
+            <div class="text-dark size-small text-uppercase">
+              <i class="fas fa-check"></i> {{ "follower.followsMe"|trans({}, "catroweb") }}
+            </div>
+          {% endif %}
+        </a>
+      </div>
+      <div class="col-4 text-right my-auto">
+        {% if app.user == null or app.user.id != user.id %}
+          <div id="follow-btn" class="follow-btn">
+            {% if user.profile.hasFollower(app.user) %}
+              <button class="btn btn-outline-primary follows"
+                      onclick="followers.unfollow('{{ user.id }}','{{ user.username }}')">
+                {{ 'follower.follows'|trans({}, 'catroweb') }}
+              </button>
+            {% else %}
+              <div id="follow-btn">
+                <button class="btn btn-primary follow"
+                        onclick="followers.follow('{{ user.id }}')">
+                  {{ 'follower.follow'|trans({}, 'catroweb') }}
+                </button>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
