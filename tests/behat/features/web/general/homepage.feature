@@ -12,14 +12,14 @@ Feature: Pocketcode homepage
       | 3  | Catrobat2|
 
     And there are projects:
-      | id | name      | owned by |
-      | 1  | project 1 | Catrobat |
-      | 2  | project 2 | Catrobat |
-      | 3  | project 3 | User1    |
-      | 4  | project 4 | User1    |
-      | 5  | project 5 | User1    |
-      | 6  | project 6 | Catrobat2|
-      | 7  | project 7 | Catrobat2|
+      | id | name      | owned by | example |
+      | 1  | project 1 | Catrobat | yes     |
+      | 2  | project 2 | Catrobat | no      |
+      | 3  | project 3 | User1    | yes     |
+      | 4  | project 4 | User1    | no      |
+      | 5  | project 5 | User1    | no      |
+      | 6  | project 6 | Catrobat2| no      |
+      | 7  | project 7 | Catrobat2| no      |
 
     And following projects are featured:
       | name      | url                   | active | priority |
@@ -48,6 +48,7 @@ Feature: Pocketcode homepage
     And I wait for the page to be loaded
     Then I should see the featured slider
     Then the element "#newest" should exist
+    Then the element "#example" should exist
     Then the element "#recommended" should exist
     Then the element "#mostDownloaded" should exist
     Then the element "#random" should exist

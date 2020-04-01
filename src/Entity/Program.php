@@ -366,6 +366,11 @@ class Program
    */
   protected Collection $reports;
 
+  /**
+   * @ORM\Column(type="boolean", options={"default": false})
+   */
+  protected bool $example = false;
+
   public function __construct()
   {
     $this->comments = new ArrayCollection();
@@ -1032,5 +1037,17 @@ class Program
   public function setRemixNotificationMentionsAsParent(Collection $remix_notification_mentions_as_parent): void
   {
     $this->remix_notification_mentions_as_parent = $remix_notification_mentions_as_parent;
+  }
+
+  public function getExample(): bool
+  {
+    return $this->example;
+  }
+
+  public function setExample(bool $example): Program
+  {
+    $this->example = $example;
+
+    return $this;
   }
 }

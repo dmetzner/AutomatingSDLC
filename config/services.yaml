@@ -606,6 +606,16 @@ services:
       - App\Catrobat\Controller\Admin\TemplateController
     public: true
 
+  catrowebadmin.block.example.program:
+    class: App\Admin\ExampleProgramAdmin
+    tags:
+      - { name: sonata.admin, manager_type: orm, label: "Example Projects" }
+    arguments:
+      - ~
+      - App\Entity\Program
+      - ~
+    public: true
+
   # ===== Media Package
 
   catrowebadmin.block.mediapackage.package:
