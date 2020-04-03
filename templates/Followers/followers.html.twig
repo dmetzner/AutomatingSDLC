@@ -5,71 +5,79 @@
   <link rel="stylesheet" href="{{ asset('css/'~theme()~'/notifications.css') }}" media="screen"/>
 {% endblock %}
 
-{% block body %}
-
-
-  <div id="following-section">
-    <h1 id="follows-header" class="header mb-4">
-      {{ 'follower.follows'|trans({}, 'catroweb') }}
-    </h1>
-
-    <div id="no-following" class="text-center mb-5">
-      {% if following_list is empty %}
-        {{ "follower.noFollowing"|trans({}, "catroweb") }}
-      {% endif %}
-    </div>
-
-    <div id="following-cards" class="mb-5">
-      {% for followsUser in following_list %}
-        <div id="following-{{ followsUser.id }}" class="single-following my-3"
-            {% if loop.index > 5 %} style="display: none" {% endif %}>
-          {% include 'Followers/follower-item.html.twig' with {'user': followsUser} only %}
-        </div>
-      {% endfor %}
-    </div>
-
-    <div class="center col-12">
-      <div id="show-more-following-button" class="button-show-more" style="display:inline-flex">
-        <a data-toggle="tooltip" title="{{ 'show-more'|trans({}, 'catroweb') }}">
-          <i class="fas fa-chevron-circle-down catro-icon-button"></i>
-        </a>
-      </div>
-      <div id="show-less-following-button" class="button-show-less" style="display:inline-flex">
-        <a data-toggle="tooltip" title="{{ 'show-less'|trans({}, 'catroweb') }}">
-          <i class="fas fa-chevron-circle-up catro-icon-button"></i>
-        </a>
-      </div>
-    </div>
+{% block tabs %}
+  <div class="catro-tabs">
+    <ul class="nav nav-tabs nav-fill" id="tabs-tab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="follows-tab" data-toggle="tab" href="#following-section"
+           aria-controls="following-section" aria-selected="true"
+           role="tab"> {{ 'follower.follows'|trans({}, 'catroweb') }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="follower-tab" data-toggle="tab" href="#follower-section"
+           aria-controls="follower-section"
+           aria-selected="false"
+           role="tab"> {{ 'follower.followers'|trans({}, 'catroweb') }}</a>
+      </li>
+    </ul>
   </div>
+{% endblock %}
 
-  <div id="follower-section">
-    <h1 id="followers-header" class="header my-5">
-      {{ 'follower.followers'|trans({}, 'catroweb') }}
-    </h1>
-
-    {% if followers_list is empty %}
-      <div id="no-followers" class="text-center mb-5">
-        {{ "follower.noFollowers"|trans({}, "catroweb") }}
+{% block body %}
+  <div class="tab-content mt-4" id="tabs-tabContent">
+    <div id="following-section" class="tab-pane fade show active" role="tabpanel" aria-labelledby="follows-tab">
+      <div id="no-following" class="text-center mb-5 {{ following_list is empty ? 'd-block' : 'd-none' }}">
+          {{ "follower.noFollowing"|trans({}, "catroweb") }}
       </div>
-    {% endif %}
 
-    <div id="follower-cards" class="mb-5">
-      {% for followerUser in followers_list %}
-        <div id="followers-{{ followerUser.id }}" class="single-follower my-3"
-            {% if loop.index > 5 %} style="display: none" {% endif %}>
-          {% include 'Followers/follower-item.html.twig' with {'user': followerUser} only %}
-        </div>
-      {% endfor %}
+      <div id="following-cards" class="mb-5">
+        {% for followsUser in following_list %}
+          <div id="following-{{ followsUser.id }}" class="single-following my-3"
+              {% if loop.index > 5 %} style="display: none" {% endif %}>
+            {% include 'Followers/follower-item.html.twig' with {'user': followsUser} only %}
+          </div>
+        {% endfor %}
+      </div>
+
       <div class="center col-12">
-        <div id="show-more-followers-button" class="button-show-more" style="display:inline-flex">
+        <div id="show-more-following-button" class="button-show-more" style="display:inline-flex">
           <a data-toggle="tooltip" title="{{ 'show-more'|trans({}, 'catroweb') }}">
             <i class="fas fa-chevron-circle-down catro-icon-button"></i>
           </a>
         </div>
-        <div id="show-less-followers-button" class="button-show-less" style="display:inline-flex">
+        <div id="show-less-following-button" class="button-show-less" style="display:inline-flex">
           <a data-toggle="tooltip" title="{{ 'show-less'|trans({}, 'catroweb') }}">
             <i class="fas fa-chevron-circle-up catro-icon-button"></i>
           </a>
+        </div>
+      </div>
+    </div>
+
+    <div id="follower-section" class="tab-pane fade" role="tabpanel" aria-labelledby="follower-tab">
+      {% if followers_list is empty %}
+        <div id="no-followers" class="text-center mb-5">
+          {{ "follower.noFollowers"|trans({}, "catroweb") }}
+        </div>
+      {% endif %}
+
+      <div id="follower-cards" class="mb-5">
+        {% for followerUser in followers_list %}
+          <div id="followers-{{ followerUser.id }}" class="single-follower my-3"
+              {% if loop.index > 5 %} style="display: none" {% endif %}>
+            {% include 'Followers/follower-item.html.twig' with {'user': followerUser} only %}
+          </div>
+        {% endfor %}
+        <div class="center col-12">
+          <div id="show-more-followers-button" class="button-show-more" style="display:inline-flex">
+            <a data-toggle="tooltip" title="{{ 'show-more'|trans({}, 'catroweb') }}">
+              <i class="fas fa-chevron-circle-down catro-icon-button"></i>
+            </a>
+          </div>
+          <div id="show-less-followers-button" class="button-show-less" style="display:inline-flex">
+            <a data-toggle="tooltip" title="{{ 'show-less'|trans({}, 'catroweb') }}">
+              <i class="fas fa-chevron-circle-up catro-icon-button"></i>
+            </a>
+          </div>
         </div>
       </div>
     </div>

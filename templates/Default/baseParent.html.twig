@@ -25,7 +25,8 @@
       {% endblock %}
     </header>
     {% include 'Default/sidebar.html.twig' with {sidebar_ul: (block('sidebar_ul')) ?? ''} %}
-    <div class="container">
+    {% block tabs %} {% endblock %}
+    <div class="container mt-3">
       {# Body block where child views will appear #}
       {% block body %}{% endblock %}
     </div>
