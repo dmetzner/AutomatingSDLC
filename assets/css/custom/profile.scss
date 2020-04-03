@@ -156,9 +156,41 @@
       text-decoration: none;
     }
   }
+
+  &__info {
+    font-size: .7em;
+    white-space: normal;
+  }
 }
 
 /* should be general */
 .round {
   border-radius: 100%;
+}
+
+.catro-tabs {
+  .nav-tabs {
+    padding:0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .nav-link {
+    background: none;
+    text-decoration: none;
+    padding: .9em;
+    text-transform: uppercase;
+    border: 0;
+    color: rgba($text-color, 10);
+
+    &:hover {
+      color: $default-text-color;
+      background: none;
+    }
+
+    &.active {
+      font-weight: 700;
+      border-bottom: 2px solid $primary;
+      color: $text-color;
+    }
+  }
 }

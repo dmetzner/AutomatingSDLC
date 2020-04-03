@@ -1,7 +1,6 @@
 $sidebar-width: 250px;
 
-#sidebar
-{
+#sidebar {
   width: $sidebar-width;
   height: 100vh;
   position: fixed;
@@ -15,8 +14,7 @@ $sidebar-width: 250px;
   overflow-y: auto;
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
 
-  &.active
-  {
+  &.active {
     left: 0;
   }
 
@@ -30,10 +28,8 @@ $sidebar-width: 250px;
     background-size: contain;
   }
 
-  li
-  {
-    a
-    {
+  li {
+    a {
       display: block;
       text-decoration: none;
       color: #222;
@@ -42,47 +38,52 @@ $sidebar-width: 250px;
       padding-top: 1rem;
       padding-bottom: 1rem;
 
-      &:hover
-      {
+      &:hover {
         text-decoration: none;
         background: rgba(0, 0, 0, 0.2);
       }
 
-      &:active, &:focus
-      {
+      &:active, &:focus {
         text-decoration: none;
       }
 
       .user-notification-badge {
         display: none;
       }
-      .user-notification-badge-dropdown
-      {
+
+      .user-notification-badge-dropdown {
         display: none;
       }
     }
   }
 
   @include media-breakpoint-up(md) {
-    &:not(.inactive)
-    {
+    &:not(.inactive) {
       left: 0;
     }
   }
 }
 
 @include media-breakpoint-up(md) {
-  body.new-nav .container {
-    padding-left: 15px + $sidebar-width;
+  body {
+    &.new-nav {
+      .container {
+        padding-left: 15px + $sidebar-width;
+      }
+
+      .catro-tabs {
+        margin-left: $sidebar-width;
+      }
+
+      .modal-open .modal {
+        border-left: $sidebar-width solid transparent;
+      }
+    }
   }
 
-  body.new-nav.modal-open .modal {
-    border-left: $sidebar-width solid transparent;
-  }
 }
 
-#sidebar-overlay
-{
+#sidebar-overlay {
   display: none;
   position: fixed;
   /* full screen */
@@ -99,34 +100,28 @@ $sidebar-width: 250px;
   transition: all 0.5s ease-in-out;
 }
 
-#sidebar.active + #sidebar-overlay
-{
+#sidebar.active + #sidebar-overlay {
   display: block;
   opacity: 1;
 }
 
-.collapsible
-{
+.collapsible {
   cursor: pointer;
 }
 
-.caret-icon
-{
- float:right;
+.caret-icon {
+  float: right;
 }
 
-#btn-notifications
-{
+#btn-notifications {
   margin-left: 11px;
 }
 
-.user-notification-badge-dropdown
-{
-font-size: 15px;
+.user-notification-badge-dropdown {
+  font-size: 15px;
 }
 
-.notifications-dropdown-content
-{
+.notifications-dropdown-content {
 
   max-height: 0;
   overflow: hidden;

@@ -13,6 +13,7 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
   self.somethingWentWrongError = somethingWentWrongError
   self.followError = followError
   self.unfollowError = unfollowError
+  
   $(function () {
     amountOfVisibleFollowing = visibleFollowing
     amountOfVisibleFollowers = visibleFollowers
@@ -54,7 +55,6 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
               return
             }
             window.sessionStorage.setItem('visibleFollowers', JSON.stringify(amountOfVisibleFollowers))
-            $('#no-following').load(window.location.href + ' #no-following>*')
             $('#following-cards').load(window.location.href + ' #following-cards>*')
             $('#follower-cards').load(window.location.href + ' #follower-cards>*')
             $('#follow-btn').load(window.location.href + ' #follow-btn>*')
@@ -75,6 +75,8 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
               $('#show-more-followers-button').show()
               $('#show-less-followers-button').hide()
             }
+            
+            toggleEmptyText()
           },
           error: function () {
             Swal.fire(somethingWentWrongError, unfollowError, 'error')
@@ -98,7 +100,6 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
         }
         window.sessionStorage.setItem('visibleFollowers', JSON.stringify(amountOfVisibleFollowers))
         window.sessionStorage.setItem('visibleFollowing', JSON.stringify(amountOfVisibleFollowing))
-        $('#no-following').load(window.location.href + ' #no-following>*')
         $('#following-cards').load(window.location.href + ' #following-cards>*')
         $('#follower-cards').load(window.location.href + ' #follower-cards>*')
         $('#follow-btn').load(window.location.href + ' #follow-btn>*')
@@ -122,6 +123,8 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
       $('#show-more-followers-button').show()
       $('#show-less-followers-button').hide()
     }
+    
+    toggleEmptyText();
   }
   $(document).on('click', '#show-more-followers-button', function () {
     showMoreFollowers (showStep)
@@ -182,6 +185,7 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
   
   function updateFollowingVisibility () {
     $('.single-following').each(function(index, user) {
+      console.log(index, amountOfVisibleFollowing)
       if (index < amountOfVisibleFollowing) {
         $(user).show()
       } else {
@@ -231,5 +235,14 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
     window.sessionStorage.setItem('visibleFollowing', JSON.stringify(amountOfVisibleFollowing))
     updateFollowingVisibility()
     updateFollowingButtonVisibility()
+  }
+  
+  function toggleEmptyText () {
+    if (totalFollowing > 0) {
+      $('#no-following').removeClass('d-block').addClass('d-none')
+    }
+    else {
+      $('#no-following').removeClass('d-none').addClass('d-block')
+    }
   }
 }
