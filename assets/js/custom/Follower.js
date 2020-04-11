@@ -14,15 +14,15 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
 
   self.unfollow = function (id, username) {
     const $followerItem = $('.follower-item-' + id)
-    const $buttons      = $followerItem.find('.follow-button button').attr('disabled', true)
+    const $buttons = $followerItem.find('.follow-button button').attr('disabled', true)
 
     Swal.fire({
       title: 'Are you sure you want to unfollow ' + username,
       text: self.notificationDeleteAllMessage,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonClass: 'btn btn-primary',
+      cancelButtonClass: 'btn btn-outline-primary',
       confirmButtonText: 'Unfollow ' + username,
       cancelButtonText: 'Cancel'
     }).then((result) => {
@@ -52,9 +52,9 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
       }
     })
   }
-  self.follow   = function (id) {
+  self.follow = function (id) {
     const $followerItem = $('.follower-item-' + id)
-    const $buttons      = $followerItem.find('.follow-button button').attr('disabled', true)
+    const $buttons = $followerItem.find('.follow-button button').attr('disabled', true)
 
     $.ajax({
       url: self.followUrl + '/' + id,

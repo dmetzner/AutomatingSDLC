@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Entity\UserManager;
 use App\Repository\CatroNotificationRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\DBAL\Types\GuidType;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -173,7 +172,6 @@ class FollowerController extends AbstractController
   public function followUser(string $id, UserManager $user_manager, CatroNotificationService $notification_service,
                              CatroNotificationRepository $notification_repo): JsonResponse
   {
-    /** @var User */
     $user = $this->getUser();
     if (!$user)
     {
