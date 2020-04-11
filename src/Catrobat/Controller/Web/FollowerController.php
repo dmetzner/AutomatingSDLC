@@ -124,7 +124,7 @@ class FollowerController extends AbstractController
       ]);
     }
 
-    return $this->render('Followers/followers.html.twig', [
+    return $this->render('UserManagement/Followers/followers.html.twig', [
       'profile' => $user,
       'program_count' => $program_count,
       'follower_count' => $followerCount,

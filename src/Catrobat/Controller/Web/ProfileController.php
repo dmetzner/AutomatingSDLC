@@ -84,6 +84,48 @@ class ProfileController extends AbstractController
     $firstMail = $user->getEmail();
     $secondMail = $user->getAdditionalEmail();
     $followerCount = $user->getFollowers()->count();
+    $follower_list = [];
+    foreach($user->getFollowers() as $follower) {
+      $country = '';
+      try
+      {
+        $country = 'AQ' !== $user->getCountry() ? Countries::getName(strtoupper($user->getCountry())) : '';
+      }
+      catch (MissingResourceException $e)
+      {
+        $country = '';
+      }
+
+      $follower_list[] = [
+        'username' => $follower->getUsername(),
+        'id' => $follower->getId(),
+        'avatar' => $follower->getAvatar(),
+        'projects' => count($follower->getPrograms()),
+        'country' => $country,
+        'profile' => $follower,
+      ];
+    }
+    $following_list =[];
+    foreach($user->getFollowing() as $follower) {
+      $country = '';
+      try
+      {
+        $country = 'AQ' !== $user->getCountry() ? Countries::getName(strtoupper($user->getCountry())) : '';
+      }
+      catch (MissingResourceException $e)
+      {
+        $country = '';
+      }
+
+      $following_list[] = [
+        'username' => $follower->getUsername(),
+        'id' => $follower->getId(),
+        'avatar' => $follower->getAvatar(),
+        'projects' => count($follower->getPrograms()),
+        'country' => $country,
+        'profile' => $follower,
+      ];
+    }
 
     return $this->render($view, [
       'profile' => $user,
@@ -97,6 +139,8 @@ class ProfileController extends AbstractController
       'maxPassLength' => self::MAX_PASSWORD_LENGTH,
       'username' => $user->getUsername(),
       'myProfile' => $my_profile,
+      'followers_list' => $follower_list,
+      'following_list' => $following_list
     ]);
   }
 
