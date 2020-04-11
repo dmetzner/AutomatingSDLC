@@ -85,7 +85,7 @@ class ProfileController extends AbstractController
     $secondMail = $user->getAdditionalEmail();
     $followerCount = $user->getFollowers()->count();
     $follower_list = [];
-    foreach($user->getFollowers() as $follower)
+    foreach ($user->getFollowers() as $follower)
     {
       $country = '';
       try
@@ -106,8 +106,8 @@ class ProfileController extends AbstractController
         'profile' => $follower
       ];
     }
-    $following_list =[];
-    foreach($user->getFollowing() as $follower)
+    $following_list = [];
+    foreach ($user->getFollowing() as $follower)
     {
       $country = '';
       try
