@@ -3,34 +3,21 @@
 
 // eslint-disable-next-line no-unused-vars
 function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError, unfollowError,
-  visibleFollowing = 5, visibleFollowers = 5, showStep = 5,
+  visibleFollowing = 5, visibleFollowers= 5, showSte = 5,
   minAmountOfVisibleFollowers = 5, totalFollowing = 5, totalFollowers = 5) {
-  const self = this
+  const self                   = this
   let amountOfVisibleFollowing
   let amountOfVisibleFollowers
-  self.unfollowUrl = unfollowUrl
-  self.followUrl = followUrl
+  self.unfollowUrl             = unfollowUrl
+  self.followUrl               = followUrl
   self.somethingWentWrongError = somethingWentWrongError
-  self.followError = followError
-  self.unfollowError = unfollowError
-  
-  $(function () {
-    amountOfVisibleFollowing = visibleFollowing
-    amountOfVisibleFollowers = visibleFollowers
-    restoreAmountOfVisibleFollowingFromSession()
-    restoreAmountOfVisibleFollowersFromSession()
-    if (amountOfVisibleFollowers < 5 && totalFollowers >= 5) {
-      amountOfVisibleFollowers = 5
-    }
-    if (amountOfVisibleFollowing < 5 && totalFollowing >= 5) {
-      amountOfVisibleFollowing = 5
-    }
-    updateFollowingVisibility()
-    updateFollowingButtonVisibility()
-    updateFollowersVisibility()
-    updateFollowerButtonVisibility()
-  })
+  self.followError             = followError
+  self.unfollowError           = unfollowError
+
   self.unfollow = function (id, username) {
+    const $followerItem = $('.follower-item-' + id)
+    const $buttons      = $followerItem.find('.follow-button button').attr('disabled', true)
+
     Swal.fire({
       title: 'Are you sure you want to unfollow ' + username,
       text: self.notificationDeleteAllMessage,
@@ -54,38 +41,23 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
               }
               return
             }
-            window.sessionStorage.setItem('visibleFollowers', JSON.stringify(amountOfVisibleFollowers))
-            $('#following-cards').load(window.location.href + ' #following-cards>*')
-            $('#follower-cards').load(window.location.href + ' #follower-cards>*')
-            $('#follow-btn').load(window.location.href + ' #follow-btn>*')
-            $('#user-information').load(window.location.href + ' #user-information>*')
-            $('#new-notifications-container').load(window.location.href + ' #new-notifications-container>*', '')
-            $('#old-notifications-container').load(window.location.href + ' #old-notifications-container>*', '')
+            $buttons.attr('disabled', false)
             totalFollowing--
-            if (amountOfVisibleFollowing > totalFollowing) {
-              amountOfVisibleFollowing = totalFollowing
-            }
-            if (amountOfVisibleFollowing > 5) {
-              amountOfVisibleFollowing = 5
-            }
-            restoreAmountOfVisibleFollowersFromSession()
-            updateFollowingVisibility()
-            updateFollowingButtonVisibility()
-            if (amountOfVisibleFollowers > 5) {
-              $('#show-more-followers-button').show()
-              $('#show-less-followers-button').hide()
-            }
-            
-            toggleEmptyText()
+
+            reloadSources()
           },
           error: function () {
             Swal.fire(somethingWentWrongError, unfollowError, 'error')
           }
         })
+        toggleEmptyText()
       }
     })
   }
-  self.follow = function (id) {
+  self.follow   = function (id) {
+    const $followerItem = $('.follower-item-' + id)
+    const $buttons      = $followerItem.find('.follow-button button').attr('disabled', true)
+
     $.ajax({
       url: self.followUrl + '/' + id,
       type: 'get',
@@ -98,151 +70,31 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
           }
           return
         }
-        window.sessionStorage.setItem('visibleFollowers', JSON.stringify(amountOfVisibleFollowers))
-        window.sessionStorage.setItem('visibleFollowing', JSON.stringify(amountOfVisibleFollowing))
-        $('#following-cards').load(window.location.href + ' #following-cards>*')
-        $('#follower-cards').load(window.location.href + ' #follower-cards>*')
-        $('#follow-btn').load(window.location.href + ' #follow-btn>*')
-        $('#user-information').load(window.location.href + ' #user-information>*')
-        $('#new-notifications-container').load(window.location.href + ' #new-notifications-container>*', '')
-        $('#old-notifications-container').load(window.location.href + ' #old-notifications-container>*', '')
+        $buttons.attr('disabled', false)
+        totalFollowing++
+        reloadSources()
       },
       error: function () {
         Swal.fire(somethingWentWrongError, followError, 'error')
       }
     })
-    totalFollowing++
-    amountOfVisibleFollowing++
-    if (amountOfVisibleFollowing > 5) {
-      amountOfVisibleFollowing = 5
-    }
-    updateFollowingVisibility()
-    updateFollowingButtonVisibility()
-    restoreAmountOfVisibleFollowersFromSession()
-    if (amountOfVisibleFollowers > 5) {
-      $('#show-more-followers-button').show()
-      $('#show-less-followers-button').hide()
-    }
-    
-    toggleEmptyText();
+
+    toggleEmptyText()
   }
-  $(document).on('click', '#show-more-followers-button', function () {
-    showMoreFollowers (showStep)
-  })
-  $(document).on('click', '#show-less-followers-button', function () {
-    showLessFollowers (showStep)
-  })
-  $(document).on('click', '#show-more-following-button', function () {
-    showMoreFollowing (showStep)
-  })
-  $(document).on('click', '#show-less-following-button', function () {
-    showLessFollowing (showStep)
-  })
-  
-  function restoreAmountOfVisibleFollowersFromSession () {
-    let lastSessionAmount = JSON.parse(window.sessionStorage.getItem('visibleFollowers'))
-    if (lastSessionAmount !== null) {
-      amountOfVisibleFollowers = lastSessionAmount
-    }
-    if (amountOfVisibleFollowers > totalFollowers) {
-      amountOfVisibleFollowers = totalFollowers
-    }
-  }
-  
-  function updateFollowersVisibility () {
-    $('.single-follower').each(function(index, user2) {
-      if (index < amountOfVisibleFollowers) {
-        $(user2).show()
-      }
-      else {
-        $(user2).hide()
-      }
-    })
-  }
-  
-  function updateFollowerButtonVisibility () {
-    if (amountOfVisibleFollowers > minAmountOfVisibleFollowers) {
-      $('#show-less-followers-button').show()
-    } else {
-      $('#show-less-followers-button').hide()
-    }
-    if (amountOfVisibleFollowers < totalFollowers) {
-      $('#show-more-followers-button').show()
-    } else {
-      $('#show-more-followers-button').hide()
-    }
-  }
-  
-  function restoreAmountOfVisibleFollowingFromSession () {
-    let lastSessionAmount = JSON.parse(window.sessionStorage.getItem('visibleFollowing'))
-    if (lastSessionAmount !== null) {
-      amountOfVisibleFollowing = lastSessionAmount
-    }
-    if (amountOfVisibleFollowing > totalFollowing) {
-      amountOfVisibleFollowing = totalFollowing
-    }
-  }
-  
-  function updateFollowingVisibility () {
-    $('.single-following').each(function(index, user) {
-      console.log(index, amountOfVisibleFollowing)
-      if (index < amountOfVisibleFollowing) {
-        $(user).show()
-      } else {
-        $(user).hide()
-      }
-    })
-  }
-  
-  function updateFollowingButtonVisibility () {
-    if (amountOfVisibleFollowing > minAmountOfVisibleFollowers) {
-      $('#show-less-following-button').show()
-    } else {
-      $('#show-less-following-button').hide()
-    }
-    if (amountOfVisibleFollowing < totalFollowing) {
-      $('#show-more-following-button').show()
-    } else {
-      $('#show-more-following-button').hide()
-    }
-  }
-  
-  function showMoreFollowers (step) {
-    amountOfVisibleFollowers = Math.min(amountOfVisibleFollowers + step, totalFollowers)
-    window.sessionStorage.setItem('visibleFollowers', JSON.stringify(amountOfVisibleFollowers))
-    updateFollowersVisibility()
-    updateFollowerButtonVisibility()
-  }
-  
-  function showLessFollowers (step) {
-    amountOfVisibleFollowers = Math.max(amountOfVisibleFollowers - step,
-      minAmountOfVisibleFollowers)
-    window.sessionStorage.setItem('visibleFollowers', JSON.stringify(amountOfVisibleFollowers))
-    updateFollowersVisibility()
-    updateFollowerButtonVisibility()
-  }
-  
-  function showMoreFollowing (step) {
-    amountOfVisibleFollowing = Math.min(amountOfVisibleFollowing + step, totalFollowing)
-    window.sessionStorage.setItem('visibleFollowing', JSON.stringify(amountOfVisibleFollowing))
-    updateFollowingVisibility()
-    updateFollowingButtonVisibility()
-  }
-  
-  function showLessFollowing (step) {
-    amountOfVisibleFollowing = Math.max(amountOfVisibleFollowing - step,
-      minAmountOfVisibleFollowers)
-    window.sessionStorage.setItem('visibleFollowing', JSON.stringify(amountOfVisibleFollowing))
-    updateFollowingVisibility()
-    updateFollowingButtonVisibility()
-  }
-  
+
   function toggleEmptyText () {
     if (totalFollowing > 0) {
       $('#no-following').removeClass('d-block').addClass('d-none')
-    }
-    else {
+    } else {
       $('#no-following').removeClass('d-none').addClass('d-block')
     }
+  }
+
+  function reloadSources () {
+    $('#following-cards').load(window.location.href + ' #following-cards>*')
+    $('#follower-cards').load(window.location.href + ' #follower-cards>*')
+    $('#user-information').load(window.location.href + ' #user-information>*')
+    $('#new-notifications-container').load(window.location.href + ' #new-notifications-container>*', '')
+    $('#old-notifications-container').load(window.location.href + ' #old-notifications-container>*', '')
   }
 }

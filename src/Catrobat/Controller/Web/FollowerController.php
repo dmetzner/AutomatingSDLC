@@ -29,21 +29,15 @@ class FollowerController extends AbstractController
   /**
    * @Route("/follower", name="catrobat_follower", methods={"GET"})
    *
-   * @param GuidType $id
-   *
    * @throws Error
-   *
-   * @return Response
    */
-  public function followerAction(Request $request, ProgramManager $program_manager, UserManager $user_manager, $id = 0)
+  public function followerAction(Request $request, ProgramManager $program_manager, UserManager $user_manager, string $id = '0'): Response
   {
-    /**
-     * @var User
-     */
+    /** @var User */
     $user = null;
     $my_profile = false;
 
-    if ((0 === $id) || ($this->getUser() && $this->getUser()->getId() === $id))
+    if (('0' === $id) || ($this->getUser() && $this->getUser()->getId() === $id))
     {
       $user = $this->getUser();
       $my_profile = true;
@@ -92,7 +86,7 @@ class FollowerController extends AbstractController
       $followerCountry = '';
       try
       {
-        $followerCountry = $user->getCountry() !== 'AQ' ? Countries::getName(strtoupper($user->getCountry())) : '';
+        $followerCountry = 'AQ' !== $user->getCountry() ? Countries::getName(strtoupper($user->getCountry())) : '';
       }
       catch (MissingResourceException $e)
       {
@@ -114,7 +108,7 @@ class FollowerController extends AbstractController
       $followingCountry = '';
       try
       {
-        $followingCountry = $user->getCountry() !== 'AQ' ? Countries::getName(strtoupper($user->getCountry())) : '';
+        $followingCountry = 'AQ' !== $user->getCountry() ? Countries::getName(strtoupper($user->getCountry())) : '';
       }
       catch (MissingResourceException $e)
       {

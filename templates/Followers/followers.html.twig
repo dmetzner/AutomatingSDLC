@@ -32,53 +32,50 @@
 
       <div id="following-cards" class="mb-5">
         {% for followsUser in following_list %}
-          <div id="following-{{ followsUser.id }}" class="single-following my-3"
-              {% if loop.index > 5 %} style="display: none" {% endif %}>
+          <div id="following-{{ followsUser.id }}" class="single-following my-3">
             {% include 'Followers/follower-item.html.twig' with {'user': followsUser} only %}
           </div>
         {% endfor %}
       </div>
-
-      <div class="center col-12">
-        <div id="show-more-following-button" class="button-show-more" style="display:inline-flex">
-          <a data-toggle="tooltip" title="{{ 'show-more'|trans({}, 'catroweb') }}">
-            <i class="fas fa-chevron-circle-down catro-icon-button"></i>
-          </a>
-        </div>
-        <div id="show-less-following-button" class="button-show-less" style="display:inline-flex">
-          <a data-toggle="tooltip" title="{{ 'show-less'|trans({}, 'catroweb') }}">
-            <i class="fas fa-chevron-circle-up catro-icon-button"></i>
-          </a>
-        </div>
-      </div>
     </div>
 
+{#      <div class="center col-12">#}
+{#        <div id="show-more-following-button" class="button-show-more" style="display:inline-flex">#}
+{#          <a data-toggle="tooltip" title="{{ 'show-more'|trans({}, 'catroweb') }}">#}
+{#            <i class="fas fa-chevron-circle-down catro-icon-button"></i>#}
+{#          </a>#}
+{#        </div>#}
+{#        <div id="show-less-following-button" class="button-show-less" style="display:inline-flex">#}
+{#          <a data-toggle="tooltip" title="{{ 'show-less'|trans({}, 'catroweb') }}">#}
+{#            <i class="fas fa-chevron-circle-up catro-icon-button"></i>#}
+{#          </a>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+
     <div id="follower-section" class="tab-pane fade" role="tabpanel" aria-labelledby="follower-tab">
-      {% if followers_list is empty %}
-        <div id="no-followers" class="text-center mb-5">
-          {{ "follower.noFollowers"|trans({}, "catroweb") }}
-        </div>
-      {% endif %}
+      <div id="no-followers" class="text-center mb-5 {{ followers_list is empty ? 'd-block' : 'd-none' }}">
+        {{ "follower.noFollowers"|trans({}, "catroweb") }}
+      </div>
 
       <div id="follower-cards" class="mb-5">
         {% for followerUser in followers_list %}
-          <div id="followers-{{ followerUser.id }}" class="single-follower my-3"
-              {% if loop.index > 5 %} style="display: none" {% endif %}>
+          <div id="followers-{{ followerUser.id }}" class="single-follower my-3">
             {% include 'Followers/follower-item.html.twig' with {'user': followerUser} only %}
           </div>
         {% endfor %}
-        <div class="center col-12">
-          <div id="show-more-followers-button" class="button-show-more" style="display:inline-flex">
-            <a data-toggle="tooltip" title="{{ 'show-more'|trans({}, 'catroweb') }}">
-              <i class="fas fa-chevron-circle-down catro-icon-button"></i>
-            </a>
-          </div>
-          <div id="show-less-followers-button" class="button-show-less" style="display:inline-flex">
-            <a data-toggle="tooltip" title="{{ 'show-less'|trans({}, 'catroweb') }}">
-              <i class="fas fa-chevron-circle-up catro-icon-button"></i>
-            </a>
-          </div>
-        </div>
+{#        <div class="center col-12">#}
+{#          <div id="show-more-followers-button" class="button-show-more" style="display:inline-flex">#}
+{#            <a data-toggle="tooltip" title="{{ 'show-more'|trans({}, 'catroweb') }}">#}
+{#              <i class="fas fa-chevron-circle-down catro-icon-button"></i>#}
+{#            </a>#}
+{#          </div>#}
+{#          <div id="show-less-followers-button" class="button-show-less" style="display:inline-flex">#}
+{#            <a data-toggle="tooltip" title="{{ 'show-less'|trans({}, 'catroweb') }}">#}
+{#              <i class="fas fa-chevron-circle-up catro-icon-button"></i>#}
+{#            </a>#}
+{#          </div>#}
+{#        </div>#}
       </div>
     </div>
   </div>
