@@ -11,7 +11,7 @@
     </div>
     <div class="col-6 pl-3 my-auto">
       <a href="{{ path('profile', { "id" : user.id }) }}">
-        <span class="h3">{{ user.username }}</span>
+        <span class="h4">{{ user.username }}</span>
         <div class="text-dark">
           <span>{{ user.projects }} {{ "follower.amountOfPrograms"|trans({}, "catroweb") }}</span>
         </div>
@@ -32,7 +32,7 @@
       {% if app.user == null or app.user.id != user.id %}
       <div class="follow-button">
         <button class="btn btn-outline-primary btn-block unfollow-btn mt-0"
-                style="{{ user.profile.hasFollower(app.user) ? 'display: block' : 'display:none'  }}"
+                style="{{ user.profile.hasFollower(app.user) ? 'display: block' : 'display:none' }}"
                 onclick="followers.unfollow('{{ user.id }}','{{ user.username }}')">
           {{ 'follower.follows'|trans({}, 'catroweb') }}
         </button>

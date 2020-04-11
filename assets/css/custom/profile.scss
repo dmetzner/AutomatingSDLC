@@ -9,26 +9,6 @@
   color: $primary;
 }
 
-#user-information {
-  font-size: $default-font-size + 0.1875;
-  color: #000;
-  padding: 0 10px;
-
-  p {
-    margin: 10px auto;
-  }
-}
-
-.user-info {
-  @include force-word-break();
-  @media screen and (max-width: 280px) {
-    width: 70%;
-    max-width: 70%;
-    margin-left: 25%;
-  }
-
-}
-
 .visited-program {
   opacity: 0.6;
 

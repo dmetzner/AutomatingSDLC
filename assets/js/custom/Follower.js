@@ -21,8 +21,7 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
       text: self.notificationDeleteAllMessage,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonClass: 'btn btn-primary',
-      cancelButtonClass: 'btn btn-outline-primary',
+      confirmButtonColor: '#00acc1',
       confirmButtonText: 'Unfollow ' + username,
       cancelButtonText: 'Cancel'
     }).then((result) => {
@@ -45,10 +44,13 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
             reloadSources()
           },
           error: function () {
+            $buttons.attr('disabled', false)
             Swal.fire(somethingWentWrongError, unfollowError, 'error')
           }
         })
         toggleEmptyText()
+      } else {
+        $buttons.attr('disabled', false)
       }
     })
   }
@@ -73,6 +75,7 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
         reloadSources()
       },
       error: function () {
+        $buttons.attr('disabled', false)
         Swal.fire(somethingWentWrongError, followError, 'error')
       }
     })
