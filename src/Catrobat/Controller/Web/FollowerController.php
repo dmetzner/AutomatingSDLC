@@ -140,12 +140,8 @@ class FollowerController extends AbstractController
 
   /**
    * @Route("/follower/unfollow/{id}", name="unfollow", methods={"GET"}, defaults={"id": 0})
-   *
-   * @param GuidType $id
-   *
-   * @return JsonResponse
    */
-  public function unfollowUser($id, UserManager $user_manager)
+  public function unfollowUser(string $id, UserManager $user_manager): JsonResponse
   {
     $user = $this->getUser();
     if (!$user)
@@ -153,7 +149,7 @@ class FollowerController extends AbstractController
       return new JsonResponse(['success' => false, 'message' => 'Please login']);
     }
 
-    if (0 === $id)
+    if ('0' === $id)
     {
       return new JsonResponse(['success' => false, 'message' => 'Cannot follow yourself']);
     }
@@ -171,33 +167,25 @@ class FollowerController extends AbstractController
   /**
    * @Route("/follower/follow/{id}", name="follow", methods={"GET"}, defaults={"id": 0})
    *
-   * @param $id
-   *
    * @throws ORMException
    * @throws OptimisticLockException
-   *
-   * @return JsonResponse
    */
-  public function followUser($id, UserManager $user_manager, CatroNotificationService $notification_service,
-                             CatroNotificationRepository $notification_repo)
+  public function followUser(string $id, UserManager $user_manager, CatroNotificationService $notification_service,
+                             CatroNotificationRepository $notification_repo): JsonResponse
   {
-    /**
-     * @var User
-     */
+    /** @var User */
     $user = $this->getUser();
     if (!$user)
     {
       return new JsonResponse(['success' => false, 'message' => 'Please login']);
     }
 
-    if (0 === $id || $id === $user->getId())
+    if ('0' === $id || $id === $user->getId())
     {
       return new JsonResponse(['success' => false, 'message' => 'Cannot follow yourself']);
     }
 
-    /**
-     * @var User
-     */
+    /** @var User */
     $notification_check = true;
     $userToFollow = $user_manager->find($id);
     $user->addFollowing($userToFollow);

@@ -3,16 +3,14 @@
 
 // eslint-disable-next-line no-unused-vars
 function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError, unfollowError,
-  visibleFollowing = 5, visibleFollowers= 5, showSte = 5,
+  visibleFollowing = 5, visibleFollowers = 5, showSte = 5,
   minAmountOfVisibleFollowers = 5, totalFollowing = 5, totalFollowers = 5) {
-  const self                   = this
-  let amountOfVisibleFollowing
-  let amountOfVisibleFollowers
-  self.unfollowUrl             = unfollowUrl
-  self.followUrl               = followUrl
+  const self = this
+  self.unfollowUrl = unfollowUrl
+  self.followUrl = followUrl
   self.somethingWentWrongError = somethingWentWrongError
-  self.followError             = followError
-  self.unfollowError           = unfollowError
+  self.followError = followError
+  self.unfollowError = unfollowError
 
   self.unfollow = function (id, username) {
     const $followerItem = $('.follower-item-' + id)
