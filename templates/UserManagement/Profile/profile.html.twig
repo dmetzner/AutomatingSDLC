@@ -29,7 +29,7 @@
             {{ "profile.follower"|trans({}, "catroweb") }}:
           </strong>
           {{ follower_count }}
-          {% if app.user.hasFollower(profile) %}
+          {% if app.user != null and app.user.hasFollower(profile) %}
             <small class="text-muted text-uppercase">
               <i class="fas fa-check"></i> {{ "follower.followsMe"|trans({}, "catroweb") }}
             </small>
@@ -48,7 +48,7 @@
 
 
       <div id="follow-btn" class="follow-button-container follow-button w-100 mt-3">
-        {% if app.user == null or app.user.id != profile.id %}
+        {% if app.user != null and app.user.id != profile.id %}
           <button class="btn btn-outline-primary btn-sm btn-block profile-follows mt-0"
                   style="{{ profile.hasFollower(app.user) ? 'display: block' : 'display:none' }}"
                   onclick="followers.unfollow('{{ profile.id }}','{{ profile.username }}')">
@@ -56,6 +56,12 @@
           </button>
           <button class="btn btn-primary btn-sm btn-block profile-follow btn-block mt-0"
                   style="{{ profile.hasFollower(app.user) ? 'display: none' : 'display:block' }}"
+                  onclick="followers.follow('{{ profile.id }}')">
+            {{ 'follower.follow'|trans({}, 'catroweb') }}
+          </button>
+        {% endif %}
+        {% if app.user == null %}
+          <button class="btn btn-primary btn-sm btn-block profile-follow btn-block mt-0"
                   onclick="followers.follow('{{ profile.id }}')">
             {{ 'follower.follow'|trans({}, 'catroweb') }}
           </button>

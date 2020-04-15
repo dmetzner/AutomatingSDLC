@@ -20,7 +20,7 @@
           {% if user.country %}
             <div class="d-inline mr-2"><i class="fas fa-map-marker"></i> {{ user.country }}</div>
           {% endif %}
-          {% if app.user.hasFollower(user.profile) %}
+          {% if app.user != null and app.user.hasFollower(user.profile) %}
             <div class="d-inline">
               <i class="fas fa-check"></i> {{ "follower.followsMe"|trans({}, "catroweb") }}
             </div>
@@ -29,7 +29,7 @@
       </a>
     </div>
     <div class="col-4 text-right my-auto">
-      {% if app.user == null or app.user.id != user.id %}
+      {% if app.user != null and app.user.id != user.id %}
       <div class="follow-button">
         <button class="btn btn-outline-primary btn-block unfollow-btn mt-0"
                 style="{{ user.profile.hasFollower(app.user) ? 'display: block' : 'display:none' }}"

@@ -167,11 +167,11 @@ Feature: User gets notifications for new followers, reactions, comments and othe
     Given I log in as "Peter"
     And I am on "/app/user/10"
     And I wait for the page to be loaded
-    And I click "#profile-follow-btn"
+    And I click ".profile-follow"
     And I wait for AJAX to finish
     And I am on "/app/user/11"
     And I wait for the page to be loaded
-    And I click "#profile-follow-btn"
+    And I click ".profile-follow"
     And I wait for AJAX to finish
     Given I have a project with "url" set to "/app/project/99"
     And User "Karen" uploads the project
