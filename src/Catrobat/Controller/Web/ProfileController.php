@@ -103,7 +103,7 @@ class ProfileController extends AbstractController
         'avatar' => $follower->getAvatar(),
         'projects' => count($follower->getPrograms()),
         'country' => $country,
-        'profile' => $follower
+        'profile' => $follower,
       ];
     }
     $following_list = [];
@@ -125,7 +125,7 @@ class ProfileController extends AbstractController
         'avatar' => $follower->getAvatar(),
         'projects' => count($follower->getPrograms()),
         'country' => $country,
-        'profile' => $follower
+        'profile' => $follower,
       ];
     }
 
@@ -142,7 +142,7 @@ class ProfileController extends AbstractController
       'username' => $user->getUsername(),
       'myProfile' => $my_profile,
       'followers_list' => $follower_list,
-      'following_list' => $following_list
+      'following_list' => $following_list,
     ]);
   }
 
