@@ -17,7 +17,7 @@
 
     </div>
   </div>
-  {% if ( newNotifications | length > 0 ) or ( oldNotifications | length > 0 ) %}
+  {%if ( newNotifications | length > 0 ) or ( oldNotifications | length > 0 ) %}
 
     <div id="notifications-summary">
 
@@ -30,12 +30,11 @@
         </div>
 
         <button id="delete-all" class="btn btn-danger download-button notification-summary-right"><i
-              class="fas fa-trash" aria-hidden="true"></i>
+                  class="fas fa-trash" aria-hidden="true"></i>
           {{ "deleteAllNotificationsButtonTitle"|trans({}, "catroweb") }}
         </button>
-        <button id="mark-all-as-seen"
-                class="btn btn-primary download-button notification-summary-right mark-all"><i
-              class="fa fa-check" aria-hidden="true"></i>
+        <button id="mark-all-as-seen" class="btn btn-primary download-button notification-summary-right mark-all"><i
+                  class="fa fa-check" aria-hidden="true"></i>
           {{ "clearAllNotificationsButtonTitle"|trans({}, "catroweb") }}
         </button>
 
@@ -55,8 +54,8 @@
     {% endfor %}
   </div>
 
-  {% if ( newNotifications | length > 0 ) or ( oldNotifications | length > 0 ) %}
-    <div class="row" id="old-notification-header">
+  {%if ( newNotifications | length > 0 ) or ( oldNotifications | length > 0 ) %}
+    <div class="row" id = "old-notification-header">
       <div class="col-md-12">
         <h1 class="headline">{{ "oldnotification"|trans({}, "catroweb") }}</h1>
       </div>
@@ -64,6 +63,7 @@
   {% endif %}
   <div id="old-notifications-container" class="row mt-4">
     {% for notification in oldNotifications %}
+
 
       <div class="col-md-12" id="old-check">
         {{ include(notification.getTwigTemplate) }}
@@ -86,38 +86,35 @@
 {% block js %}
   <script src="{{ asset('js/Notifications.min.js') }}"></script>
   <script>
+
+
     let notifications = new Notification({{ newNotifications|length }},
-      "{{ oldNotifications|length }}",
-      "{{ url('catro_notification_mark_as_read') }}",
-      "{{ url('user_notifications_seen', {'notification_type':  notificationType }) }}",
-      "{{ url('delete_all_notifications', {'notification_type':  notificationType }) }}",
-      "{{ url('delete_notification') }}",
-      "{{ "done"|trans({}, "catroweb") }}",
-      "{{ "notificationsClearedMessage"|trans({}, "catroweb") }}",
-      "{{ "somethingWentWrong"|trans({}, "catroweb") }}",
-      "{{ "notificationsClearError"|trans({}, "catroweb") }}",
-      "{{ "notificationDeleteMessage"|trans({}, "catroweb") }}",
-      "{{ "notificationDeleteAllMessage"|trans({}, "catroweb") }}",
-      "{{ "confirmMessage"|trans({}, "catroweb") }}",
-      "{{ "cancelMessage"|trans({}, "catroweb") }}",
-      "{{ "deleteNotificationConfirmation"|trans({}, "catroweb") }}",
-      "{{ "notificationDeletedMessage"|trans({}, "catroweb") }}",
-      "{{ "notificationsAllMessagesDeleted"|trans({}, "catroweb") }}",
-      "{{ "notificationsDeleteError"|trans({}, "catroweb") }}",
-      "{{ path('user_notifications_count') }}", "{{ notificationType }}"
+            "{{ oldNotifications|length }}",
+            "{{ url('catro_notification_mark_as_read') }}",
+            "{{ url('user_notifications_seen', {'notification_type':  notificationType }) }}",
+            "{{ url('delete_all_notifications', {'notification_type':  notificationType }) }}",
+            "{{ url('delete_notification') }}",
+            "{{ "done"|trans({}, "catroweb") }}",
+            "{{ "notificationsClearedMessage"|trans({}, "catroweb") }}",
+            "{{ "somethingWentWrong"|trans({}, "catroweb") }}",
+            "{{ "notificationsClearError"|trans({}, "catroweb") }}",
+            "{{ "notificationDeleteMessage"|trans({}, "catroweb") }}",
+            "{{ "notificationDeleteAllMessage"|trans({}, "catroweb") }}",
+            "{{ "confirmMessage"|trans({}, "catroweb") }}",
+            "{{ "cancelMessage"|trans({}, "catroweb") }}",
+            "{{ "deleteNotificationConfirmation"|trans({}, "catroweb") }}",
+            "{{ "notificationDeletedMessage"|trans({}, "catroweb") }}",
+            "{{ "notificationsAllMessagesDeleted"|trans({}, "catroweb") }}",
+            "{{ "notificationsDeleteError"|trans({}, "catroweb") }}",
+            "{{ path('user_notifications_count') }}", "{{ notificationType }}"
+
     )
-    $(document).ready(function() {
+    $(document).ready(function () {
       notifications.init()
     })
-  </script>
 
-  <script src="{{ asset('js/Follower.min.js') }}"></script>
-  <script>
-    let followers = new Follower("{{ url('unfollow') }}", "{{ url('follow') }}",
-      "{{ "somethingWentWrong"|trans({}, "catroweb") }}", "{{ "followError"|trans({}, "catroweb") }}",
-      "{{ "unfollowError"|trans({}, "catroweb") }}")
-  </script>
 
+  </script>
 
 
 {% endblock %}

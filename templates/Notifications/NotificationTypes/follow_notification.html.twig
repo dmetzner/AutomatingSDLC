@@ -1,6 +1,6 @@
 {% extends 'Notifications/NotificationTypes/baseNotification.html.twig' %}
 
-{% block notification_title %}
+{% block notification_title%}
   {{ 'catro-notifications.follow.title'|trans({}, 'catroweb') }}
 {% endblock %}
 
@@ -8,8 +8,7 @@
   {{ include('Notifications/NotificationTypes/userAvatar.html.twig') }}
 {% endblock %}
 
-{% block notification_body %}
-
+{% block notification_body%}
   {{ 'catro-notifications.follow.message' | trans
     (
     {
@@ -17,5 +16,6 @@
     },
     'catroweb'
   )
-  |raw }}
+  |raw
+  }}
 {% endblock %}
