@@ -4,64 +4,52 @@ namespace App\Catrobat\Controller\Web;
 
 use App\Catrobat\Services\CatroNotificationService;
 use App\Entity\FollowNotification;
-use App\Entity\ProgramManager;
 use App\Entity\User;
 use App\Entity\UserManager;
 use App\Repository\CatroNotificationRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Intl\Countries;
-use Symfony\Component\Intl\Exception\MissingResourceException;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Error\Error;
 
-/**
- * Class FollowerController.
- */
 class FollowerController extends AbstractController
 {
+  private UserManager $user_manager;
+  private CatroNotificationService $notification_service;
+  private CatroNotificationRepository $notification_repo;
+
+  public function __construct(UserManager $user_manager, CatroNotificationService $notification_service,
+                              CatroNotificationRepository $notification_repo)
+  {
+    $this->user_manager = $user_manager;
+    $this->notification_service = $notification_service;
+    $this->notification_repo = $notification_repo;
+  }
+
   /**
    * @Route("/follower", name="catrobat_follower", methods={"GET"})
-   *
-   * @throws Error
    */
-  public function followerAction(Request $request, ProgramManager $program_manager, UserManager $user_manager, string $id = '0'): Response
+  public function followerAction(Request $request, string $id = '0'): Response
   {
-    /** @var User */
+    /** @var User|null */
     $user = null;
-    $my_profile = false;
 
     if (('0' === $id) || ($this->getUser() && $this->getUser()->getId() === $id))
     {
       $user = $this->getUser();
-      $my_profile = true;
-      $program_count = count($program_manager->getUserPrograms($id));
     }
     else
     {
-      $user = $user_manager->find($id);
-      $program_count = count($program_manager->getPublicUserPrograms($id));
+      $user = $this->user_manager->find($id);
     }
 
-    if (!$user)
+    if (null === $user)
     {
       return $this->redirectToRoute('fos_user_security_login');
     }
 
-    \Locale::setDefault(substr($request->getLocale(), 0, 2));
-    try
-    {
-      $country = Countries::getName(strtoupper($user->getCountry()));
-    }
-    catch (MissingResourceException $e)
-    {
-      $country = '';
-    }
     $followerCount = $user->getFollowers()->count();
     $followingCount = $user->getFollowing()->count();
 
@@ -79,59 +67,14 @@ class FollowerController extends AbstractController
     $followers = $followersCollection->matching($criteria)->toArray();
     $following = $followingCollection->matching($criteria)->toArray();
 
-    $data_followers = [];
-    foreach ($followers as $user)
-    {
-      $followerCountry = '';
-      try
-      {
-        $followerCountry = 'AQ' !== $user->getCountry() ? Countries::getName(strtoupper($user->getCountry())) : '';
-      }
-      catch (MissingResourceException $e)
-      {
-        $followerCountry = '';
-      }
-      array_push($data_followers, [
-        'username' => $user->getUsername(),
-        'id' => $user->getId(),
-        'avatar' => $user->getAvatar(),
-        'projects' => count($user->getPrograms()),
-        'country' => $followerCountry,
-        'profile' => $user,
-      ]);
-    }
+    \Locale::setDefault(substr($request->getLocale(), 0, 2));
 
-    $data_following = [];
-    foreach ($following as $user)
-    {
-      $followingCountry = '';
-      try
-      {
-        $followingCountry = 'AQ' !== $user->getCountry() ? Countries::getName(strtoupper($user->getCountry())) : '';
-      }
-      catch (MissingResourceException $e)
-      {
-        $followingCountry = '';
-      }
-
-      array_push($data_following, [
-        'username' => $user->getUsername(),
-        'id' => $user->getId(),
-        'avatar' => $user->getAvatar(),
-        'projects' => count($user->getPrograms()),
-        'country' => $followingCountry,
-        'profile' => $user,
-      ]);
-    }
+    $data_followers = $this->user_manager->getMappedUserData($followers);
+    $data_following = $this->user_manager->getMappedUserData($following);
 
     return $this->render('UserManagement/Followers/followers.html.twig', [
-      'profile' => $user,
-      'program_count' => $program_count,
       'follower_count' => $followerCount,
       'following_count' => $followingCount,
-      'country' => $country,
-      'username' => $user->getUsername(),
-      'myProfile' => $my_profile,
       'followers_list' => $data_followers,
       'following_list' => $data_following,
     ]);
@@ -139,74 +82,89 @@ class FollowerController extends AbstractController
 
   /**
    * @Route("/follower/unfollow/{id}", name="unfollow", methods={"GET"}, defaults={"id": 0})
+   *
+   * Todo -> move to CAPI
    */
-  public function unfollowUser(string $id, UserManager $user_manager): JsonResponse
+  public function unfollowUser(string $id): JsonResponse
   {
+    /** @var User|null $user */
     $user = $this->getUser();
-    if (!$user)
+
+    if (null === $user)
     {
-      return new JsonResponse(['success' => false, 'message' => 'Please login']);
+      return new JsonResponse([], Response::HTTP_UNAUTHORIZED);
     }
 
-    if ('0' === $id)
+    if ($user->getId() === $id)
     {
-      return new JsonResponse(['success' => false, 'message' => 'Cannot follow yourself']);
+      return new JsonResponse([], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    /**
-     * @var User
-     */
-    $userToUnfollow = $user_manager->find($id);
-    $user->removeFollowing($userToUnfollow);
-    $user_manager->updateUser($user);
+    /** @var User|null $user_to_unfollow */
+    $user_to_unfollow = $this->user_manager->find($id);
+    if (null === $user_to_unfollow)
+    {
+      return new JsonResponse([], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 
-    return new JsonResponse(['success' => true]);
+    $user->removeFollowing($user_to_unfollow);
+    $this->user_manager->updateUser($user);
+
+    return new JsonResponse([], Response::HTTP_OK);
   }
 
   /**
    * @Route("/follower/follow/{id}", name="follow", methods={"GET"}, defaults={"id": 0})
    *
-   * @throws ORMException
-   * @throws OptimisticLockException
+   * Todo -> move to CAPI
    */
-  public function followUser(string $id, UserManager $user_manager, CatroNotificationService $notification_service,
-                             CatroNotificationRepository $notification_repo): JsonResponse
+  public function followUser(string $id): JsonResponse
   {
+    /** @var User|null $user */
     $user = $this->getUser();
-    if (!$user)
+
+    if (null === $user)
     {
-      return new JsonResponse(['success' => false, 'message' => 'Please login']);
+      return new JsonResponse([], Response::HTTP_UNAUTHORIZED);
     }
 
-    if ('0' === $id || $id === $user->getId())
+    if ($user->getId() === $id)
     {
-      return new JsonResponse(['success' => false, 'message' => 'Cannot follow yourself']);
+      return new JsonResponse([], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    /** @var User */
-    $notification_check = true;
-    $userToFollow = $user_manager->find($id);
-    $user->addFollowing($userToFollow);
-    $user_manager->updateUser($user);
-    $catro_user_notifications = $notification_repo->findByUser($userToFollow, ['id' => 'DESC']);
-    foreach ($catro_user_notifications as $notification)
+    /** @var User|null $user_to_follow */
+    $user_to_follow = $this->user_manager->find($id);
+    if (null === $user_to_follow)
     {
-      if (($notification instanceof FollowNotification))
+      return new JsonResponse([], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    $user->addFollowing($user_to_follow);
+    $this->user_manager->updateUser($user);
+    $this->addFollowNotificationIfNotExists($user, $user_to_follow);
+
+    return new JsonResponse([], Response::HTTP_OK);
+  }
+
+  private function addFollowNotificationIfNotExists(User $user, User $user_to_follow): void
+  {
+    $notification_exists = false;
+    $user_notifications = $this->notification_repo->findBy(['user' => $user_to_follow], ['id' => 'DESC']);
+    foreach ($user_notifications as $notification)
+    {
+      if ($notification instanceof FollowNotification
+        && $notification->getUser()->getId() === $user_to_follow->getId()
+        && $notification->getFollower()->getId() === $user->getId())
       {
-        if (($notification->getUser()->getId() === $userToFollow->getId()) and
-          ($notification->getFollower()->getId() === $user->getId()))
-        {
-          $notification_check = false;
-          break;
-        }
+        $notification_exists = true;
+        break;
       }
     }
-    if ($notification_check)
+    if (!$notification_exists)
     {
-      $notification = new FollowNotification($userToFollow, $user);
-      $notification_service->addNotification($notification);
+      $notification = new FollowNotification($user_to_follow, $user);
+      $this->notification_service->addNotification($notification);
     }
-
-    return new JsonResponse(['success' => true]);
   }
 }
