@@ -44,7 +44,7 @@ Feature: There should be all projects of a user presented on a profile page
     Then I should see "User1"
     And I should see "Amount of projects: 2"
     And I should see "Country: Austria"
-    And I should see "Projects of User1"
+    And I should see "Projects"
     And I should see "project 1"
     And I should see "project 2"
     But I should not see "User2"
@@ -55,7 +55,7 @@ Feature: There should be all projects of a user presented on a profile page
     And I wait for the page to be loaded
     Then I should see "User2"
     And I should see "Amount of projects: 1"
-    And I should see "Projects of User2"
+    And I should see "Projects"
     And I should see "project 3"
     But I should not see "User1"
     And I should not see "project 1"
