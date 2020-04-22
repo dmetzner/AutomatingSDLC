@@ -8,12 +8,13 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 use Exception;
 
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="program")
+ * @ORM\Table(name="program", indexes={@Index(columns={"id", "name", "description", "credits"}, flags={"fulltext"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProgramRepository")
  */
 class Program
@@ -847,17 +848,11 @@ class Program
       return;
     }
     $this->tags->add($tag);
-    $tag->addProgram($this);
   }
 
   public function removeTag(Tag $tag): void
   {
-    if (!$this->tags->contains($tag))
-    {
-      return;
-    }
     $this->tags->removeElement($tag);
-    $tag->removeProgram($this);
   }
 
   public function addExtension(Extension $extension): void
@@ -867,17 +862,11 @@ class Program
       return;
     }
     $this->extensions->add($extension);
-    $extension->addProgram($this);
   }
 
   public function removeExtension(Extension $extension): void
   {
-    if (!$this->extensions->contains($extension))
-    {
-      return;
-    }
     $this->extensions->removeElement($extension);
-    $extension->removeProgram($this);
   }
 
   public function removeAllExtensions(): void

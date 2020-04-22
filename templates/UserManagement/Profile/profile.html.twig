@@ -6,8 +6,8 @@
 
 {% block body %}
 
-  <div class="row no-gutters">
-    <div class="col-4 avatar-container mt-2 pr-3">
+  <div class="row no-gutters profile">
+    <div class="col-4 col-md-2 avatar-container mt-2 pr-3">
       <img alt="user-image" id="user-image" class="img-fluid round"
            src="{% if profile.avatar is not empty %}{{ profile.avatar }}{% else %}{{ asset('images/default/avatar_default.png') }}{% endif %}"/>
     </div>
@@ -49,19 +49,19 @@
 
       <div id="follow-btn" class="follow-button-container follow-button w-100 mt-3">
         {% if app.user != null and app.user.id != profile.id %}
-          <button class="btn btn-outline-primary btn-sm btn-block profile-follows mt-0"
+          <button class="btn btn-outline-primary profile-follows mt-0 ml-auto"
                   style="{{ profile.hasFollower(app.user) ? 'display: block' : 'display:none' }}"
                   onclick="followers.unfollow('{{ profile.id }}','{{ profile.username }}')">
             {{ 'follower.follows'|trans({}, 'catroweb') }}
           </button>
-          <button class="btn btn-primary btn-sm btn-block profile-follow btn-block mt-0"
+          <button class="btn btn-primary profile-follow mt-0 ml-auto"
                   style="{{ profile.hasFollower(app.user) ? 'display: none' : 'display:block' }}"
                   onclick="followers.follow('{{ profile.id }}')">
             {{ 'follower.follow'|trans({}, 'catroweb') }}
           </button>
         {% endif %}
         {% if app.user == null %}
-          <button class="btn btn-primary btn-sm btn-block profile-follow btn-block mt-0"
+          <button class="btn btn-primary profile-follow mt-0 mt-auto"
                   onclick="followers.follow('{{ profile.id }}')">
             {{ 'follower.follow'|trans({}, 'catroweb') }}
           </button>
@@ -76,7 +76,7 @@
         <li class="nav-item">
           <a class="nav-link active" id="projects-tab" data-toggle="tab" href="#projects-section"
              aria-controls="projects-section" aria-selected="true"
-             role="tab">{{ "profile.programsOf"|trans({}, "catroweb") }}</a>
+             role="tab">{{ "profile.programs"|trans({}, "catroweb") }}</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="follows-tab" data-toggle="tab" href="#following-section"
@@ -102,7 +102,7 @@
 
     <div id="following-section" class="tab-pane fade show" role="tabpanel" aria-labelledby="follows-tab">
       <div id="no-following" class="text-center mb-5 {{ following_list is empty ? 'd-block' : 'd-none' }}">
-        {{ "follower.noFollowing"|trans({}, "catroweb") }}
+        {{ "follower.noOtherFollowing"|trans({}, "catroweb") }}
       </div>
 
       <div id="following-cards" class="mb-5">
@@ -116,7 +116,7 @@
 
     <div id="follower-section" class="tab-pane fade" role="tabpanel" aria-labelledby="follower-tab">
       <div id="no-followers" class="text-center mb-5 {{ followers_list is empty ? 'd-block' : 'd-none' }}">
-        {{ "follower.noFollowers"|trans({}, "catroweb") }}
+        {{ "follower.noOtherFollowers"|trans({}, "catroweb") }}
       </div>
 
       <div id="follower-cards" class="mb-5">

@@ -193,3 +193,18 @@
     }
   }
 }
+
+.profile {
+    .follow-button-container button {
+      min-width: 150px;
+
+      @media(max-width:480px) {
+      width: 100%;
+      display:block;
+    }
+  }
+}
+
+.follower-tabs {
+  margin-top: -15px;
+}

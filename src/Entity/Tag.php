@@ -5,11 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="tags")
+ * @ORM\Table(name="tags", indexes={@Index(columns={"en", "de", "it", "fr"}, flags={"fulltext"})})
  * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  */
 class Tag
@@ -68,17 +69,11 @@ class Tag
       return;
     }
     $this->programs->add($program);
-    $program->addTag($this);
   }
 
   public function removeProgram(Program $program): void
   {
-    if (!$this->programs->contains($program))
-    {
-      return;
-    }
     $this->programs->removeElement($program);
-    $program->removeTag($this);
   }
 
   public function getPrograms(): Collection

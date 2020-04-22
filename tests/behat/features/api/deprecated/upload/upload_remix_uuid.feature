@@ -73,18 +73,18 @@ Feature: Upload a remixed program with multiple parents should also work with th
     #-------------------------------------------------------------------------------------------------------------------
     Given I am "Catrobat"
     Given I have a program with "name" set to "program 4" and "url" set to "program 390a46b7-4dca-11ea-b467-08002765cf2c[/pocketalice/project/390a46b7-4dca-11ea-b467-08002765cf2c]"
-    When I upload a program
-    Then the uploaded program should not be a remix root
-    And the uploaded program should have remix migration date NOT NULL
-    And the uploaded program should have a Catrobat forward ancestor having id "379dc210-4dca-11ea-b467-08002765cf2c" and depth "0"
-    And the uploaded program should have a Catrobat forward ancestor having id "390a46b7-4dca-11ea-b467-08002765cf2c" and depth "1"
-    And the uploaded program should have no further Catrobat forward ancestors
-    And the uploaded program should have no Catrobat backward parents
-    And the uploaded program should have no Scratch parents
-    And the uploaded program should have a Catrobat forward descendant having id "220a46b7-4dca-11ea-b467-08002765cf2c" and depth "1"
-    And the uploaded program should have a Catrobat forward descendant having id "330a46b7-4dca-11ea-b467-08002765cf2c" and depth "2"
-    And the uploaded program should have no further Catrobat forward descendants
-    And the uploaded program should have RemixOf "program 390a46b7-4dca-11ea-b467-08002765cf2c[/pocketalice/project/390a46b7-4dca-11ea-b467-08002765cf2c]" in the xml
+    When I upload a generated program, API version 1
+    Then the uploaded program should not be a remix root, API version 1
+    And the uploaded program should have remix migration date NOT NULL, API version 1
+    And the uploaded program should have a Catrobat forward ancestor having id "379dc210-4dca-11ea-b467-08002765cf2c" and depth "0", API version 1
+    And the uploaded program should have a Catrobat forward ancestor having id "390a46b7-4dca-11ea-b467-08002765cf2c" and depth "1", API version 1
+    And the uploaded program should have no further Catrobat forward ancestors, API version 1
+    And the uploaded program should have no Catrobat backward parents, API version 1
+    And the uploaded program should have no Scratch parents, API version 1
+    And the uploaded program should have a Catrobat forward descendant having id "220a46b7-4dca-11ea-b467-08002765cf2c" and depth "1", API version 1
+    And the uploaded program should have a Catrobat forward descendant having id "330a46b7-4dca-11ea-b467-08002765cf2c" and depth "2", API version 1
+    And the uploaded program should have no further Catrobat forward descendants, API version 1
+    And the uploaded program should have RemixOf "program 390a46b7-4dca-11ea-b467-08002765cf2c[/pocketalice/project/390a46b7-4dca-11ea-b467-08002765cf2c]" in the xml, API version 1
 
     And the program "390a46b7-4dca-11ea-b467-08002765cf2c" should be a remix root
     And the program "390a46b7-4dca-11ea-b467-08002765cf2c" should have a Catrobat forward ancestor having id "390a46b7-4dca-11ea-b467-08002765cf2c" and depth "0"

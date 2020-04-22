@@ -83,6 +83,8 @@ follower:
   followsMe: Follows me
   noFollowing: You are not following anybody currently
   noFollowers: You have no followers currently
+  noOtherFollowing: There are no following users currently.
+  noOtherFollowers: There are no follower users currently.
 
 programs:
   welcome:
@@ -265,6 +267,7 @@ profile:
     submitSuccess: saved!
   reallyDeleteProgram: Do you really want to delete your project
   programsOf: Projects of
+  programs: Projects
   changePicture: Change picture
   avatar:
     noImage: No Image!
@@ -701,6 +704,11 @@ api:
     passwordTooLong: 'Password too long'
     passwordInvalidChars: 'Password contains invalid chars'
     usernameContainsEmail: "Username shouldn't contain an email address"
+
+  projectsPost:
+      invalid_checksum: 'Invalid checksum. Try uploading again!'
+      upload_error: 'Error while uploading. Try uploading again!'
+      creating_error: 'Error while creating Program Entity. Try uploading again!'
 
 
 #languages and countries

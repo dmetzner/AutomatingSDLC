@@ -11,10 +11,10 @@ Feature: Upload a program with tag
       | 5  | Raspberry Pi | RASPI   |
 
   Scenario: uploading a embroidery project should add the embroidery extension to the database and
-            also adding the extension to the program
+  also adding the extension to the program
     Given I have an embroidery project
-    And I use the "english" app
-    When I upload this program
+    And I use the "english" app, API version 1
+    When I upload this generated program, API version 1
     Then the embroidery program should have the "Embroidery" extension
 
   Scenario: uploading a embroidery project should add the embroidery to the project
@@ -23,13 +23,13 @@ Feature: Upload a program with tag
       | id | name         | prefix       |
       | 1  | newOne       | NEW1         |
       | 2  | Embroidery   | Embroidery   |
-    And I use the "english" app
-    When I upload this program
+    And I use the "english" app, API version 1
+    When I upload this generated program, API version 1
     Then the embroidery program should have the "Embroidery" extension
 
   Scenario: uploading a normal project should must not add the embroidery extension to the project
     Given I have a program
-    And I use the "english" app
-    When I upload this program
+    And I use the "english" app, API version 1
+    When I upload this generated program, API version 1
     Then the project should have no extension
 

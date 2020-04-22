@@ -18,12 +18,12 @@ Feature: Upload a program with extensions
 
   Scenario: upload a program with extensions
     Given I have a program with Arduino, Lego and Phiro extensions
-    When I upload this program
+    When I upload this generated program, API version 1
     Then the program should be marked with extensions in the database
 
   Scenario: update a program with extensions
     Given I have a program with Arduino, Lego and Phiro extensions
-    And I upload this program with id "2"
-    When I upload the program again without extensions
+    And I upload this generated program with id "2", API version 1
+    When I upload this generated program again without extensions, API version 1
     Then the program with id "2" should be marked with no extensions in the database
 

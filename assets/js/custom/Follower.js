@@ -29,23 +29,13 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
         $.ajax({
           url: self.unfollowUrl + '/' + id,
           type: 'get',
-          success: function (data) {
-            if (!data.success) {
-              if (data.message === 'Please login') {
-                window.location.replace('fos_user_security_login')
-              } else if (data.message === 'Cannot follow yourself') {
-                window.location.replace('profile')
-              }
-              return
-            }
+          success: function () {
             $buttons.attr('disabled', false)
             totalFollowing--
-
             reloadSources()
           },
-          error: function () {
-            $buttons.attr('disabled', false)
-            Swal.fire(somethingWentWrongError, unfollowError, 'error')
+          error: function (xhr) {
+            handleError(xhr, $buttons)
           }
         })
         toggleEmptyText()
@@ -54,6 +44,7 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
       }
     })
   }
+
   self.follow = function (id) {
     const $followerItem = $('.follower-item-' + id)
     const $buttons = $followerItem.find('.follow-button button').attr('disabled', true)
@@ -61,25 +52,15 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
     $.ajax({
       url: self.followUrl + '/' + id,
       type: 'get',
-      success: function (data) {
-        if (!data.success) {
-          if (data.message === 'Please login') {
-            window.location.replace('fos_user_security_login')
-          } else if (data.message === 'Cannot follow yourself') {
-            window.location.replace('profile')
-          }
-          return
-        }
+      success: function () {
         $buttons.attr('disabled', false)
         totalFollowing++
         reloadSources()
       },
-      error: function () {
-        $buttons.attr('disabled', false)
-        Swal.fire(somethingWentWrongError, followError, 'error')
+      error: function (xhr) {
+        handleError(xhr, $buttons)
       }
     })
-
     toggleEmptyText()
   }
 
@@ -97,5 +78,20 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
     $('#user-information').load(window.location.href + ' #user-information>*')
     $('#new-notifications-container').load(window.location.href + ' #new-notifications-container>*', '')
     $('#old-notifications-container').load(window.location.href + ' #old-notifications-container>*', '')
+  }
+
+  function handleError (xhr, $buttons) {
+    if (xhr.status === 401) {
+      // a user must be logged in to (un)follow someone
+      window.location.replace('fos_user_security_login')
+      return
+    }
+    if (xhr.status === 422) {
+      // can't (un)follow yourself, or a user that does not exist
+      window.location.replace('profile')
+      return
+    }
+    $buttons.attr('disabled', false)
+    Swal.fire(somethingWentWrongError, followError, 'error')
   }
 }
