@@ -51,6 +51,7 @@ class UserNotificationController extends AbstractController
     $avatars = [];
     $new_notifications = [];
     $old_notifications = [];
+    $notification_instance = [];
 
     foreach ($catro_user_notifications as $notification)
     {
@@ -60,6 +61,26 @@ class UserNotificationController extends AbstractController
       if ('allNotifications' === $notification_type)
       {
         $found_notification = true;
+        if ($notification instanceof LikeNotification)
+        {
+          $notification_instance[$notification->getId()] = 'like';
+        }
+        if ($notification instanceof CommentNotification)
+        {
+          $notification_instance[$notification->getId()] = 'comment';
+        }
+        if ($notification instanceof FollowNotification)
+        {
+          $notification_instance[$notification->getId()] = 'follow';
+        }
+        if ($notification instanceof NewProgramNotification)
+        {
+          $notification_instance[$notification->getId()] = 'program';
+        }
+        if ($notification instanceof RemixNotification)
+        {
+          $notification_instance[$notification->getId()] = 'remix';
+        }
       }
       if ($notification instanceof LikeNotification && 'likes' === $notification_type)
       {
@@ -73,6 +94,7 @@ class UserNotificationController extends AbstractController
       }
       elseif ($notification instanceof NewProgramNotification && 'followers' === $notification_type)
       {
+        $notification_instance[$notification->getId()] = 'program';
         $found_notification = true;
         $user = $notification->getProgram()->getUser();
       }
@@ -88,6 +110,7 @@ class UserNotificationController extends AbstractController
           $found_notification = true;
         }
         $user = $notification->getRemixFrom();
+        $notification_instance[$notification->getId()] = 'remix';
       }
       if (null !== $user)
       {
@@ -111,6 +134,7 @@ class UserNotificationController extends AbstractController
       'newNotifications' => $new_notifications,
       'avatars' => $avatars,
       'notificationType' => $notification_type,
+      'instance' => $notification_instance,
     ]);
 
     $response->headers->set('Cache-Control', 'no-store, must-revalidate, max-age=0');

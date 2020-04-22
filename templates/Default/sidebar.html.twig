@@ -23,7 +23,7 @@
           <i id="notifications-dropdown-arrow" class="fas fa-caret-left"></i>
         </a>
 
-        <div id="notifications-dropdown-content" class="notifications-dropdown-content">
+          <div id="notifications-dropdown-content" class="notifications-dropdown-content">
 
           <a class="nav-link" href="{{ path('user_notifications', { 'notification_type': "allNotifications" })}}" id="btn-notifications">
             <i class="link-icon fas fa-bell"></i>
@@ -31,7 +31,9 @@
             <span class="badge-pill badge-danger all-notifications"></span>
           </a>
 
-          <a class="nav-link" href="{{ path('user_notifications', { 'notification_type': "followers" }) }}" id="btn-followers">
+            <a class="nav-link"
+               href="{{ path('user_notifications', { 'notification_type': "followers" }) }}"
+               id="btn-followers">
 
             <i class="link-icon fas fa-user"></i>
             <span class="text">{{ "FollowersNotifications"|trans({}, "catroweb") }}</span>
@@ -72,6 +74,13 @@
           </a>
         </li>
       {% endif %}
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('catrobat_follower') }}" id="btn-follow">
+          <i class="fas fa-user"></i>
+          <span>{{ 'menu.followersAndFollowing'|trans({}, "catroweb") }}</span>
+        </a>
+      </li>
 
     {% else %} {# login #}
       <li class="nav-item">

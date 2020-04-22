@@ -73,19 +73,12 @@ label {
   text-align: center;
 }
 
-button, .button {
-  border: 0;
-  border-radius: 4px;
-  color: #fff;
-  font-size: $default-button-size;
+.bold {
   font-weight: bold;
-  padding: $default-button-padding;
-  text-shadow: #333 1px 1px 1px;
-  text-align: center;
+}
 
-  img {
-    margin-right: 6px;
-  }
+.uppercase {
+  text-transform: uppercase;
 }
 
 form {

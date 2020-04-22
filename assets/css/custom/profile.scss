@@ -9,16 +9,6 @@
   color: $primary;
 }
 
-#user-information {
-  font-size: $default-font-size + 0.1875;
-  color: #000;
-  padding: 0 10px;
-
-  p {
-    margin: 10px auto;
-  }
-}
-
 .visited-program {
   opacity: 0.6;
 
@@ -101,6 +91,10 @@
   }
 }
 
+.follow-button-container {
+  align-self: flex-end;
+}
+
 .img-lock,
 .img-lock-open {
   text-align: center;
@@ -126,3 +120,82 @@
   }
 }
 
+/* follower section */
+.follower-item {
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__info {
+    font-size: .7em;
+    white-space: normal;
+  }
+
+  .follow-btn {
+    .btn {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+/* should be general */
+.round {
+  border-radius: 100%;
+}
+
+.catro-tabs {
+  .nav-tabs {
+    padding: 0;
+    border-bottom: 1px solid #e0e0e0;
+
+    @media (min-width: 768px) {
+      &.nav-fill {
+        .nav-item {
+          flex: unset;
+        }
+      }
+
+      .nav-link {
+        padding: .9em 1.5em;
+      }
+    }
+  }
+
+  .nav-link {
+    background: none;
+    text-decoration: none;
+    padding: .9em;
+    text-transform: uppercase;
+    border: 0;
+    color: rgba($text-color, 10);
+
+    &:hover {
+      color: $default-text-color;
+      background: none;
+    }
+
+    &.active {
+      font-weight: 700;
+      border-bottom: 2px solid $primary;
+      color: $text-color;
+    }
+  }
+}
+
+.profile {
+    .follow-button-container button {
+      min-width: 150px;
+
+      @media(max-width:480px) {
+      width: 100%;
+      display:block;
+    }
+  }
+}
+
+.follower-tabs {
+  margin-top: -15px;
+}
