@@ -2,10 +2,58 @@
 @import 'theme_settings';
 @import "mixins";
 
+// -- Material Icons: https://google.github.io/material-design-icons/
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/MaterialIcons-Regular.eot'); /* For IE6-8 */
+  src: local('Material Icons'),
+  local('MaterialIcons-Regular'),
+  url('../fonts/MaterialIcons-Regular.woff2') format('woff2'),
+  url('../fonts/MaterialIcons-Regular.woff') format('woff'),
+  url('../fonts/MaterialIcons-Regular.ttf') format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+// --
+
 @font-face {
   font-family: 'Roboto';
   src: url('../fonts/Roboto-Regular-webfont.eot');
-  src: local('Roboto Regular'), local('Roboto-Regular'), url('../fonts/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-Regular-webfont.woff') format('woff'), url('../fonts/Roboto-Regular-webfont.ttf') format('truetype'), url('../fonts/Roboto-Regular-webfont.svg#RobotoRegular') format('svg');
+  src: local('Roboto Regular'),
+  local('Roboto-Regular'),
+  url('../fonts/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/Roboto-Regular-webfont.woff') format('woff'),
+  url('../fonts/Roboto-Regular-webfont.ttf') format('truetype'),
+  url('../fonts/Roboto-Regular-webfont.svg#RobotoRegular') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -14,7 +62,12 @@
 @font-face {
   font-family: 'Roboto';
   src: url('../fonts/Roboto-Italic-webfont.eot');
-  src: local('Roboto Italic'), local('Roboto-Italic'), url('../fonts/Roboto-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-Italic-webfont.woff') format('woff'), url('../fonts/Roboto-Italic-webfont.ttf') format('truetype'), url('../fonts/Roboto-Italic-webfont.svg#RobotoItalic') format('svg');
+  src: local('Roboto Italic'),
+  local('Roboto-Italic'),
+  url('../fonts/Roboto-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/Roboto-Italic-webfont.woff') format('woff'),
+  url('../fonts/Roboto-Italic-webfont.ttf') format('truetype'),
+  url('../fonts/Roboto-Italic-webfont.svg#RobotoItalic') format('svg');
   font-weight: normal;
   font-style: italic;
   font-display: swap;
@@ -23,7 +76,12 @@
 @font-face {
   font-family: 'Roboto';
   src: url('../fonts/Roboto-Bold-webfont.eot');
-  src: local('Roboto Bold'), local('Roboto-Bold'), url('../fonts/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-Bold-webfont.woff') format('woff'), url('../fonts/Roboto-Bold-webfont.ttf') format('truetype'), url('../fonts/Roboto-Bold-webfont.svg#RobotoBold') format('svg');
+  src: local('Roboto Bold'),
+  local('Roboto-Bold'),
+  url('../fonts/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/Roboto-Bold-webfont.woff') format('woff'),
+  url('../fonts/Roboto-Bold-webfont.ttf') format('truetype'),
+  url('../fonts/Roboto-Bold-webfont.svg#RobotoBold') format('svg');
   font-weight: bold;
   font-style: normal;
   font-display: swap;

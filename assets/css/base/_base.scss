@@ -1,3 +1,11 @@
+// material.io components: https://material.io/develop/web/components
+@use "@material/icon-button";
+@use "@material/top-app-bar/mdc-top-app-bar";
+@use "@material/form-field";
+@use "@material/menu-surface/mdc-menu-surface";
+@use "@material/snackbar/mdc-snackbar";
+
+
 @import 'elements'; // A set of useful LESS mixins (More info at: http://lesselements.com)
 @import 'mixins';   // Our own defined Mixins
 
@@ -12,6 +20,10 @@
 // BS4 - GruntFile handles coping the files from vendor to the defined public directory
 @import '../../../public/bootstrap/scss/bootstrap';
 
+// material.io components - includes
+@include icon-button.core-styles;
+
+// ToDo - We are switching to Material:
 // Font Awesome - GruntFile handles coping the files from vendor to the defined public directory
 $fa-font-path: "../../webfonts";
 @import "../../../public/font_awesome_wrapper/fontawesome-free/scss/fontawesome";
@@ -26,6 +38,13 @@ $fa-font-path: "../../webfonts";
 //
 @import 'theme_settings';
 
+// Customizing Material.io:
+:root {
+  // https://material.io/develop/web/docs/theming/
+  --mdc-theme-primary: #{$primary};
+  --mdc-theme-secondary: #{$secondary};
+  --mdc-theme--background: #{$default-background-color}
+}
 
 // Custom Styles
 
@@ -33,13 +52,11 @@ $fa-font-path: "../../webfonts";
 @import "catro_bootstrap";
 @import 'brain';
 @import 'icons';
-@import 'header';
-@import 'navbar';
 @import 'buttons';
 
 // new design
 @import 'typography';
+@import 'header';
 @import "sidebar";
 @import 'footer';
 @import 'catro_tabs';
-
