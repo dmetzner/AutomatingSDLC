@@ -85,7 +85,7 @@ class FollowerController extends AbstractController
    *
    * Todo -> move to CAPI
    */
-  public function unfollowUser(string $id): JsonResponse
+  public function unfollowUser(string $id, CatroNotificationRepository $notification_repo, CatroNotificationService $notification_service): JsonResponse
   {
     /** @var User|null $user */
     $user = $this->getUser();
@@ -109,6 +109,13 @@ class FollowerController extends AbstractController
 
     $user->removeFollowing($user_to_unfollow);
     $this->user_manager->updateUser($user);
+
+    $existing_notifications = $notification_repo->getFollowNotificationForUser($user_to_unfollow, $user);
+
+    foreach ($existing_notifications as $notification)
+    {
+      $notification_service->removeNotification($notification);
+    }
 
     return new JsonResponse([], Response::HTTP_OK);
   }

@@ -8,11 +8,11 @@
 
   <div class="row no-gutters profile">
     <div class="col-4 col-md-2 avatar-container mt-2 pr-3">
-      <img alt="user-image" id="user-image" class="img-fluid round"
+      <img alt="Profile Picture" id="user-image" class="img-fluid round"
            src="{% if profile.avatar is not empty %}{{ profile.avatar }}{% else %}{{ asset('images/default/avatar_default.png') }}{% endif %}"/>
     </div>
 
-    <div id="user-information" class="col-8 mt-2 user-info d-flex flex-column justify-content-between">
+    <div id="user-information" class="col-8 col-md-10 mt-2 user-info d-flex flex-column justify-content-between">
       <div>
         <h1 id="profile-header" class="h4">
           {{ profile.username }}
@@ -105,9 +105,9 @@
         {{ "follower.noOtherFollowing"|trans({}, "catroweb") }}
       </div>
 
-      <div id="following-cards" class="mb-5">
+      <div id="following-cards" class="row mb-5">
         {% for followsUser in following_list %}
-          <div id="following-{{ followsUser.id }}" class="single-following my-3">
+          <div id="following-{{ followsUser.id }}" class="col-12 col-sm-6 single-following my-3">
             {% include 'UserManagement/Followers/follower-item.html.twig' with {'user': followsUser} only %}
           </div>
         {% endfor %}
@@ -119,9 +119,9 @@
         {{ "follower.noOtherFollowers"|trans({}, "catroweb") }}
       </div>
 
-      <div id="follower-cards" class="mb-5">
+      <div id="follower-cards" class="row mb-5">
         {% for followerUser in followers_list %}
-          <div id="followers-{{ followerUser.id }}" class="single-follower my-3">
+          <div id="followers-{{ followerUser.id }}" class="col-12 col-sm-6 single-follower my-3">
             {% include 'UserManagement/Followers/follower-item.html.twig' with {'user': followerUser} only %}
           </div>
         {% endfor %}
@@ -156,6 +156,7 @@
   <script>
     let followers = new Follower("{{ url('unfollow') }}", "{{ url('follow') }}",
       "{{ "somethingWentWrong"|trans({}, "catroweb") }}", "{{ "followError"|trans({}, "catroweb") }}",
-      "{{ "unfollowError"|trans({}, "catroweb") }}")
+      "{{ "unfollowError"|trans({}, "catroweb") }}", "{{ "unfollowButton"|trans({}, "catroweb") }}", "{{ "unfollowQuestion"|trans({}, "catroweb") }}",
+      "{{ "cancelButton"|trans({}, "catroweb") }}")
   </script>
 {% endblock %}

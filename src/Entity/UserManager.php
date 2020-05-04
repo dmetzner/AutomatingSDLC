@@ -12,10 +12,14 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class UserManager extends \Sonata\UserBundle\Entity\UserManager
 {
+  private ProgramManager $program_manager;
+
   public function __construct(PasswordUpdaterInterface $passwordUpdater,
                               CanonicalFieldsUpdater $canonicalFieldsUpdater,
-                              EntityManagerInterface $om)
+                              EntityManagerInterface $om,
+                              ProgramManager $program_manager)
   {
+    $this->program_manager = $program_manager;
     parent::__construct($passwordUpdater, $canonicalFieldsUpdater, $om, User::class);
   }
 
@@ -42,7 +46,7 @@ class UserManager extends \Sonata\UserBundle\Entity\UserManager
         'username' => $user->getUsername(),
         'id' => $user->getId(),
         'avatar' => $user->getAvatar(),
-        'projects' => count($user->getPrograms()),
+        'project_count' => count($this->program_manager->getPublicUserPrograms($user->getId())),
         'country' => $country,
         'profile' => $user,
       ]);

@@ -2,7 +2,7 @@
 /* global Swal */
 
 // eslint-disable-next-line no-unused-vars
-function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError, unfollowError,
+function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError, unfollowError, unfollowButton, unfollowQuestion, cancelButton,
   visibleFollowing = 5, visibleFollowers = 5, showSte = 5,
   minAmountOfVisibleFollowers = 5, totalFollowing = 5, totalFollowers = 5) {
   const self = this
@@ -11,19 +11,20 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
   self.somethingWentWrongError = somethingWentWrongError
   self.followError = followError
   self.unfollowError = unfollowError
+  self.unfollowButton = unfollowButton
+  self.unfollowQuestion = unfollowQuestion
+  self.cancelButton = cancelButton
 
   self.unfollow = function (id, username) {
-    const $followerItem = $('.follower-item-' + id)
-    const $buttons = $followerItem.find('.follow-button button').attr('disabled', true)
+    const $followerItems = $('.follower-item-' + id)
+    const $buttons = $followerItems.find('.btn-follow button').attr('disabled', true)
 
     Swal.fire({
-      title: 'Are you sure you want to unfollow ' + username,
-      text: self.notificationDeleteAllMessage,
+      title: self.unfollowQuestion,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#00acc1',
-      confirmButtonText: 'Unfollow ' + username,
-      cancelButtonText: 'Cancel'
+      confirmButtonText: self.unfollowButton + username,
+      cancelButtonText: self.cancelButton
     }).then((result) => {
       if (result.value) {
         $.ajax({
@@ -46,8 +47,8 @@ function Follower (unfollowUrl, followUrl, somethingWentWrongError, followError,
   }
 
   self.follow = function (id) {
-    const $followerItem = $('.follower-item-' + id)
-    const $buttons = $followerItem.find('.follow-button button').attr('disabled', true)
+    const $followerItems = $('.follower-item-' + id)
+    const $buttons = $followerItems.find('.btn-follow button').attr('disabled', true)
 
     $.ajax({
       url: self.followUrl + '/' + id,

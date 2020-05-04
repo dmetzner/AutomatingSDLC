@@ -30,9 +30,9 @@
         {{ "follower.noFollowing"|trans({}, "catroweb") }}
       </div>
 
-      <div id="following-cards" class="mb-5">
+      <div id="following-cards" class="row mb-5">
         {% for followsUser in following_list %}
-          <div id="following-{{ followsUser.id }}" class="single-following my-3">
+          <div id="following-{{ followsUser.id }}" class="col-12 col-sm-6 single-following my-3">
             {% include 'UserManagement/Followers/follower-item.html.twig' with {'user': followsUser} only %}
           </div>
         {% endfor %}
@@ -44,9 +44,9 @@
         {{ "follower.noFollowers"|trans({}, "catroweb") }}
       </div>
 
-      <div id="follower-cards" class="mb-5">
+      <div id="follower-cards" class="row mb-5">
         {% for followerUser in followers_list %}
-          <div id="followers-{{ followerUser.id }}" class="single-follower my-3">
+          <div id="followers-{{ followerUser.id }}" class="col-12 col-sm-6 single-follower my-3">
             {% include 'UserManagement/Followers/follower-item.html.twig' with {'user': followerUser, 'hideFollowsMe': true} only %}
           </div>
         {% endfor %}
@@ -60,6 +60,7 @@
   <script>
     let followers = new Follower("{{ url('unfollow') }}", "{{ url('follow') }}",
       "{{ "somethingWentWrong"|trans({}, "catroweb") }}", "{{ "followError"|trans({}, "catroweb") }}",
-      "{{ "unfollowError"|trans({}, "catroweb") }}", 5, 5, 5, 5, {{ following_count }}, {{ follower_count }})
+      "{{ "unfollowError"|trans({}, "catroweb") }}", "{{ "unfollowButton"|trans({}, "catroweb") }}", "{{ "unfollowQuestion"|trans({}, "catroweb") }}",
+      "{{ "cancelButton"|trans({}, "catroweb") }}", 5, 5, 5, 5, {{ following_count }}, {{ follower_count }})
   </script>
 {% endblock %}

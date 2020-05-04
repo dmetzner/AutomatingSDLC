@@ -66,6 +66,9 @@ notificationsDeleteError: "Unable to delete notifications!"
 pleaseWait: "Please wait..."
 followError: "Unable to follow the desired user!"
 unfollowError: "Unable to unfollow the desired user!"
+unfollowQuestion: "Are you sure you want to unfollow this user?"
+unfollowButton: "Unfollow"
+cancelButton: "Cancel"
 
 indexPage:
   recommendedSection:

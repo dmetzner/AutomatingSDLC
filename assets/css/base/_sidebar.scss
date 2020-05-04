@@ -39,6 +39,10 @@ $sidebar-width: 250px;
       padding-top: 1rem;
       padding-bottom: 1rem;
 
+      &.nav-link {
+        cursor: pointer;
+      }
+
       &:hover {
         cursor: pointer;
         text-decoration: none;
@@ -103,21 +107,18 @@ $sidebar-width: 250px;
         font-size: 1.1rem;
       }
 
-      .user-notification-badge-dropdown {
+      .text {
+        @include force-word-break();
+        flex-grow: 1;
+        max-width: calc(100% - 3rem);
+      }
 
-        .text {
-          @include force-word-break();
-          flex-grow: 1;
-          max-width: calc(100% - 3rem);
-        }
-
-        .badge-pill {
-          margin-left: 0.25rem;
-          display: none;
-          font-size: 1rem;
-          padding-left: 0.5em;
-          padding-right: 0.5em;
-        }
+      .badge-pill {
+        margin-left: 0.25rem;
+        display: none;
+        font-size: 1rem;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
       }
     }
 
@@ -136,18 +137,6 @@ $sidebar-width: 250px;
 
   body.new-nav.modal-open .modal {
     border-left: $sidebar-width solid transparent;
-  }
-
-  body.new-nav {
-    .catro-tabs {
-      margin-left: $sidebar-width;
-    }
-    .container {
-      padding-left: 15px + $sidebar-width;
-      .catro-tabs {
-        margin-left: 0;
-      }
-    }
   }
 }
 

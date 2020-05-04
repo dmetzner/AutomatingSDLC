@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CatroNotification;
+use App\Entity\FollowNotification;
 use App\Entity\LikeNotification;
 use App\Entity\Program;
 use App\Entity\User;
@@ -43,6 +44,37 @@ class CatroNotificationRepository extends ServiceEntityRepository
       $qb
         ->andWhere($qb->expr()->eq('n.like_from', ':like_from_id'))
         ->setParameter(':like_from_id', $likeFrom->getId())
+      ;
+    }
+
+    return $qb->getQuery()->getResult();
+  }
+
+  /**
+   * @return FollowNotification[]
+   */
+  public function getFollowNotificationForUser(User $owner = null, User $followFrom = null): array
+  {
+    $qb = $this->_em->createQueryBuilder();
+
+    $qb
+      ->select('n')
+      ->from(FollowNotification::class, 'n')
+    ;
+
+    if (null !== $owner)
+    {
+      $qb
+        ->andWhere($qb->expr()->eq('n.user', ':user_id'))
+        ->setParameter(':user_id', $owner->getId())
+      ;
+    }
+
+    if (null !== $followFrom)
+    {
+      $qb
+        ->andWhere($qb->expr()->eq('n.follower', ':follower_id'))
+        ->setParameter(':follower_id', $followFrom->getId())
       ;
     }
 

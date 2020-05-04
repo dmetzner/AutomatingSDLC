@@ -1,6 +1,9 @@
-@import 'theme_settings';
+@import '../../../public/bootstrap/scss/functions';
 @import '../base/variables';
 @import '../base/mixins';
+@import '../../../public/bootstrap/scss/variables';
+@import '../../../public/bootstrap/scss/mixins';
+@import 'theme_settings';
 
 /* profile */
 
@@ -189,13 +192,13 @@
     .follow-button-container button {
       min-width: 150px;
 
-      @media(max-width:480px) {
-      width: 100%;
-      display:block;
+      @include media-breakpoint-down(xs) {
+        width: 100%;
+        display: block;
     }
   }
 }
 
 .follower-tabs {
-  margin-top: -15px;
+  margin-top: -1rem;
 }
