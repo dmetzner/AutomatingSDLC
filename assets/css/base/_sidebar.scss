@@ -44,7 +44,6 @@ $sidebar-width: 250px;
       }
 
       &:hover {
-        cursor: pointer;
         text-decoration: none;
         background: rgba(0, 0, 0, 0.2);
       }
@@ -121,11 +120,11 @@ $sidebar-width: 250px;
         padding-right: 0.5em;
       }
     }
+  }
 
-    @include media-breakpoint-up(md) {
-      &:not(.inactive) {
-        left: 0;
-      }
+  @include media-breakpoint-up(md) {
+    &:not(.inactive) {
+      left: 0;
     }
   }
 }
