@@ -8,6 +8,7 @@ use App\Catrobat\Exceptions\Upload\MissingPostDataException;
 use App\Catrobat\Exceptions\Upload\NoGameJamException;
 use App\Catrobat\Requests\AddProgramRequest;
 use App\Catrobat\Services\CatroNotificationService;
+use App\Catrobat\Services\ExtractedFileRepository;
 use App\Catrobat\StatusCode;
 use App\Entity\GameJam;
 use App\Entity\Program;
@@ -44,10 +45,13 @@ class UploadController
 
   private EntityManagerInterface $em;
 
+  private ExtractedFileRepository $extracted_file_repository;
+
   public function __construct(UserManager $user_manager, TokenStorageInterface $token_storage,
                               ProgramManager $program_manager, GameJamRepository $game_jam_repository,
                               TranslatorInterface $translator, LoggerInterface $logger,
-                              CatroNotificationService $catro_notification_service, EntityManagerInterface $em)
+                              CatroNotificationService $catro_notification_service, EntityManagerInterface $em,
+                              ExtractedFileRepository $extracted_file_repository)
   {
     $this->user_manager = $user_manager;
     $this->token_storage = $token_storage;
@@ -57,6 +61,7 @@ class UploadController
     $this->logger = $logger;
     $this->catro_notification_service = $catro_notification_service;
     $this->em = $em;
+    $this->extracted_file_repository = $extracted_file_repository;
   }
 
   /**
@@ -146,8 +151,12 @@ class UploadController
     }
     else
     {
+      // Remove old extracted project files since they are not needed anymore.
+      $this->extracted_file_repository->removeProgramExtractedFile($program);
+
       $response = $this->createUploadResponse($request, $game_jam, $user, $program);
     }
+
     $this->logger->info('Uploading a project done : '.json_encode($response, JSON_THROW_ON_ERROR));
 
     return JsonResponse::create($response);

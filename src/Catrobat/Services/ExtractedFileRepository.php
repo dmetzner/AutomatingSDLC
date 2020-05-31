@@ -25,11 +25,11 @@ class ExtractedFileRepository
 
   private ProgramFileRepository $program_file_repo;
 
-  private LoggerInterface $l;
+  private LoggerInterface $logger;
 
   public function __construct(ParameterBagInterface $parameter_bag, CatrobatFileExtractor $file_extractor,
                               ProgramManager $program_manager, ProgramFileRepository $program_file_repo,
-                              LoggerInterface $l)
+                              LoggerInterface $logger)
   {
     $local_extracted_path = $parameter_bag->get('catrobat.file.extract.dir');
     $web_extracted_path = $parameter_bag->get('catrobat.file.extract.path');
@@ -45,7 +45,7 @@ class ExtractedFileRepository
     $this->file_extractor = $file_extractor;
     $this->program_manager = $program_manager;
     $this->program_file_repo = $program_file_repo;
-    $this->l = $l;
+    $this->logger = $logger;
   }
 
   public function loadProgramExtractedFile(Program $program): ?ExtractedCatrobatFile
@@ -83,55 +83,60 @@ class ExtractedFileRepository
     {
       $hash = $program->getExtractedDirectoryHash();
 
-      if (null != $hash)
+      if (null === $hash)
       {
-        $path = $this->local_path.$hash.'/';
+        return; // nothing to do
+      }
 
-        if (file_exists($this->local_path.$hash) && is_dir($path))
+      $path = $this->local_path.$hash.'/';
+
+      if (file_exists($this->local_path.$hash) && is_dir($path))
+      {
+        $finder = new Finder();
+
+        $image_path = $path.'images/';
+        if (file_exists($path.'images') && is_dir($image_path))
         {
-          $finder = new Finder();
-
-          $image_path = $path.'images/';
-          if (file_exists($path.'images') && is_dir($image_path))
-          {
-            $finder->files()->in($image_path);
-            foreach ($finder as $file)
-            {
-              unlink($image_path.$file->getFilename());
-            }
-            rmdir($image_path);
-          }
-
-          $finder = new Finder();
-
-          $sound_path = $path.'sounds/';
-          if (file_exists($path.'sounds') && is_dir($sound_path))
-          {
-            $finder->files()->in($sound_path);
-            foreach ($finder as $file)
-            {
-              unlink($sound_path.$file->getFilename());
-            }
-            rmdir($sound_path);
-          }
-          /** @var Finder $finder */
-          $finder = new Finder();
-          $finder->files()->in($path);
+          $finder->files()->in($image_path);
           foreach ($finder as $file)
           {
-            unlink($path.$file->getFilename());
+            unlink($image_path.$file->getFilename());
           }
-
-          rmdir($path);
+          rmdir($image_path);
         }
 
-        $program->setExtractedDirectoryHash(null);
-        $this->program_manager->save($program);
+        $finder = new Finder();
+
+        $sound_path = $path.'sounds/';
+        if (file_exists($path.'sounds') && is_dir($sound_path))
+        {
+          $finder->files()->in($sound_path);
+          foreach ($finder as $file)
+          {
+            unlink($sound_path.$file->getFilename());
+          }
+          rmdir($sound_path);
+        }
+        /** @var Finder $finder */
+        $finder = new Finder();
+        $finder->files()->in($path);
+        foreach ($finder as $file)
+        {
+          unlink($path.$file->getFilename());
+        }
+
+        rmdir($path);
       }
+
+      $program->setExtractedDirectoryHash(null);
+      $this->program_manager->save($program);
     }
-    catch (InvalidCatrobatFileException $e)
+    catch (Exception $e)
     {
-      // do nothing
+      $this->logger->error(
+        "Removing extracted project files failed with code '" . $e->getCode() .
+        "' and message: '" . $e->getMessage() . "'"
+      );
     }
   }
 }
