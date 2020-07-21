@@ -27,9 +27,9 @@ class BroadcastNotificationController extends CRUDController
   }
 
   /**
-   * @return BroadcastNotification[]
+   * @psalm-return \Generator<int, BroadcastNotification, mixed, void>
    */
-  private function getNotifications(string $message, string $title, UserManager $user_manager): iterable
+  private function getNotifications(string $message, string $title, UserManager $user_manager): \Generator
   {
     foreach ($user_manager->findAll() as $user)
     {

@@ -175,17 +175,17 @@ class CodeStatistic
     return $this->total_num_looks;
   }
 
-  public function getSoundStatistic(): int
+  public function getSoundStatistic(): ?int
   {
     return $this->total_num_sounds;
   }
 
-  public function getGlobalVarStatistic(): int
+  public function getGlobalVarStatistic(): ?int
   {
     return $this->total_num_global_vars;
   }
 
-  public function getLocalVarStatistic(): int
+  public function getLocalVarStatistic(): ?int
   {
     return $this->total_num_local_vars;
   }

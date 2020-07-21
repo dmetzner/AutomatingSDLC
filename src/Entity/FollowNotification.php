@@ -45,7 +45,7 @@ class FollowNotification extends CatroNotification
   /**
    * Returns the User which "follow action" to another user triggered this FollowNotification.
    */
-  public function getFollower(): User
+  public function getFollower(): ?User
   {
     return $this->follower;
   }

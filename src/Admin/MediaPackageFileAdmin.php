@@ -46,82 +46,113 @@ class MediaPackageFileAdmin extends AbstractAdmin
   }
 
   /**
-   * @param MediaPackageFile $object
+   * {@inheritdoc}
    */
   public function prePersist($object): void
   {
-    /** @var UploadedFile $file */
-    $file = $object->file;
-    if (null == $file)
+    /** @var MediaPackageFile $media_package_file */
+    $media_package_file = $object;
+
+    /** @var UploadedFile|null $file */
+    $file = $media_package_file->file;
+    if (null === $file)
     {
       return;
     }
 
-    $object->setExtension(('catrobat' == $file->getClientOriginalExtension()) ? 'catrobat' : $file->guessExtension());
+    $media_package_file->setExtension(
+      ('catrobat' === $file->getClientOriginalExtension()) ? 'catrobat' : $file->guessExtension()
+    );
   }
 
   /**
-   * @param MediaPackageFile $object
+   * {@inheritdoc}
    *
    * @throws ImagickException
    */
   public function postPersist($object): void
   {
-    $file = $object->file;
+    /** @var MediaPackageFile $media_package_file */
+    $media_package_file = $object;
+
+    /** @var UploadedFile|null $file */
+    $file = $media_package_file->file;
     if (null === $file)
     {
       return;
     }
-    $this->media_package_file_repository->moveFile($file, $object->getId(), $object->getExtension());
+
+    $this->media_package_file_repository->moveFile(
+      $file, $media_package_file->getId(), $media_package_file->getExtension()
+    );
   }
 
   /**
-   * @param MediaPackageFile $object
+   * {@inheritdoc}
    */
   public function preUpdate($object): void
   {
-    $object->old_extension = $object->getExtension();
+    /** @var MediaPackageFile $media_package_file */
+    $media_package_file = $object;
 
-    /** @var UploadedFile $file */
-    $file = $object->file;
-    if (null == $file)
+    $media_package_file->old_extension = $media_package_file->getExtension();
+
+    /** @var UploadedFile|null $file */
+    $file = $media_package_file->file;
+    if (null === $file)
     {
-      $object->setExtension($object->old_extension);
+      $media_package_file->setExtension($media_package_file->old_extension);
 
       return;
     }
-    $object->setExtension(('catrobat' == $file->getClientOriginalExtension()) ? 'catrobat' : $file->guessExtension());
+
+    $media_package_file->setExtension(
+      ('catrobat' == $file->getClientOriginalExtension()) ? 'catrobat' : $file->guessExtension()
+    );
   }
 
   /**
-   * @param MediaPackageFile $object
+   * {@inheritdoc}
    *
    * @throws ImagickException
    */
   public function postUpdate($object): void
   {
-    $file = $object->file;
+    /** @var MediaPackageFile $media_package_file */
+    $media_package_file = $object;
+
+    /** @var UploadedFile|null $file */
+    $file = $media_package_file->file;
     if (null === $file)
     {
       return;
     }
-    $this->media_package_file_repository->moveFile($file, $object->getId(), $object->getExtension());
+
+    $this->media_package_file_repository->moveFile(
+      $file, $media_package_file->getId(), $media_package_file->getExtension()
+    );
   }
 
   /**
-   * @param MediaPackageFile $object
+   * {@inheritdoc}
    */
   public function preRemove($object): void
   {
-    $object->removed_id = $object->getId();
+    /** @var MediaPackageFile $media_package_file */
+    $media_package_file = $object;
+
+    $object->removed_id = $media_package_file->getId();
   }
 
   /**
-   * @param MediaPackageFile $object
+   * {@inheritdoc}
    */
   public function postRemove($object): void
   {
-    $this->media_package_file_repository->remove($object->removed_id, $object->getExtension());
+    /** @var MediaPackageFile $media_package_file */
+    $media_package_file = $object;
+
+    $this->media_package_file_repository->remove($media_package_file->removed_id, $media_package_file->getExtension());
   }
 
   /**

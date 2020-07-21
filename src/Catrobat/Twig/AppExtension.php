@@ -76,8 +76,10 @@ class AppExtension extends AbstractExtension
 
   /**
    * @param mixed $input
+   *
+   * @return bool|string
    */
-  public function humanFriendlyNumberFilter($input): string
+  public function humanFriendlyNumberFilter($input)
   {
     $user_locale = $this->request_stack->getCurrentRequest()->getLocale();
 
@@ -212,23 +214,35 @@ class AppExtension extends AbstractExtension
     return $list;
   }
 
-  public function isMobile(): bool
+  /**
+   * @return false|int
+   */
+  public function isMobile()
   {
     return preg_match('/(Catrobat|Android|Windows Phone|iPad|iPhone)/', $this->getUserAgent());
   }
 
-  public function isWebview(): bool
+  /**
+   * @return false|int
+   */
+  public function isWebview()
   {
     // Example Webview: $user_agent = "Catrobat/0.93 PocketCode/0.9.14 Platform/Android";
     return preg_match('/Catrobat/', $this->getUserAgent());
   }
 
-  public function isAndroid(): bool
+  /**
+   * @return false|int
+   */
+  public function isAndroid()
   {
     return preg_match('/Android/', $this->getUserAgent());
   }
 
-  public function isIOS(): bool
+  /**
+   * @return false|int
+   */
+  public function isIOS()
   {
     return preg_match('/(iPad|iPhone)/', $this->getUserAgent());
   }
@@ -248,7 +262,7 @@ class AppExtension extends AbstractExtension
       // $user_agent_array = [ "Catrobat", "0.93 PocketCode", 0.9.14 Platform", "Android" ];
       $catrobat_language_array = explode(' ', $user_agent_array[1]);
       // $catrobat_language_array = [ "0.93", "PocketCode" ];
-      $catrobat_language = $catrobat_language_array[0] * 1.0;
+      $catrobat_language = floatval($catrobat_language_array[0]);
 
       if ($catrobat_language < $program_catrobat_language)
       {
@@ -400,7 +414,7 @@ class AppExtension extends AbstractExtension
     return substr($filename, $firstOccurrence, $lastOccurrence - $firstOccurrence);
   }
 
-  private function getUserAgent(): string
+  private function getUserAgent(): ?string
   {
     $request = $this->request_stack->getCurrentRequest();
 
