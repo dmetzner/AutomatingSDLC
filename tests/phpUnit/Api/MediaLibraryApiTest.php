@@ -37,25 +37,32 @@ class MediaLibraryApiTest extends WebTestCase
 
     $luna = $this->createFlavors('luna');
     $pocket_code = $this->createFlavors('pocketcode');
+    $flavor = new ArrayCollection([$luna]);
+    $flavors = new ArrayCollection([$luna, $pocket_code]);
 
     $new_media_package = new MediaPackage();
     $new_media_package->setName('Looks');
     $new_media_package->setNameUrl('looks');
     $this->entity_manager->persist($new_media_package);
     $this->entity_manager->flush();
+    $new_media_package2 = new MediaPackage();
+    $new_media_package2->setName('Looks2');
+    $new_media_package2->setNameUrl('looks2');
+    $this->entity_manager->persist($new_media_package2);
+    $this->entity_manager->flush();
 
     $new_media_package_cat = new MediaPackageCategory();
     $new_media_package_cat->setName('Pocket Family');
-    $new_media_package_cat->setPackage(new ArrayCollection([$new_media_package]));
+    $new_media_package_cat->setPackage(new ArrayCollection([$new_media_package, $new_media_package2]));
     $this->entity_manager->persist($new_media_package_cat);
     $this->entity_manager->flush();
 
-    $this->addMediaFile('Panda', $file, $new_media_package_cat, $pocket_code, 'Catrobat');
-    $this->addMediaFile('Cat', $file, $new_media_package_cat, $luna, 'CatrobatLuna');
-    $this->addMediaFile('Dog', $file, $new_media_package_cat, $pocket_code, 'Catrobat');
-    $this->addMediaFile('Rabbit', $file, $new_media_package_cat, $luna, 'CatrobatLuna');
-    $this->addMediaFile('Bear', $file, $new_media_package_cat, $pocket_code, 'Catrobat');
-    $this->addMediaFile('Snake', $file, $new_media_package_cat, $luna, 'CatrobatLuna');
+    $this->addMediaFile('Panda', $file, $new_media_package_cat, $flavors, 'Catrobat');
+    $this->addMediaFile('Cat', $file, $new_media_package_cat, $flavor, 'CatrobatLuna');
+    $this->addMediaFile('Dog', $file, $new_media_package_cat, $flavor, 'Catrobat');
+    $this->addMediaFile('Rabbit', $file, $new_media_package_cat, $flavor, 'CatrobatLuna');
+    $this->addMediaFile('Bear', $file, $new_media_package_cat, $flavor, 'Catrobat');
+    $this->addMediaFile('Snake', $file, $new_media_package_cat, $flavor, 'CatrobatLuna');
   }
 
   /**
@@ -95,46 +102,46 @@ class MediaLibraryApiTest extends WebTestCase
     $client->request('GET', '/api/media/file/1', [], [], ['HTTP_ACCEPT' => 'application/json']);
     $data = $client->getResponse()->getContent();
     $this->assertResponseStatusCodeSame(200);
-    $this->assertJsonStringEqualsJsonString($data, '{"id":1,"name":"Panda","flavor":"pocketcode","package":"Looks","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/1"}');
+    $this->assertJsonStringEqualsJsonString($data, '{"id":1,"name":"Panda","flavor":"[\"luna\",\"pocketcode\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/1"}');
 
     $client->request('GET', '/api/media/file/5', [], [], ['HTTP_ACCEPT' => 'application/json']);
     $this->assertResponseStatusCodeSame(200);
     $data = $client->getResponse()->getContent();
-    $this->assertJsonStringEqualsJsonString($data, '{"id":5,"name":"Bear","flavor":"pocketcode","package":"Looks","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/5"}');
+    $this->assertJsonStringEqualsJsonString($data, '{"id":5,"name":"Bear","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/5"}');
 
     $client->request('GET', '/api/media/files', [], [], ['HTTP_ACCEPT' => 'application/json']);
     $this->assertResponseStatusCodeSame(200);
     $data = $client->getResponse()->getContent();
-    $this->assertJsonStringEqualsJsonString($data, '[{"id":1,"name":"Panda","flavor":"pocketcode","package":"Looks","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/1"},{"id":2,"name":"Cat","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/2"},{"id":3,"name":"Dog","flavor":"pocketcode","package":"Looks","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/3"},{"id":4,"name":"Rabbit","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/4"},{"id":5,"name":"Bear","flavor":"pocketcode","package":"Looks","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/5"},{"id":6,"name":"Snake","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/6"}]');
+    $this->assertJsonStringEqualsJsonString($data, '[{"id":1,"name":"Panda","flavor":"[\"luna\",\"pocketcode\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/1"},{"id":2,"name":"Cat","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/2"},{"id":3,"name":"Dog","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/3"},{"id":4,"name":"Rabbit","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/4"},{"id":5,"name":"Bear","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/5"},{"id":6,"name":"Snake","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/6"}]');
 
     $client->request('GET', '/api/media/files', ['flavor' => 'luna'], [], ['HTTP_ACCEPT' => 'application/json']);
     $this->assertResponseStatusCodeSame(200);
     $data = $client->getResponse()->getContent();
-    $this->assertJsonStringEqualsJsonString($data, '[{"id":2,"name":"Cat","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/2"},{"id":4,"name":"Rabbit","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/4"},{"id":6,"name":"Snake","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/6"}]');
+    $this->assertJsonStringEqualsJsonString($data, '[{"id":1,"name":"Panda","flavor":"[\"luna\",\"pocketcode\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/1"},{"id":2,"name":"Cat","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/2"},{"id":3,"name":"Dog","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/3"},{"id":4,"name":"Rabbit","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/4"},{"id":5,"name":"Bear","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/5"},{"id":6,"name":"Snake","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/6"}]');
 
     $client->request('GET', '/api/media/files', ['limit' => 3], [], ['HTTP_ACCEPT' => 'application/json']);
     $this->assertResponseStatusCodeSame(200);
     $data = $client->getResponse()->getContent();
-    $this->assertJsonStringEqualsJsonString($data, '[{"id":1,"name":"Panda","flavor":"pocketcode","package":"Looks","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/1"},{"id":2,"name":"Cat","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/2"},{"id":3,"name":"Dog","flavor":"pocketcode","package":"Looks","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/3"}]');
+    $this->assertJsonStringEqualsJsonString($data, '[{"id":1,"name":"Panda","flavor":"[\"luna\",\"pocketcode\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/1"},{"id":2,"name":"Cat","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/2"},{"id":3,"name":"Dog","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/3"}]');
 
     $client->request('GET', '/api/media/files', ['offset' => 3], [], ['HTTP_ACCEPT' => 'application/json']);
     $this->assertResponseStatusCodeSame(200);
     $data = $client->getResponse()->getContent();
-    $this->assertJsonStringEqualsJsonString($data, '[{"id":4,"name":"Rabbit","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/4"},{"id":5,"name":"Bear","flavor":"pocketcode","package":"Looks","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/5"},{"id":6,"name":"Snake","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/6"}]');
+    $this->assertJsonStringEqualsJsonString($data, '[{"id":4,"name":"Rabbit","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/4"},{"id":5,"name":"Bear","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/5"},{"id":6,"name":"Snake","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/6"}]');
 
     $client->request('GET', '/api/media/files', ['offset' => 2, 'limit' => 2], [], ['HTTP_ACCEPT' => 'application/json']);
     $this->assertResponseStatusCodeSame(200);
     $data = $client->getResponse()->getContent();
-    $this->assertJsonStringEqualsJsonString($data, '[{"id":3,"name":"Dog","flavor":"pocketcode","package":"Looks","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/3"},{"id":4,"name":"Rabbit","flavor":"luna","package":"Looks","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/4"}]');
+    $this->assertJsonStringEqualsJsonString($data, '[{"id":3,"name":"Dog","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"Catrobat","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/3"},{"id":4,"name":"Rabbit","flavor":"[\"luna\"]","package":"[\"Looks\",\"Looks2\"]","category":"Pocket Family","author":"CatrobatLuna","extension":"","download_url":"http:\/\/localhost\/app\/download-media\/4"}]');
   }
 
-  private function addMediaFile(string $name, File $file, MediaPackageCategory $media_package_cat, Flavor $flavor, string $author): void
+  private function addMediaFile(string $name, File $file, MediaPackageCategory $media_package_cat, iterable $flavors, string $author): void
   {
     $new_media_package_file = new MediaPackageFile();
     $new_media_package_file->setName($name);
     $new_media_package_file->setFile($file);
     $new_media_package_file->setCategory($media_package_cat);
-    $new_media_package_file->addFlavor($flavor);
+    $new_media_package_file->setFlavors($flavors);
     $new_media_package_file->setAuthor($author);
     $new_media_package_file->setExtension($file->getExtension());
 
