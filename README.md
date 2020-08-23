@@ -2,6 +2,22 @@
 
 Description: The test system needs to be refactored and split up to speed up testing processes with the already existing docker container. Tests need to be split up in more sections/test suits so that we can execute them in parallel using our docker container The underlying FeatureContextFiles need to be refactored, cleaned, adapted where necessary and code duplications need to be removed Since we are on our way to introduce APIv2, it is a good time to check if our current Testsuite (Behat) is adequately equipped to extensively test our new API. If not an alternative should be found and implemented (in accordance with the rest of the team)
 
+## Why unit testing?
+
+Testing can be automated for speed.
+
+Higher probability of bug free code
+
+Easy to understand inherited code
+
+Refactor code to the point of testability and understandability
+
+Figure out what went wrong quickly with test cases
+
+New features can be coded easily
+
+It also minimizes the cost of change in software.
+
 ## ApiPhpUnit Tests
 
 Since we found out that the PhpUnit tests are the best alternative for our current Testsuite, because they are significantly faster than Behat tests, it was used for this project. 
@@ -15,7 +31,7 @@ After adding other tests and some refactoring, tests were all done in: [API PhpU
 
 ## Testing: 
 
-For the purposes of these tests **WebTestCase** class and fake database entries were used.
+For the purposes of these tests **WebTestCase** class, fake database entries and PHP Unit assertions were used.
 
 For every route for media files both response status and response body were checked.
 
