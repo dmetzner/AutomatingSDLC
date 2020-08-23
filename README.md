@@ -2,7 +2,7 @@
 
 Description: The test system needs to be refactored and split up to speed up testing processes with the already existing docker container. Tests need to be split up in more sections/test suits so that we can execute them in parallel using our docker container The underlying FeatureContextFiles need to be refactored, cleaned, adapted where necessary and code duplications need to be removed Since we are on our way to introduce APIv2, it is a good time to check if our current Testsuite (Behat) is adequately equipped to extensively test our new API. If not an alternative should be found and implemented (in accordance with the rest of the team)
 
-## Why unit testing?
+## Why Unit testing?
 
 Testing can be automated for speed.
 
@@ -18,7 +18,25 @@ New features can be coded easily
 
 It also minimizes the cost of change in software.
 
-## ApiPhpUnit Tests
+##Why PHPUnit testing?
+
+Just like other test automation frameworks meant for unit testing, PHPUnit helps you in developing a code that performs well and is easy to maintain.
+
+It also helps you to identify defects that may arise before the code is pushed to further testing phases.
+
+Issues are detected early during development phase since the testing is carried out by developers only.
+
+Unit testing helps in detecting issues and fixing the code at a certain fragment of the application, thereby leaving other fragments intact and without any chance of breakage.
+
+Debugging process is made simpler. Debugging is required only when a certain unit test fails.
+
+## Disadvantages
+
+The only disadvantage of PHPUnit is that, for testing multiple functions, the developer is required to add cover annotations.
+
+By any chance, if you change the name of the method or function without updating the @covers annotation, testing is skipped for that certain method or function.
+
+## ApiPHPUnit Tests
 
 Since we found out that the PhpUnit tests are the best alternative for our current Testsuite, because they are significantly faster than Behat tests, it was used for this project. 
 
