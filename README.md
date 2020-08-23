@@ -1,41 +1,31 @@
-# Catroweb
+# Refactoring of test system and alternative API testing
 
-![Tests](https://github.com/Catrobat/Catroweb-Symfony/workflows/Tests/badge.svg)
-![Code Quality Checks](https://github.com/Catrobat/Catroweb-Symfony/workflows/Code%20Quality%20Checks/badge.svg)
-[![Dependabot Status](https://img.shields.io/badge/Dependabot-active-green.svg)](https://dependabot.com)
-[![codecov](https://codecov.io/gh/Catrobat/Catroweb/branch/develop/graph/badge.svg)](https://codecov.io/gh/Catrobat/Catroweb)
+Description: The test system needs to be refactored and split up to speed up testing processes with the already existing docker container. Tests need to be split up in more sections/test suits so that we can execute them in parallel using our docker container The underlying FeatureContextFiles need to be refactored, cleaned, adapted where necessary and code duplications need to be removed Since we are on our way to introduce APIv2, it is a good time to check if our current Testsuite (Behat) is adequately equipped to extensively test our new API. If not an alternative should be found and implemented (in accordance with the rest of the team)
 
-[![Php 7.4](https://img.shields.io/badge/PHP-7.4-informational.svg)](https://www.php.net/)
-[![Symfony](https://img.shields.io/badge/Symfony-4.4-informational.svg)](https://cs.symfony.com/)
+**ApiPhpUnit Tests** 
 
-**Catroweb** is the name of the **Pocket Code share community platform** for the associated [Catrobat](https://github.com/Catrobat/) project. 
+Since we found out that the PhpUnit tests are the best alternative for our current Testsuite, because they are significantly faster than Behat tests, it was used for this project. 
 
-The website features Catrobat projects (also called Catrobat programs) created with Pocket Code. 
-Uploaded projects can be shared and downloaded. Additionally, the platform provides users with features typical for a social network.
+First, some missing routes were added, which helped to find out more about our APIs:
+[SHARE-314 Extend media lib API](https://github.com/Catrobat/Catroweb/pull/622)
+Then, first part of tests was added: [MediaAPI PhpUnit Tests](https://github.com/Catrobat/Catroweb/pull/681)
+After adding other tests and some refactoring, tests were all done in: [API PhpUnit Tests](https://github.com/Catrobat/Catroweb/pull/760)
 
-The Community website with projects from users all around the world can be found at [https://share.catrob.at](https://share.catrob.at/).
-The official Swagger API documentation can be found at [GitHub](https://github.com/Catrobat/Catroweb-API/blob/develop/catroweb.yaml).
+## Testing: 
 
-**Please create a new [issue](https://github.com/Catrobat/Catroweb/issues/new) for every bug you find.**
+For the purposes of these tests **WebTestCase** class and fake database entries were used.
+For every route for media files both response status and response body were checked.
+For routes for users and projects it was only possible to check response status because projects and users had different ID every time when created.
 
-## How to get started: 
+## Result: 
+Not only that these tests run for only few minutes, they are also a lot easier to understand or write than Behat tests.
 
-You can find all important HowTo's in our [wiki](https://github.com/Catrobat/Catroweb-Symfony/wiki).
-Make sure all tests are passing when creating a pull request!
+## Other work: 
 
-[![Docker](https://img.shields.io/badge/Docker-supported-brightgreen.svg)](https://github.com/Catrobat/Catroweb/wiki/Docker)
+After testing part there was a lot of hours left so the following tickets were also done:
 
-##### Tools integrated in the project:
+[SHARE-255/Refactoring - Adminarea - Tools/Maintain](https://github.com/Catrobat/Catroweb/pull/779)
+[Edit php unit tests annotations, tests refactoring, add admin command test](https://github.com/Catrobat/Catroweb/pull/805)
+[SHARE-341/CAPI_Entities_Inconsistency](https://github.com/Catrobat/Catroweb/pull/818)
+[SHARE-345/Updated_bricks](https://github.com/Catrobat/Catroweb/pull/850)
 
-[![Php-cs-fixer](https://img.shields.io/badge/Php_Code_Style-Php_CS_Fixer-informational.svg)](https://github.com/FriendsOfPHP/PHP-CS-Fixer)
-[![PhpStan](https://img.shields.io/badge/Php_Code_Quality-PhpStan,_Psalm,_PhpCF,_PhpCPD_-informational.svg)](https://github.com/phpstan/phpstan)
-[![Grunt](https://img.shields.io/badge/Task_Runner-Grunt-orange.svg)](https://gruntjs.com/)
-[![Npm standard](https://img.shields.io/badge/JS_Code_Style-standard-green.svg)](https://standardjs.com)
-[![ESLint](https://img.shields.io/badge/JS_Code_Quality-ESLint-green.svg)](https://eslint.org/)
-[![Sass](https://img.shields.io/badge/CSS_Preprocessor-npm_sass-ff69b4.svg)](https://sass-lang.com/)
-[![StyleLint](https://img.shields.io/badge/CSS_Code_Style-StyleLint-ff69b4.svg)](https://stylelint.io/)
-
-**Have fun!**
-
-# License #
-[License](https://catrob.at/licenses) of our project (mainly AGPL v3).
