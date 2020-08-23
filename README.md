@@ -18,7 +18,7 @@ New features can be coded easily
 
 It also minimizes the cost of change in software.
 
-##Why PHPUnit testing?
+## Why PHPUnit testing?
 
 Just like other test automation frameworks meant for unit testing, PHPUnit helps you in developing a code that performs well and is easy to maintain.
 
