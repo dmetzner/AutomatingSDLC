@@ -58,6 +58,13 @@ For routes for users and projects it was only possible to check response status 
 ## Result: 
 Not only that these tests run for only few minutes, they are also a lot easier to understand or write than Behat tests.
 
+## Things I learned:
+API in Symfony
+Behat tests
+Unit tests
+PHPUnit tests
+Git
+
 ## Other work: 
 
 After testing part there was a lot of hours left so the following tickets were also done:
