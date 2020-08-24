@@ -56,13 +56,19 @@ For every route for media files both response status and response body were chec
 For routes for users and projects it was only possible to check response status because projects and users had different ID every time when created.
 
 ## Result: 
+
 Not only that these tests run for only few minutes, they are also a lot easier to understand or write than Behat tests.
 
 ## Things I learned:
+
 API in Symfony
+
 Behat tests
+
 Unit tests
+
 PHPUnit tests
+
 Git
 
 ## Other work: 
