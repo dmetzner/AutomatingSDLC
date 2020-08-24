@@ -73,7 +73,7 @@ Git
 
 ## Other work: 
 
-After testing part there was a lot of hours left so the following tickets were also done:
+After testing part there were a lot of hours left so the following tickets were also done:
 
 [SHARE-255/Refactoring - Adminarea - Tools/Maintain](https://github.com/Catrobat/Catroweb/pull/779)
 
