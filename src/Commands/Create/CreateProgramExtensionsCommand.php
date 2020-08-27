@@ -65,7 +65,7 @@ class CreateProgramExtensionsCommand extends Command
     $this->em->flush();
 
     $finder = new Finder();
-    $finder->in($this->program_file_repository->directory);
+    $finder->in($this->program_file_repository->zip_dir);
 
     $this->output->writeln('Searching for extensions ...');
 
@@ -74,11 +74,11 @@ class CreateProgramExtensionsCommand extends Command
     {
       $zip = new ZipArchive();
 
-      $open = $zip->open($this->program_file_repository->directory.$element->getFilename());
+      $open = $zip->open($this->program_file_repository->zip_dir.$element->getFilename());
 
       if (true !== $open)
       {
-        $this->output->writeln('Cant open: '.$this->program_file_repository->directory.$element->getFilename());
+        $this->output->writeln('Cant open: '.$this->program_file_repository->zip_dir.$element->getFilename());
         $this->output->writeln('Skipping file ...');
         continue;
       }

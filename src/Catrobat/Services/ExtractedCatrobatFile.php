@@ -163,47 +163,27 @@ class ExtractedCatrobatFile
     return array_unique($matches[1]);
   }
 
+  /**
+   * The Apps have a screenshot for every scene. However, we only need one for the project image.
+   * This method goes through all possible locations to search a screenshot file that exists.
+   */
   public function getScreenshotPath(): ?string
   {
-    $screenshot_path = null;
-    if (is_file($this->path.'screenshot.png'))
-    {
-      $screenshot_path = $this->path.'screenshot.png';
-    }
-    elseif (is_file($this->path.'manual_screenshot.png'))
-    {
-      $screenshot_path = $this->path.'manual_screenshot.png';
-    }
-    elseif (is_file($this->path.'automatic_screenshot.png'))
-    {
-      $screenshot_path = $this->path.'automatic_screenshot.png';
-    }
     $finder = new Finder();
+    $screenshots = iterator_to_array($finder->in($this->path)
+      ->files()
+      ->name(['manual_screenshot.png', 'automatic_screenshot.png'])
+      ->sortByName()
+      ->reverseSorting() // Priority: manual - automatic - screenshot
+    );
 
-    if (null === $screenshot_path)
+    if (!$finder->hasResults())
     {
-      $fu = $finder->in($this->path)->files()->name('manual_screenshot.png');
-
-      /** @var File $file */
-      foreach ($fu as $file)
-      {
-        $screenshot_path = $file->getPathname();
-        break;
-      }
-    }
-    if (null === $screenshot_path)
-    {
-      $fu = $finder->in($this->path)->files()->name('automatic_screenshot.png');
-
-      /** @var File $file */
-      foreach ($fu as $file)
-      {
-        $screenshot_path = $file->getPathname();
-        break;
-      }
+      // Legacy screenshot.png support
+      $screenshots = iterator_to_array($finder->in($this->path)->files()->name('screenshot.png'));
     }
 
-    return $screenshot_path;
+    return $finder->hasResults() ? reset($screenshots)->getPathname() : null;
   }
 
   public function getApplicationVersion(): string
