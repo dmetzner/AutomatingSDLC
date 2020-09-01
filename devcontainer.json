@@ -1,0 +1,15 @@
+{
+    "name": "Catroweb - Share community platform",
+    
+    "dockerComposeFile": "docker/docker-compose.dev.yml",
+    "service": "app.catroweb",
+	
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+
+	"extensions": [
+		"felixfbecker.php-debug",
+		"felixfbecker.php-intellisense"
+	]
+}
