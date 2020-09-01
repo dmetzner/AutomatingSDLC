@@ -1,17 +1,21 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ** Code Quality **
 #
-#  Code quality checks must fulfill minimum the requirements at all time (Every pull request!).
-#  We should never allow those checks to fail before merging a pull request. Having failing pipelines over a longer
-#  period of time results in developers and code reviewers to ignore those checks, which again results in more and more
-#  errors over time. If necessary it is better to reduce the strictness of some checks in the corresponding config
-#  files, or explicitly tell the tools to ignore a certain pattern or line.
+#  Code quality checks require contributions to fulfill the minimum requirements at all times using static analysis
+#  tools on every pull request.
+#
+#  We should never allow those checks to fail before merging a pull request. Having failing pipelines over a more
+#  extended period results in developers and code reviewers to ignore those checks, which again results in more and more
+#  errors over time. If necessary, it is better to reduce the strictness of some checks in the corresponding config
+#  files, or explicitly tell the tools to ignore a particular pattern or line.
 #
 #  ToDo: As soon as Github Action have support: use templates/components to prevent the duplicated (build/cache) code
 #
 #
-name: Code Quality
+name: Static analysis
 
+# Run-on every creation, update and merge of a pull request.
+# However, prevent checks to be initiated twice if the pull request is a branch on the same repository. (E.g dependabot)
 on:
   push:
     branches:
