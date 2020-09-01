@@ -448,8 +448,8 @@ class BrowserContext extends MinkContext implements KernelAwareContext
    */
   public function iWaitForThePageToBeLoaded(): void
   {
-//    $this->getSession()->wait(15_000, "document.readyState === 'complete'");
-//    $this->iWaitForAjaxToFinish();
+    $this->getSession()->wait(15_000, "document.readyState === 'complete'");
+    $this->iWaitForAjaxToFinish();
   }
 
   /**
@@ -459,9 +459,9 @@ class BrowserContext extends MinkContext implements KernelAwareContext
    */
   public function iWaitForAjaxToFinish(): void
   {
-//    $this->getSession()->wait(15_000,
-//      '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))'
-//    );
+    $this->getSession()->wait(15_000,
+      '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))'
+    );
   }
 
   /**
