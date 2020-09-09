@@ -26,7 +26,7 @@ class DefaultController extends AbstractController
   /**
    * @Route("/", name="index", methods={"GET"})
    */
-  public function indexAction(Request $request, ImageRepository $image_repository, FeaturedRepository $repository): Response
+  public function indexAction(Request $request, ImageRepository $image_repository, FeaturedRepository $repository)
   {
     $flavor = $request->get('flavor');
 
@@ -58,9 +58,9 @@ class DefaultController extends AbstractController
       }
       else
       {
-        $info['url'] = $item->getUrl();
+        $info['url'] = $item->getUrl(true);
       }
-      $info['image'] = $image_repository->getWebPath($item->getId(), $item->getImageType(), true);
+      $info['image'] = $image_repository->getWebPath($item->getId(), $item->getImageType(), "true");
 
       $featured[] = $info;
     }
@@ -118,7 +118,7 @@ class DefaultController extends AbstractController
       $this->statistics->createClickStatistics($request, $type, $rec_from_id, $rec_program_id, null, null,
         $referrer, $locale, $is_recommended_program_a_scratch_program, $is_user_specific_recommendation);
 
-      return new Response('ok');
+//      return new Response('ok');
     }
 
     if ('tags' == $type)
